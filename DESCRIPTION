@@ -1,0 +1,20 @@
+Package: comperes
+Title: Create and Manipulate Competition Results
+Version: 0.1.0
+Authors@R: person("Evgnei", "Chasnovski", email = "evgeni.chasnovski@gmail.com",
+    role = c("aut", "cre"))
+Description: Tools for creating and manipulating competition results.
+Depends: R (>= 3.4.0)
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+URL: https://github.com/echasnovski/comperes
+BugReports: https://github.com/echasnovski/comperes/issues
+RoxygenNote: 6.0.1
+Imports: dplyr (>= 0.6.0),
+    tidyr (>= 0.6.1),
+    rlang (>= 0.1.0)
+Suggests: testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
