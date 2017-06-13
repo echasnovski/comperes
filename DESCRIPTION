@@ -15,6 +15,7 @@ Imports: dplyr (>= 0.6.0),
     tidyr (>= 0.6.1),
     rlang (>= 0.1.0)
 Suggests: testthat,
+    covr,
     knitr,
     rmarkdown
 VignetteBuilder: knitr
