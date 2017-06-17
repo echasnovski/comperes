@@ -79,7 +79,7 @@ to_pairgames <- function(cr_data) {
 
       .data %>%
         slice(c(cr_pairs)) %>%
-        mutate(..subGame = rep(1:ncol(cr_pairs), each = 2))
+        mutate(..subGame = rep(seq_len(ncol(cr_pairs)), each = 2))
     }) %>%
     ungroup()
 
