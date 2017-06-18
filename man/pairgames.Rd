@@ -4,7 +4,7 @@
 \alias{pairgames}
 \alias{to_pairgames}
 \alias{is_pairgames}
-\title{Сompetition results with games between two players}
+\title{Competition results with games between two players}
 \usage{
 to_pairgames(cr_data)
 

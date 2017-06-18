@@ -1,4 +1,4 @@
-#' Сompetition results with games between two players
+#' Competition results with games between two players
 #'
 #' Functions for competition results with games between two players.
 #'
