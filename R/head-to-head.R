@@ -11,6 +11,7 @@
 #' @param absent_h2h Function which performs actions on Head-to-Head matrix
 #'   dealing with absent Head-to-Head records for some pairs of players.
 #' @param transpose Whether to transpose Head-to-Head matrix.
+#' @param self_play Values for self-play matchups.
 #' @param ... Additional arguments to be passed to or from methods.
 #'
 #' @details Head-to-Head value is a measure of a quality of direct
@@ -63,7 +64,9 @@
 #'     \link{head-to-head-helpers};
 #'   \item If \code{transpose} is \code{TRUE} do transposition of Head-to-Head
 #'     matrix. This option is added to minimize the need in almost duplicated
-#'     \code{h2h_fun}s.
+#'     \code{h2h_fun}s;
+#'   \item If \code{self_play} is not NULL replace values on diagonal of
+#'     Head-to-Head matrix with \code{self_play}.
 #' }
 #'
 #' If argument \code{players} is \code{NULL} then Head-to-Head matrix is
@@ -86,13 +89,20 @@
 #' )
 #'
 #' # Compute Head-to-Head matrix with mean score difference.
-#' mean_score_diff <- function(matchup_data, ...) {
-#'   mean(matchup_data$score2 - matchup_data$score1)
-#' }
 #' get_h2h(
-#'   cr_data = cr_data, h2h_fun = mean_score_diff,
+#'   cr_data = cr_data, h2h_fun = h2h_mean_score_diff,
 #'   players = NULL, absent_players = players_drop,
 #'   absent_h2h = fill_h2h
+#' )
+#'
+#' # Use arguments for post modification
+#' get_h2h(
+#'   cr_data = cr_data, h2h_fun = h2h_mean_score_diff,
+#'   transpose = TRUE
+#' )
+#' get_h2h(
+#'   cr_data = cr_data, h2h_fun = h2h_mean_score_diff,
+#'   self_play = 1
 #' )
 #'
 #' @seealso \link{head-to-head-helpers} Head-to-Head helpers.
@@ -105,7 +115,7 @@ NULL
 #' @export
 get_h2h <- function(cr_data, h2h_fun, players = NULL,
                     absent_players = players_drop, absent_h2h = fill_h2h,
-                    transpose = FALSE,
+                    transpose = FALSE, self_play = NULL,
                     ...) {
   cr <- to_longcr(cr_data, ...)
   players <- get_cr_players(cr_data = cr, players = players, ...)
@@ -138,6 +148,10 @@ get_h2h <- function(cr_data, h2h_fun, players = NULL,
     absent_h2h(...)
 
   class(res) <- c("h2h", "matrix")
+
+  if (!is.null(self_play)) {
+    diag(res) <- self_play
+  }
 
   if (transpose) {
     t(res)

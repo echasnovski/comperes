@@ -41,15 +41,27 @@ test_that("get_h2h works", {
 })
 
 test_that("get_h2h works when 'transpose' is TRUE", {
-  output_ref_1 <- matrix(c(0, 1, -1, 0), ncol = 2, dimnames = list(1:2, 1:2))
-  class(output_ref_1) <- c("h2h", "matrix")
+  output_ref <- matrix(c(0, 1, -1, 0), ncol = 2, dimnames = list(1:2, 1:2))
+  class(output_ref) <- c("h2h", "matrix")
 
-  output_1 <- get_h2h(
+  output <- get_h2h(
     cr_data = cr_data, h2h_fun = h2h_mean_score_diff,
     players = NULL, absent_players = players_drop,
     absent_h2h = fill_h2h, transpose = TRUE
   )
 
-  expect_identical(output_1, output_ref_1)
+  expect_identical(output, output_ref)
 })
 
+test_that("get_h2h works with not NULL 'self_play'", {
+  output_ref <- matrix(c(1, -1, 1, 2), ncol = 2, dimnames = list(1:2, 1:2))
+  class(output_ref) <- c("h2h", "matrix")
+
+  output <- get_h2h(
+    cr_data = cr_data, h2h_fun = h2h_mean_score_diff,
+    players = NULL, absent_players = players_drop,
+    absent_h2h = fill_h2h, self_play = 1:2
+  )
+
+  expect_identical(output, output_ref)
+})
