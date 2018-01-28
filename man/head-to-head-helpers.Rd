@@ -33,28 +33,28 @@ get_cr_matchups(cr_data)
 \item{players}{Vector of players for which Head-to-Head is computed.}
 }
 \value{
-\code{players_drop} removes from \code{h2h_mat} rows and columns of
-the players for which either row or column contain only \code{NA} (in
-most cases it means these players are absent in original competition
-results).
+\code{players_drop()} removes from \code{h2h_mat} rows and columns of the
+players for which either row or column contain only \code{NA} (in most cases it
+means these players are absent in original competition results).
 
-\code{fill_h2h} replaces \code{NA}s in \code{h2h_mat} with \code{fill}.
+\code{fill_h2h()} replaces \code{NA}s in \code{h2h_mat} with \code{fill}.
 
-\code{get_cr_players} in case of argument \code{players} is \code{NULL}
-returns vector of players present in \code{cr_data}. If not \code{NULL} then
-returns its argument \code{players}.
+\code{get_cr_players()} in case of argument \code{players} is \code{NULL} returns vector of
+players present in \code{cr_data}. If not \code{NULL} then returns its argument
+\code{players}.
 
-\code{get_cr_matchups} returns a \code{\link[dplyr]{tibble}} of all
+\code{get_cr_matchups()} returns a \link[tibble:tibble]{tibble} of all
 matchups (pairs of players from one game) present in \code{cr_data}. It has
 following columns:
-\describe{
-  \item{game}{Game identifier of matchup}
-  \item{player1}{Identifier of first player in matchup}
-  \item{score1}{Score of the first player in matchup}
-  \item{player2}{Identifier of second player in matchup}
-  \item{score2}{Score of the second player in matchup}
+\itemize{
+\item \code{game} - game identifier of matchup.
+\item \code{player1} - identifier of first player in matchup.
+\item \code{score1} - score of the first player in matchup.
+\item \code{player2} - identifier of second player in matchup.
+\item \code{score2} - score of the second player in matchup.
 }
-\bold{Note} that matchups are not symmetrical: matchup "player1"-"player2"
+
+\strong{Note} that matchups are not symmetrical: matchup "player1"-"player2"
 is considered different from "player2"-"player1" in order to except more
 advanced, not symmetrical Head-to-Head values.
 }
@@ -72,8 +72,6 @@ get_cr_matchups(cr_data)
 
 }
 \seealso{
-\link{head-to-head} Abstract computing of Head-to-Head matrices.
-
-\link{head-to-head-functions} Specific functions for computing
-  Head-to-Head matrices.
+\link[=head-to-head]{Head-to-Head computation}, \link[=head-to-head-functions]{Head-to-Head
+functions}.
 }

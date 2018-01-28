@@ -2,38 +2,33 @@
 #'
 #' Functions for competition results with games between two players.
 #'
-#' @param cr_data Competition results in format ready for
-#'   \code{\link[=results-longcr]{to_longcr}}.
+#' @param cr_data Competition results in format ready for [to_longcr()].
 #'
 #' @details Pairgames is a term for competition results with games between two
 #'   players.
 #'
-#'   \code{to_pairgames} is a function that converts competition results
-#'   into pairwise games: it drops games with one player and for every game with
-#'   3 and more players this function transforms it into set of separate games
+#'   `to_pairgames()` is a function that converts competition results into
+#'   pairwise games: it drops games with one player and for every game with 3
+#'   and more players this function transforms it into set of separate games
 #'   between unordered pairs of players. In other words the result is a set of
-#'   unordered \link[=head-to-head-helpers]{matchups} (as different games)
-#'   between different players.
+#'   unordered [matchups][head-to-head-helpers] (as different games) between
+#'   different players.
 #'
-#'   \bold{Note} that order in which players are assigned to \code{player1} or
-#'   \code{player2} column in general shouldn't agree with any order in
-#'   \code{cr_data}.
+#'   __Important notes__:
+#'   - Order in which players are assigned to `player1` or `player2` column in
+#'   general shouldn't agree with any order in `cr_data`.
+#'   - Any column except `game`, `player` and `score` will be dropped after
+#'   conversion to [longcr][results-longcr].
+#'   - `NA` and `NaN` in `players` are allowed. They are treated as different
+#'   players.
+#'   - `to_pairgames()` is rather compute-intensive and can take much time for
+#'   competition results with many games.
 #'
-#'   \bold{Note} that any column except \code{game}, \code{player} and
-#'   \code{score} will be dropped after conversion to
-#'   \code{\link[=results-longcr]{longcr}}.
+#' @return `to_pairgames()` returns a competition results of pairwised games as
+#'   [widecr][results-widecr] object with two players.
 #'
-#'   \bold{Note} that \code{NA} and \code{NaN} in \code{players} are allowed.
-#'   They are treated as different players.
-#'
-#'   \bold{Note} that \code{to_pairgames} is rather compute-intensive and can
-#'   take much time for competition results with many games.
-#'
-#' @return \code{to_pairgames} returns a competition results of pairwised games
-#'   as \link[=results-widecr]{widecr} object with two players.
-#'
-#'   \code{is_pairgames} returns a boolean value of whether \code{cr_data}
-#'   contains only games between two players.
+#'   `is_pairgames()` returns a boolean value of whether `cr_data` contains only
+#'   games between two players.
 #'
 #' @examples
 #' cr_data <- data.frame(

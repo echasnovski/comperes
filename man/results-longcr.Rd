@@ -23,67 +23,65 @@ to_longcr(cr_data, repair = TRUE, ...)
 \item{x}{An object to print.}
 }
 \value{
-\code{is_longcr} returns TRUE if its argument is appropriate object
-  of class \code{longcr}.
+\code{is_longcr()} returns \code{TRUE} if its argument is appropriate object of
+class \code{longcr}.
 
-\code{to_longcr} returns an object of class \code{longcr}.
+\code{to_longcr()} returns an object of class \code{longcr}.
 }
 \description{
 Functions for converting data of competition results to long format.
 }
 \details{
-\code{to_longcr} is S3 method for converting data to \code{longcr}.
-When using default method if \code{repair} is \code{TRUE} it also tries
-to fix possible problems with the following actions:
+\code{to_longcr()} is S3 method for converting data to \code{longcr}. When
+using \strong{default} method if \code{repair} is \code{TRUE} it also tries to fix
+possible problems with the following actions:
 \itemize{
-  \item Detect first columns with names containing "game", "player" or
-    "score" (ignoring case). If there are many matching names for one output
-    name then the first one is used. In case of imperfect match, message
-    is given;
-  \item If some legitimate names aren't detected respective columns are
-    created and filled with \code{NA_integer_}. Also a message is given.
-  \item If in one game some player listed more than once the first record
-    is taken;
-  \item Return the tibble with at least 3 appropriate columns and column
-    names.
-}
-If \code{repair} is \code{FALSE} it converts \code{cr_data} to
-\code{\link[dplyr]{tibble}} and adds \code{longcr} class to it.
-
-When applying \code{to_longcr} to \code{widecr} object, conversion is made:
-\itemize{
-  \item If there is column \code{game} then it is used as game identifier.
-    Else treat every row as separate game data;
-  \item Every "player"-"score" pair for every game is converted to separate
-    row with adding the appropriate extra columns;
-  \item Result is arranged by \code{game} and \code{player} in increasing
-    order;
-  \item If \code{repair} is \code{TRUE} then repair is done as in
-    \code{to_longcr.default}.
+\item Detect first columns with names containing "game", "player" or "score"
+(ignoring case). If there are many matching names for one output name then
+the first one is used. In case of imperfect match, message is given.
+\item If some legitimate names aren't detected respective columns are created and
+filled with \code{NA_integer_}. Also a message is given.
+\item If in one game some player listed more than once the first record is taken.
+\item Return the tibble with at least 3 appropriate columns and column names.
 }
 
-For appropriate \code{longcr} objects \code{to_longcr} returns its input.
+If \code{repair} is \code{FALSE} it converts \code{cr_data} to \link[tibble:tibble]{tibble} and
+adds \code{longcr} class to it.
+
+When applying \code{to_longcr()} to \strong{\code{widecr}} object, conversion is made:
+\itemize{
+\item If there is column \code{game} then it is used as game identifier. Else treat
+every row as separate game data.
+\item Every "player"-"score" pair for every game is converted to separate row
+with adding the appropriate extra columns.
+\item Result is arranged by \code{game} and \code{player} in increasing order.
+\item If \code{repair} is \code{TRUE} then repair is done as in \code{to_longcr.default()}.
+}
+
+For appropriate \strong{\code{longcr}} objects \code{to_longcr()} returns its input and
+throws error otherwise.
 }
 \section{Long format of competition results}{
 
 It is assumed that competition consists from multiple games (matches,
-comparisons, etc.). One game can consist from \bold{variable} number of
+comparisons, etc.). One game can consist from \strong{variable} number of
 players. Inside a game all players are treated equally.
 In every game every player has some score: the value of arbitrary nature
 that fully characterizes player's performance in particular game (in most
 cases it is some numeric value).
 
-\code{longcr} inherits from \code{\link[dplyr]{tibble}}. Data should have
-  at least three columns with the following names:
-  \itemize{
-    \item "game" - game identifier;
-    \item "player" - player identifier;
-    \item "score" - score of particular player in particular game.
-  }
-  Extra columns are allowed. \bold{Note} that if object is converted to
-  \code{widecr} they will be dropped. So it is better to store extra
-  information about "game"-"player" pair as list-column "score" which will
-  stay untouched.
+\code{longcr} inherits from \link[tibble:tibble]{tibble}. Data should have at least
+three columns with the following names:
+\itemize{
+\item \code{game} - game identifier.
+\item \code{player} - player identifier.
+\item \code{score} - score of particular player in particular game.
+}
+
+Extra columns are allowed. \strong{Note} that if object is converted to
+\link[=results-widecr]{widecr}, they will be dropped. So it is better to store
+extra information about "game"-"player" pair as list-column "score" which
+will stay untouched.
 }
 
 \examples{
@@ -99,5 +97,5 @@ is_longcr(cr_data_long)
 
 }
 \seealso{
-\link[=results-widecr]{widecr} for wide format.
+\link[=results-widecr]{Wide format}
 }

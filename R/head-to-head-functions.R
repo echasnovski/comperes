@@ -2,34 +2,30 @@
 #'
 #' Specific functions for computing Head-to-Head matrices.
 #'
-#' @param matchup_data Data of matchups described in \link{head-to-head} as
-#'   input for specific \code{h2h_fun}.
+#' @param matchup_data Data of matchups described in [Head-to-Head
+#'   computation][head-to-head] as input for specific `h2h_fun`.
 #' @param half_for_draw Whether to count half points for draws in
-#'   \code{h2h_num_wins}.
+#'   `h2h_num_wins()`.
 #' @param ... Additional arguments to be passed to or from methods.
 #'
-#' @details This is a list of currently implemented \code{h2h_fun}s:
-#' \describe{
-#'   \item{h2h_mean_score_diff}{Computes mean score difference of \code{player2}
-#'     compared to \code{player1};}
-#'   \item{h2h_mean_score_diff_pos}{Equivalent to \code{h2h_mean_score_diff}
-#'     but returns 0 if result is negative;}
-#'   \item{h2h_mean_score}{Computes mean score of \code{player2};}
-#'   \item{h2h_sum_score_diff}{Computes sum of score differences of
-#'     \code{player2} compared to \code{player1};}
-#'   \item{h2h_sum_score_diff_pos}{Equivalent to \code{h2h_sum_score_diff}
-#'     but returns 0 if result is negative;}
-#'   \item{h2h_mean_score_diff_pos}{Equivalent to \code{h2h_mean_score_diff}
-#'     but returns 0 if result is negative;}
-#'   \item{h2h_sum_score}{Computes sum of scores of \code{player2};}
-#'   \item{h2h_num_wins}{Computes number of matchups \code{player2} scored
-#'     \bold{more} than \code{player1}. If \code{half_for_draw} is \code{TRUE}
-#'     then it also adds half number of matchups where they had draw.
-#'     \bold{Note} that it excludes matchups of the players with themselves;}
-#'   \item{h2h_num}{Computes number of matchups.}
-#' }
+#' @details This is a list of currently implemented `h2h_fun`s:
+#'   - `h2h_mean_score_diff()` - computes mean score difference of `player2`
+#'   compared to `player1`.
+#'   - `h2h_mean_score_diff_pos()` - equivalent to `h2h_mean_score_diff()` but
+#'   returns 0 if result is negative.
+#'   - `h2h_mean_score()` - computes mean score of `player2`.
+#'   - `h2h_sum_score_diff()` - computes sum of score differences of
+#'     `player2` compared to `player1`.
+#'   - `h2h_sum_score_diff_pos()` - equivalent to `h2h_sum_score_diff()` but
+#'   returns 0 if result is negative.
+#'   - `h2h_sum_score()` - computes sum of scores of `player2`.
+#'   - `h2h_num_wins()` - computes number of matchups `player2` scored __more__
+#'   than `player1`. If `half_for_draw` is `TRUE` then it also adds half number
+#'   of matchups where they had draw. __Note__ that it excludes matchups of the
+#'   players with themselves.
+#'   - `h2h_num()` - computes number of matchups.
 #'
-#' @return All \code{h2h_*} are implementations of \code{h2h_fun} and return a
+#' @return All `h2h_*` are implementations of `h2h_fun` and return a
 #'   single Head-to-Head value.
 #'
 #' @examples # Initializing data
@@ -49,8 +45,8 @@
 #' h2h_mean_score_diff(matchup_data[2, ])
 #' h2h_mean_score_diff(matchup_data[19, ])
 #'
-#' @seealso \link{head-to-head} Abstract computing of Head-to-Head matrices.
-#' @seealso \link{head-to-head-helpers} Head-to-Head helpers.
+#' @seealso [Head-to-Head computation][head-to-head], [Head-to-Head
+#'   helpers][head-to-head-helpers]
 #' @name head-to-head-functions
 NULL
 

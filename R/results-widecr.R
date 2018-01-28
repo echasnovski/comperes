@@ -9,65 +9,59 @@
 #'
 #' @section Wide format of competition results:
 #' It is assumed that competition consists from multiple games (matches,
-#' comparisons, etc.). One game can consist only from \bold{constant} number
+#' comparisons, etc.). One game can consist only from __constant__ number
 #' of players. Inside a game all players are treated equally.
 #' In every game every player has some score: the value of arbitrary nature
 #' that fully characterizes player's performance in particular game (in most
 #' cases it is some numeric value).
 #'
-#' \code{widecr} inherits from \code{\link[dplyr]{tibble}}. Data should be
-#' organized in pairs of columns "player"-"score". Identifier of a pair should
-#' go after respective keyword and consist only from digits. For example:
-#' player1, score1, player2, score2. Order doesn't matter.
-#' Extra columns are allowed.
+#' `widecr` inherits from [tibble][tibble::tibble]. Data should be organized in
+#' pairs of columns "player"-"score". Identifier of a pair should go after
+#' respective keyword and consist only from digits. For example: player1,
+#' score1, player2, score2. Order doesn't matter. Extra columns are allowed.
 #'
 #' To account for R standard string ordering, identifiers of pairs should be
-#' formatted with possible leading zeros. For example: player01, score01, ...,
-#' player10, score10.
+#' formatted with leading zeros (when appropriate). For example: player01,
+#' score01, ..., player10, score10.
 #'
-#' Column \code{game} for game identifier is optional. If present it will
-#' be used in conversion to \code{longcr} format via \code{\link{to_longcr}}.
+#' Column `game` for game identifier is optional. If present it will be used in
+#' conversion to `longcr` format via [to_longcr()].
 #'
-#' @details \code{to_widecr} is S3 method for converting data to \code{widecr}.
-#' When using default method if \code{repair = TRUE} it tries to fix possible
+#' @details `to_widecr()` is S3 method for converting data to `widecr`.
+#' When using __default__ method if `repair` is `TRUE` it tries to fix possible
 #' problems with the following actions:
-#' \itemize{
-#'   \item Detect columns with names containing "player" or "score".
-#'     All other columns are treated as "extra";
-#'   \item Extract first occurrence of "player" or "score" from names of
-#'     detected columns. Everything after extracted word is treated as
-#'     identifier of "player"-"score" pair;
-#'   \item Convert these identifiers to numeric form with
-#'     \code{as.integer(as.factor(...))};
-#'   \item Convert identifiers once again to character form with possible
-#'     leading zeros (to account for R standard string ordering);
-#'   \item Spread pairs to appropriate columns adding columns with
-#'     \code{NA_integer_} if they were not present in original data;
-#'   \item \bold{Note} that if there is column \code{game} it is placed as
-#'     first column.
-#' }
-#' Note that the order (and numeration) of pairs can change.
+#' - Detect columns with names containing "player" or "score". All other columns
+#' are treated as "extra".
+#' - Extract first occurrence of "player" or "score" from names of detected
+#' columns. Everything after extracted word is treated as identifier of
+#' "player"-"score" pair.
+#' - Convert these identifiers to numeric form with
+#' `as.integer(as.factor(...))`.
+#' - Convert identifiers once again to character form with possible leading
+#' zeros (to account for R standard string ordering).
+#' - Spread pairs to appropriate columns adding columns with `NA_integer_` if
+#' they were not present in original data.
+#' - __Note__ that if there is column `game` it is placed as first column.
+#' __Note__ that the order (and numeration) of pairs can change.
 #'
-#' If \code{repair} is \code{FALSE} it converts \code{cr_data} to
-#' \code{\link[dplyr]{tibble}} and adds \code{widecr} class to it.
+#' If `repair` is `FALSE` it converts `cr_data` to [tibble][tibble::tibble] and
+#' adds `widecr` class to it.
 #'
-#' When applying \code{to_widecr} to \code{longcr} object, conversion is made:
-#' \itemize{
-#'   \item All columns except "game", "player" and "score" are dropped;
-#'   \item Conversion from long to wide format is made. The number of
-#'     "player"-"score" pairs is taken as the maximum number of players in game.
-#'     If not all games are played between the same number of players then there
-#'     will be \code{NA}'s in some pairs.
-#'     Column \code{game} is preserved in output and is used for arranging in
-#'     increasing order.
-#' }
+#' When applying `to_widecr()` to __`longcr`__ object, conversion is made:
+#' - All columns except "game", "player" and "score" are dropped.
+#' - Conversion from long to wide format is made. The number of "player"-"score"
+#' pairs is taken as the maximum number of players in game. If not all games are
+#' played between the same number of players then there will be `NA`'s in some
+#' pairs. Column `game` is preserved in output and is used for arranging in
+#' increasing order.
 #'
-#' For appropriate \code{widecr} objects \code{to_widecr} returns its input.
+#' For appropriate __`widecr`__ objects `to_widecr` returns its input  and
+#' throws error otherwise.
 #'
-#' @return \code{is_widecr} returns TRUE if its argument is appropriate object
-#'   of class \code{widecr}.
+#' @return `is_widecr()` returns `TRUE` if its argument is appropriate object
+#'   of class `widecr`.
 #'
-#' \code{to_widecr} returns an object of class \code{widecr}.
+#' `to_widecr()` returns an object of class `widecr`.
 #'
 #' @examples
 #' cr_data <- data.frame(
@@ -82,7 +76,7 @@
 #' is_widecr(cr_data_wide)
 #'
 #' @name results-widecr
-#' @seealso \link[=results-longcr]{longcr} for long format.
+#' @seealso [Long format][results-longcr]
 NULL
 
 #' @rdname results-widecr

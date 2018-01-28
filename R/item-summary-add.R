@@ -3,26 +3,25 @@
 #' This page describes functions for adding item summary as columns to
 #' competition results.
 #'
-#' @param cr_data Competition results in format ready for
-#'   \code{\link[=results-longcr]{to_longcr}}.
+#' @param cr_data Competition results in format ready for [to_longcr()].
 #' @param item Character vector of columns to group by.
-#' @param summary_fun Function to compute item summary (see Details).
+#' @param summary_fun Function to compute item summary (see [Item summary
+#'   computation][item-summary]).
 #' @param ... Additional arguments to be passed to or from methods.
 #'
-#' @details If "game" is present in \code{item} but not in column names of
-#'   \code{cr_data} (which can occur in case of
-#'   \code{\link[=results-widecr]{widecr}} format) then every row is treated as
-#'   separate game results. In all other cases every entry of \code{item} should
-#'   be present in column names of \code{cr_data}.
+#' @details If "game" is present in `item` but not in column names of
+#'   `cr_data` (which can occur in case of [widecr][results-widecr] format) then
+#'   every row is treated as separate game results. In all other cases every
+#'   entry of `item` should be present in column names of `cr_data`.
 #'
-#'   As in \link{item-summary} one can control the names of the summaries by
-#'   adding prefix stored in \code{prefix} as extra argument.
+#'   As in [Item summary computation][item-summary] one can control the names of
+#'   the summaries by adding prefix stored in `prefix` as extra argument.
 #'
-#' @return \code{add_item_summary} returns \code{cr_data} with added
-#'   (by left joining) item summaries.
+#' @return `add_item_summary()` returns `cr_data` with added (by left joining)
+#'   item summaries.
 #'
-#'   \code{add_game_summary} and \code{add_player_summary} are wrappers around
-#'   \code{add_item_summary} with \code{item} equals to "game" and "player"
+#'   `add_game_summary()` and `add_player_summary()` are wrappers for
+#'   `add_item_summary()` with `item` equals to `"game"` and `"player"`
 #'   accordingly.
 #'
 #' @examples
@@ -52,8 +51,8 @@
 #' ))
 #' add_game_summary(cr_data = cr_data, summary_fun = summary_min_max_score)
 #'
-#' @seealso \link{item-summary} for description of computing item summary.
-#' @seealso \link{item-summary-functions} for implemented \code{summary_fun}s.
+#' @seealso [Item summary computation][item-summary], [Item summary
+#'   functions][item-summary-functions]
 #'
 #' @name item-summary-add
 NULL

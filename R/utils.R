@@ -6,7 +6,7 @@
 #' @param x Input object
 #' @param ... Additional arguments to be passed to or from methods.
 #'
-#' @return An exact copy of \code{x}.
+#' @return An exact copy of `x`.
 #'
 #' @examples identical(skip_action(1), 1)
 #'

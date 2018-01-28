@@ -2,12 +2,11 @@
 #'
 #' This page describes methods of computing Head-to-Head matrices.
 #'
-#' @param cr_data Competition results in format ready for
-#'   \code{\link[=results-longcr]{to_longcr}}.
+#' @param cr_data Competition results in format ready for [to_longcr()].
 #' @param h2h_fun Head-to-Head function (see Details).
 #' @param players Vector of players for which Head-to-Head is computed.
 #' @param absent_players Function which performs actions on Head-to-Head matrix
-#'   dealing with players which absent in \code{cr_data}.
+#'   dealing with players which absent in `cr_data`.
 #' @param absent_h2h Function which performs actions on Head-to-Head matrix
 #'   dealing with absent Head-to-Head records for some pairs of players.
 #' @param transpose Whether to transpose Head-to-Head matrix.
@@ -19,66 +18,57 @@
 #' computed based only on the players' scores in their common games. If it is
 #' not true for some case then competition results should be changed by
 #' transformation or addition of more information (in form of extra columns or
-#' extra field in \code{score} column(s) making list-column(s)).
+#' extra field in `score` column(s) making list-column(s)).
 #'
-#' \code{get_h2h} performs computation of Head-to-Head matrix: square matrix
-#' with number of rows (and columns) equal to number of players for which it is
+#' `get_h2h()` performs computation of Head-to-Head matrix: square matrix with
+#' number of rows (and columns) equal to number of players for which it is
 #' computed. Head-to-Head values are computed based only on
-#' \link[=head-to-head-helpers]{matchups} (pairs of players from one game)
-#' between players from argument \code{players}. \bold{Note} to be careful with
-#' Head-to-Head values of players with themselves: it can be inaccurate if
-#' \code{players} is not \code{NULL} because it will be based on possibly
-#' undesirable data.
+#' [matchups][head-to-head-helpers] (pairs of players from one game) between
+#' players from argument `players`. __Note__ to be careful with Head-to-Head
+#' values of players with themselves: it can be inaccurate if `players` is not
+#' `NULL` because it will be based on possibly undesirable data.
 #'
 #' The following algorithm is used:
-#' \enumerate{
-#'   \item Compute for every present in \code{cr_data} matchup
-#'     between players from \code{players} its Head-to-Head value via
-#'     \code{h2h_fun} based on these players' scores in common games.
-#'     \code{h2h_fun} should accept two arguments:
-#'     \itemize{
-#'       \item A tibble of \link[=head-to-head-helpers]{matchups} data.
-#'         Structure is like \code{\link[=results-widecr]{widecr}} with
-#'         two players, i.e. with columns \code{game}, \code{player1},
-#'         \code{score1}, \code{player2}, \code{score2} (in input of
-#'         \code{h2h_fun} columns \code{player1} and \code{player2} will
-#'         contain constant values);
-#'       \item Argument \code{...} for easier use of \code{h2h}.
-#'     }
-#'     Also \code{h2h_fun} should return a single value.
+#' 1. Compute for every present in `cr_data` matchup between players from
+#' `players` its Head-to-Head value via `h2h_fun` based on these players'
+#' scores in common games. `h2h_fun` should accept two arguments:
+#'     - A tibble of [matchups][head-to-head-helpers] data. Structure is like
+#'     [widecr][results-widecr] with two players, i.e. with columns `game`,
+#'     `player1`, `score1`, `player2`, `score2` (in input of `h2h_fun()` columns
+#'     `player1` and `player2` will contain constant values).
+#'     - Argument `...` for easier use of `get_h2h()`.
+#' Also `h2h_fun` should return a single value.
+#' __Note__ that order of the players in matchups matters. So, for example,
+#' matchup "player1"-"player2" is considered different from "player2"-"player1"
+#' in order to except not symmetrical Head-to-Head values.
+#' For absent in `cr_data` matchups `NA_real_`s are produced.
 #'
-#'     \bold{Note} that order of the players in matchups matters. So, for
-#'     example, matchup "player1"-"player2" is considered different from
-#'     "player2"-"player1" in order to except not symmetrical
-#'     Head-to-Head values.
+#' 1. Perform actions via `absent_players`. It should, based on Head-to-Head
+#' matrix, do something with data of players that have not enough games played.
+#' For no actions use [skip_action()]. For other options see [Head-to-Head
+#' helpers][head-to-head-helpers].
 #'
-#'     For absent in \code{cr_data} matchups \code{NA_real_}s are produced;
+#' 1. Perform actions via `absent_h2h`. It should do something with those
+#' entries of Head-to-Head matrix which are `NA`. For no actions use
+#' [skip_action()]. For other options see [Head-to-Head
+#' helpers][head-to-head-helpers].
 #'
-#'   \item Perform actions via \code{absent_players}. It should, based on
-#'     Head-to-Head matrix, do something with data of players that have not
-#'     enough games played. For no actions use \code{\link{skip_action}}.
-#'     For other options see \link{head-to-head-helpers};
-#'   \item Perform actions via \code{absent_h2h}. It should do something with
-#'     those entries of Head-to-Head matrix which are \code{NA}. For no actions
-#'     use \code{\link{skip_action}}. For other options see
-#'     \link{head-to-head-helpers};
-#'   \item If \code{transpose} is \code{TRUE} do transposition of Head-to-Head
-#'     matrix. This option is added to minimize the need in almost duplicated
-#'     \code{h2h_fun}s;
-#'   \item If \code{self_play} is not NULL replace values on diagonal of
-#'     Head-to-Head matrix with \code{self_play}.
-#' }
+#' 1. If `transpose` is `TRUE` do transposition of Head-to-Head matrix. This
+#' option is added to minimize the need in almost duplicated `h2h_fun`s.
 #'
-#' If argument \code{players} is \code{NULL} then Head-to-Head matrix is
-#' computed for all present in \code{cr_data} players. \bold{Note} that
-#' \code{players} can contain values that are not present in \code{cr_data}: in
-#' this case rows and columns in Head-to-Head matrix for these values will
-#' contain only \code{NA}s (before applying \code{absent_players} function).
+#' 1. If `self_play` is not `NULL` replace values on diagonal of Head-to-Head
+#' matrix with `self_play`.
 #'
-#' @return An object of class \code{h2h} which is a square matrix of
-#'   Head-to-Head values. Rows correspond to \code{player1} and columns to
-#'   \code{player2} (as in input for \code{h2h_fun}). Row and column
-#'   names are made with \code{as.character()} on players used for computation.
+#' If argument `players` is `NULL` then Head-to-Head matrix is computed for all
+#' present in `cr_data` players. __Note__ that `players` can contain values that
+#' are not present in `cr_data`: in this case rows and columns in Head-to-Head
+#' matrix for these values will contain only `NA`s (before applying
+#' `absent_players`).
+#'
+#' @return An object of class `h2h` which is a square matrix of Head-to-Head
+#'   values. Rows correspond to `player1` and columns to `player2` (as in input
+#'   for `h2h_fun`). Row and column names are made with `as.character()` on
+#'   players used for computation.
 #'
 #' @examples
 #' set.seed(1002)
@@ -105,9 +95,8 @@
 #'   self_play = 1
 #' )
 #'
-#' @seealso \link{head-to-head-helpers} Head-to-Head helpers.
-#' @seealso \link{head-to-head-functions} Specific functions for computing
-#'   Head-to-Head matrices.
+#' @seealso [Head-to-Head functions][head-to-head-functions], [Head-to-Head
+#'   helpers][head-to-head-helpers]
 #' @name head-to-head
 NULL
 

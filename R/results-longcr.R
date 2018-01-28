@@ -9,60 +9,52 @@
 #'
 #' @section Long format of competition results:
 #' It is assumed that competition consists from multiple games (matches,
-#' comparisons, etc.). One game can consist from \bold{variable} number of
+#' comparisons, etc.). One game can consist from __variable__ number of
 #' players. Inside a game all players are treated equally.
 #' In every game every player has some score: the value of arbitrary nature
 #' that fully characterizes player's performance in particular game (in most
 #' cases it is some numeric value).
 #'
-#' \code{longcr} inherits from \code{\link[dplyr]{tibble}}. Data should have
-#'   at least three columns with the following names:
-#'   \itemize{
-#'     \item "game" - game identifier;
-#'     \item "player" - player identifier;
-#'     \item "score" - score of particular player in particular game.
-#'   }
-#'   Extra columns are allowed. \bold{Note} that if object is converted to
-#'   \code{widecr} they will be dropped. So it is better to store extra
-#'   information about "game"-"player" pair as list-column "score" which will
-#'   stay untouched.
+#' `longcr` inherits from [tibble][tibble::tibble]. Data should have at least
+#' three columns with the following names:
+#' - `game` - game identifier.
+#' - `player` - player identifier.
+#' - `score` - score of particular player in particular game.
 #'
-#' @details \code{to_longcr} is S3 method for converting data to \code{longcr}.
-#' When using default method if \code{repair} is \code{TRUE} it also tries
-#' to fix possible problems with the following actions:
-#' \itemize{
-#'   \item Detect first columns with names containing "game", "player" or
-#'     "score" (ignoring case). If there are many matching names for one output
-#'     name then the first one is used. In case of imperfect match, message
-#'     is given;
-#'   \item If some legitimate names aren't detected respective columns are
-#'     created and filled with \code{NA_integer_}. Also a message is given.
-#'   \item If in one game some player listed more than once the first record
-#'     is taken;
-#'   \item Return the tibble with at least 3 appropriate columns and column
-#'     names.
-#' }
-#' If \code{repair} is \code{FALSE} it converts \code{cr_data} to
-#' \code{\link[dplyr]{tibble}} and adds \code{longcr} class to it.
+#' Extra columns are allowed. __Note__ that if object is converted to
+#' [widecr][results-widecr], they will be dropped. So it is better to store
+#' extra information about "game"-"player" pair as list-column "score" which
+#' will stay untouched.
 #'
-#' When applying \code{to_longcr} to \code{widecr} object, conversion is made:
-#' \itemize{
-#'   \item If there is column \code{game} then it is used as game identifier.
-#'     Else treat every row as separate game data;
-#'   \item Every "player"-"score" pair for every game is converted to separate
-#'     row with adding the appropriate extra columns;
-#'   \item Result is arranged by \code{game} and \code{player} in increasing
-#'     order;
-#'   \item If \code{repair} is \code{TRUE} then repair is done as in
-#'     \code{to_longcr.default}.
-#' }
+#' @details `to_longcr()` is S3 method for converting data to `longcr`. When
+#'   using __default__ method if `repair` is `TRUE` it also tries to fix
+#'   possible problems with the following actions:
+#' - Detect first columns with names containing "game", "player" or "score"
+#' (ignoring case). If there are many matching names for one output name then
+#' the first one is used. In case of imperfect match, message is given.
+#' - If some legitimate names aren't detected respective columns are created and
+#' filled with `NA_integer_`. Also a message is given.
+#' - If in one game some player listed more than once the first record is taken.
+#' - Return the tibble with at least 3 appropriate columns and column names.
 #'
-#' For appropriate \code{longcr} objects \code{to_longcr} returns its input.
+#' If `repair` is `FALSE` it converts `cr_data` to [tibble][tibble::tibble] and
+#' adds `longcr` class to it.
 #'
-#' @return \code{is_longcr} returns TRUE if its argument is appropriate object
-#'   of class \code{longcr}.
+#' When applying `to_longcr()` to __`widecr`__ object, conversion is made:
+#' - If there is column `game` then it is used as game identifier. Else treat
+#' every row as separate game data.
+#' - Every "player"-"score" pair for every game is converted to separate row
+#' with adding the appropriate extra columns.
+#' - Result is arranged by `game` and `player` in increasing order.
+#' - If `repair` is `TRUE` then repair is done as in `to_longcr.default()`.
 #'
-#' \code{to_longcr} returns an object of class \code{longcr}.
+#' For appropriate __`longcr`__ objects `to_longcr()` returns its input and
+#' throws error otherwise.
+#'
+#' @return `is_longcr()` returns `TRUE` if its argument is appropriate object of
+#'   class `longcr`.
+#'
+#' `to_longcr()` returns an object of class `longcr`.
 #'
 #' @examples # Repairing example
 #' cr_data <- data.frame(
@@ -75,7 +67,7 @@
 #' is_longcr(cr_data_long)
 #'
 #' @name results-longcr
-#' @seealso \link[=results-widecr]{widecr} for wide format.
+#' @seealso [Wide format][results-widecr]
 NULL
 
 #' @rdname results-longcr

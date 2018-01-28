@@ -11,43 +11,40 @@ to_pairgames(cr_data)
 is_pairgames(cr_data)
 }
 \arguments{
-\item{cr_data}{Competition results in format ready for
-\code{\link[=results-longcr]{to_longcr}}.}
+\item{cr_data}{Competition results in format ready for \code{\link[=to_longcr]{to_longcr()}}.}
 }
 \value{
-\code{to_pairgames} returns a competition results of pairwised games
-  as \link[=results-widecr]{widecr} object with two players.
+\code{to_pairgames()} returns a competition results of pairwised games as
+\link[=results-widecr]{widecr} object with two players.
 
-  \code{is_pairgames} returns a boolean value of whether \code{cr_data}
-  contains only games between two players.
+\code{is_pairgames()} returns a boolean value of whether \code{cr_data} contains only
+games between two players.
 }
 \description{
 Functions for competition results with games between two players.
 }
 \details{
 Pairgames is a term for competition results with games between two
-  players.
+players.
 
-  \code{to_pairgames} is a function that converts competition results
-  into pairwise games: it drops games with one player and for every game with
-  3 and more players this function transforms it into set of separate games
-  between unordered pairs of players. In other words the result is a set of
-  unordered \link[=head-to-head-helpers]{matchups} (as different games)
-  between different players.
+\code{to_pairgames()} is a function that converts competition results into
+pairwise games: it drops games with one player and for every game with 3
+and more players this function transforms it into set of separate games
+between unordered pairs of players. In other words the result is a set of
+unordered \link[=head-to-head-helpers]{matchups} (as different games) between
+different players.
 
-  \bold{Note} that order in which players are assigned to \code{player1} or
-  \code{player2} column in general shouldn't agree with any order in
-  \code{cr_data}.
-
-  \bold{Note} that any column except \code{game}, \code{player} and
-  \code{score} will be dropped after conversion to
-  \code{\link[=results-longcr]{longcr}}.
-
-  \bold{Note} that \code{NA} and \code{NaN} in \code{players} are allowed.
-  They are treated as different players.
-
-  \bold{Note} that \code{to_pairgames} is rather compute-intensive and can
-  take much time for competition results with many games.
+\strong{Important notes}:
+\itemize{
+\item Order in which players are assigned to \code{player1} or \code{player2} column in
+general shouldn't agree with any order in \code{cr_data}.
+\item Any column except \code{game}, \code{player} and \code{score} will be dropped after
+conversion to \link[=results-longcr]{longcr}.
+\item \code{NA} and \code{NaN} in \code{players} are allowed. They are treated as different
+players.
+\item \code{to_pairgames()} is rather compute-intensive and can take much time for
+competition results with many games.
+}
 }
 \examples{
 cr_data <- data.frame(

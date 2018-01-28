@@ -4,33 +4,31 @@
 #' summary measurements (of arbitrary nature) of item (one or more columns)
 #' present in competition results.
 #'
-#' @param cr_data Competition results in format ready for
-#'   \code{\link[=results-longcr]{to_longcr}}.
+#' @param cr_data Competition results in format ready for [to_longcr()].
 #' @param item Character vector of columns to group by.
 #' @param summary_fun Function to compute item summary (see Details).
 #' @param ... Additional arguments to be passed to or from methods.
 #'
-#' @details Argument \code{item} defines on which columns grouping is made for
-#'   computing item summary. Basically \code{get_item_summary} applies
-#'   \code{summary_fun} to groups of \code{cr_data} defined by \code{item}.
+#' @details Argument `item` defines on which columns grouping is made for
+#'   computing item summary. Basically `get_item_summary()` applies
+#'   `summary_fun` to groups of `cr_data` defined by `item`.
 #'
-#'   \code{summary_fun} is a function that takes competition results of a
-#'   particular item (game, player, their combination, etc.) and produces named
-#'   vector of item summary. Also it should take \code{prefix} and \code{...} as
-#'   argument for easier use. See \link{item-summary-functions} for more
-#'   details.
+#'   `summary_fun` is a function that takes competition results of a particular
+#'   item (game, player, their combination, etc.) and produces named vector of
+#'   item summary. Also it should take `prefix` and `...` as argument for easier
+#'   use. See [Item summary functions][item-summary-functions] for more details.
 #'
 #'   One can control the names of the summaries by adding prefix stored in
-#'   \code{prefix} as extra argument.
+#'   `prefix` as extra argument.
 #'
-#' @return If \code{summary_fun} is \code{NULL} then \code{get_item_summary}
-#'   returns a \code{\link[dplyr]{tibble}} with columns named as stored in
-#'   argument \code{item} and which has all unique values of particular item
-#'   in \code{cr_data}. If not \code{NULL} then there will be extra columns for
-#'   every summary value that \code{summary_fun} produces.
+#' @return If `summary_fun` is `NULL` then `get_item_summary()` returns a
+#'   [tibble][tibble::tibble] with columns named as stored in argument `item`
+#'   and which has all unique values of particular item in `cr_data`. If not
+#'   `NULL` then there will be extra columns for every summary value that
+#'   `summary_fun` produces.
 #'
-#'   \code{get_game_summary} and \code{get_player_summary} are wrappers around
-#'   \code{get_item_summary} with \code{item} equals to "game" and "player"
+#'   `get_game_summary()` and `get_player_summary()` are wrappers for
+#'   `get_item_summary()` with `item` equals to `"game"` and `"player"`
 #'   accordingly.
 #'
 #' @examples
@@ -55,9 +53,8 @@
 #'   summary_fun = summary_mean_sd_score, prefix = "seasonPlayer_"
 #' )
 #'
-#' @seealso \link{item-summary-functions} for implemented \code{summary_fun}s.
-#' @seealso \link{item-summary-add} for adding item summary to competition
-#'   results.
+#' @seealso [Item summary functions][item-summary-functions], [Item summary
+#'   addition][item-summary-add]
 #'
 #' @name item-summary
 NULL
