@@ -38,6 +38,19 @@ test_that("get_h2h works", {
     absent_h2h = fill_h2h,
     extrArg = TRUE
   ))
+
+  # Test to ensure `get_h2h()` works with `h2h_num()` as it is the only current
+  # `h2h_*()` which actually treats its first argument as data frame
+  output_ref_3 <- matrix(c(2, 2, 2, 2), ncol = 2, dimnames = list(1:2, 1:2))
+  class(output_ref_3) <- c("h2h", "matrix")
+
+  output_3 <- get_h2h(
+    cr_data = cr_data, h2h_fun = h2h_num,
+    players = NULL, absent_players = players_drop,
+    absent_h2h = fill_h2h
+  )
+
+  expect_identical(output_3, output_ref_3)
 })
 
 test_that("get_h2h works when 'transpose' is TRUE", {

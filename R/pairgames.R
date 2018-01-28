@@ -68,15 +68,15 @@ to_pairgames <- function(cr_data) {
   # In raw pairgames game identifier is formed from 'game' and '..subGame'
   raw_pairgames <- cr %>%
     semi_join(y = multiple_players_games, by = "game") %>%
-    group_by(.data$game) %>%
-    do({
-      cr_pairs <- utils::combn(nrow(.data), 2)
+    tidyr::nest(-.data$game) %>%
+    mutate(data = lapply(.data$data, function(game_res) {
+      cr_pairs <- utils::combn(nrow(game_res), 2)
 
-      .data %>%
+      game_res %>%
         slice(c(cr_pairs)) %>%
         mutate(..subGame = rep(seq_len(ncol(cr_pairs)), each = 2))
-    }) %>%
-    ungroup()
+    })) %>%
+    tidyr::unnest(.data$data)
 
   # Compute new game identifiers
   pairgames_ids <- raw_pairgames %>%
