@@ -1,3 +1,3 @@
 #' @import dplyr
-#' @importFrom rlang ":=" .data
+#' @importFrom rlang ":=" .data !! !!!
 "_PACKAGE"

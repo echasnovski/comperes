@@ -156,8 +156,8 @@ to_widecr.longcr <- function(cr_data, repair = TRUE, ...) {
 
       game_data %>%
         rename(
-          rlang::UQ(player_name) := .data$player,
-          rlang::UQ(score_name) := .data$score
+          !! player_name := .data$player,
+          !! score_name := .data$score
         ) %>%
         select(-.data[["..in_game_id"]])
     }) %>%
@@ -213,11 +213,11 @@ repair_widecr <- function(cr_data, ...) {
   if ("game" %in% colnames(res)) {
     res <- res %>%
       select(.data$game,
-             rlang::UQS(rlang::syms(repair_info$target)),
+             !!! rlang::syms(repair_info$target),
              everything())
   } else {
     res <- res %>%
-      select(rlang::UQS(rlang::syms(repair_info$target)),
+      select(!!! rlang::syms(repair_info$target),
              everything())
   }
 

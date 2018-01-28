@@ -66,10 +66,10 @@ get_item_summary <- function(cr_data, item, summary_fun = NULL, ...) {
     to_longcr(repair = TRUE)
 
   if (is.null(summary_fun)) {
-    res <- distinct(cr, rlang::UQS(rlang::syms(item)))
+    res <- distinct(cr, !!! rlang::syms(item))
   } else {
     res <- cr %>%
-      group_by(rlang::UQS(rlang::syms(item))) %>%
+      group_by(!!! rlang::syms(item)) %>%
       do(dplyr::as_tibble(as.list(summary_fun(.data, ...)))) %>%
       ungroup()
   }

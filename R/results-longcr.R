@@ -128,7 +128,7 @@ to_longcr.widecr <- function(cr_data, repair = TRUE, ...) {
       names(pair_names) <- pair_info$group
 
       cr_data %>%
-        select(rlang::UQS(rlang::syms(c("game", pair_names, extra_columns))))
+        select(!!! rlang::syms(c("game", pair_names, extra_columns)))
     }) %>%
     bind_rows() %>%
     arrange(.data$game, .data$player)
