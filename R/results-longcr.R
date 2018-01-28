@@ -98,7 +98,7 @@ to_longcr.default <- function(cr_data, repair = TRUE, ...) {
 #' @export
 to_longcr.widecr <- function(cr_data, repair = TRUE, ...) {
   if (!is_widecr(cr_data)) {
-    stop("Input is not appropriate object of class widecr.")
+    stop("Input is not appropriate object of class widecr.", call. = FALSE)
   }
 
   if (!("game" %in% colnames(cr_data))) {
@@ -144,7 +144,7 @@ to_longcr.widecr <- function(cr_data, repair = TRUE, ...) {
 #' @export
 to_longcr.longcr <- function(cr_data, repair = TRUE, ...) {
   if (!is_longcr(cr_data)) {
-    stop("Input is not appropriate object of class longcr.")
+    stop("Input is not appropriate object of class longcr.", call. = FALSE)
   }
 
   cr_data
