@@ -99,3 +99,19 @@ add_player_summary <- function(cr_data, summary_fun = NULL, ...) {
                    summary_fun = summary_fun,
                    ...)
 }
+
+add_item_summary_new <- function(cr_data, item, ..., .args = list(),
+                                 .prefix = "") {
+  item_summary <- summarise_item(cr_data, item, ..., .args = .args,
+                                 .prefix = .prefix)
+
+  left_join(x = cr_data, y = item_summary, by = item)
+}
+
+add_game_summary_new <- function(cr_data, ..., .args = list(), .prefix = "") {
+  add_item_summary_new(cr_data, "game", ..., .args = .args, .prefix = .prefix)
+}
+
+add_player_summary_new <- function(cr_data, ..., .args = list(), .prefix = "") {
+  add_item_summary_new(cr_data, "player", ..., .args = .args, .prefix = .prefix)
+}

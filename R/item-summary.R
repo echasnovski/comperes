@@ -96,3 +96,28 @@ get_player_summary <- function(cr_data, summary_fun = NULL, ...) {
                    summary_fun = summary_fun,
                    ...)
 }
+
+summarise_item <- function(cr_data, item, ..., .args = list(), .prefix = "") {
+  dots <- funs(..., .args = .args)
+  names(dots) <- paste0(.prefix, names(dots))
+
+  cr_data %>%
+    group_by(!!! rlang::syms(item)) %>%
+    summarise(!!! dots) %>%
+    ungroup() %>%
+    `class<-`(class(dplyr::tibble()))
+}
+
+summarise_game <- function(cr_data, ..., .args = list(), .prefix = "") {
+  summarise_item(cr_data, "game", ..., .args = .args, .prefix = .prefix)
+}
+
+summarise_player <- function(cr_data, ..., .args = list(), .prefix = "") {
+  summarise_item(cr_data, "player", ..., .args = .args, .prefix = .prefix)
+}
+
+summarize_item <- summarise_item
+
+summarize_game <- summarise_game
+
+summarize_player <- summarise_player

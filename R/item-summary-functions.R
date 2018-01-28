@@ -93,3 +93,13 @@ summary_num_players <- function(cr_data, prefix = "", ...) {
 
   res
 }
+
+summary_funs <- list(
+  min_score = quo(min(score)),
+  max_score = quo(max(score)),
+  mean_score = quo(mean(score)),
+  sd_score = quo(sd(score)),
+  sum_score = quo(sum(score)),
+  num_games = quo(length(unique(game))),
+  num_players = quo(length(unique(player)))
+)
