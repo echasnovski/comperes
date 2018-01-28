@@ -121,7 +121,7 @@ get_h2h <- function(cr_data, h2h_fun, players = NULL,
       player1 = factor(.data$player1, levels = players),
       player2 = factor(.data$player2, levels = players)
     ) %>%
-    tidyr::complete_(cols = c("player1", "player2")) %>%
+    tidyr::complete(!!! rlang::syms(c("player1", "player2"))) %>%
     mutate(
       player1 = as.character(.data$player1),
       player2 = as.character(.data$player2)

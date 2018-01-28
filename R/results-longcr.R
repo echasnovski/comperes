@@ -110,8 +110,8 @@ to_longcr.widecr <- function(cr_data, repair = TRUE, ...) {
       name = colnames(cr_data),
       stringsAsFactors = FALSE
     ) %>%
-    tidyr::extract_(
-      col = "name", into = c("group", "pair"),
+    tidyr::extract(
+      col = .data$name, into = c("group", "pair"),
       regex = "(player|score)([0-9]+)", remove = FALSE
     ) %>%
     arrange(.data$pair, .data$group)

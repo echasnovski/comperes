@@ -96,8 +96,8 @@ is_widecr <- function(cr_data) {
   }
 
   names_df <- names_df %>%
-    tidyr::extract_(
-      col = "name", into = c("group", "id"),
+    tidyr::extract(
+      col = .data$name, into = c("group", "id"),
       regex = ".*(player|score)([0-9]+)",
       remove = TRUE
     ) %>%
@@ -188,8 +188,8 @@ repair_widecr <- function(cr_data, ...) {
       original = colnames(cr_data),
       stringsAsFactors = FALSE
     ) %>%
-    tidyr::extract_(
-      col = "original", into = c("group", "pair"),
+    tidyr::extract(
+      col = .data$original, into = c("group", "pair"),
       regex = ".*(player|score)(.*)", remove = FALSE
     ) %>%
     filter(.data$group %in% c("player", "score"))
@@ -201,12 +201,12 @@ repair_widecr <- function(cr_data, ...) {
 
   repair_info <- repair_info %>%
     mutate(pair = as.integer(factor(.data$pair))) %>%
-    tidyr::complete_(cols = c("group", "pair")) %>%
+    tidyr::complete(!!! rlang::syms(c("group", "pair"))) %>%
     mutate(pair = formatC(.data$pair,
                           width = get_formatC_width(.data$pair),
                           format = "d", flag = "0")) %>%
     arrange(.data$pair, .data$group) %>%
-    tidyr::unite_(col = "target", from = c("group", "pair"), sep = "")
+    tidyr::unite(col = "target", !!! rlang::syms(c("group", "pair")), sep = "")
 
   res <- renamecreate_columns(cr_data, repair_info, fill = NA_integer_)
 
