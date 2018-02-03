@@ -2,79 +2,66 @@
 % Please edit documentation in R/item-summary.R
 \name{item-summary}
 \alias{item-summary}
-\alias{get_item_summary}
-\alias{get_game_summary}
-\alias{get_player_summary}
+\alias{summarise_item}
+\alias{summarise_game}
+\alias{summarise_player}
+\alias{summarize_item}
+\alias{summarize_game}
+\alias{summarize_player}
 \title{Compute item summary}
 \usage{
-get_item_summary(cr_data, item, summary_fun = NULL, ...)
+summarise_item(tbl, item, ..., .args = list(), .prefix = "")
 
-get_game_summary(cr_data, summary_fun = NULL, ...)
+summarise_game(tbl, ..., .args = list(), .prefix = "")
 
-get_player_summary(cr_data, summary_fun = NULL, ...)
+summarise_player(tbl, ..., .args = list(), .prefix = "")
+
+summarize_item(tbl, item, ..., .args = list(), .prefix = "")
+
+summarize_game(tbl, ..., .args = list(), .prefix = "")
+
+summarize_player(tbl, ..., .args = list(), .prefix = "")
 }
 \arguments{
-\item{cr_data}{Competition results in format ready for \code{\link[=to_longcr]{to_longcr()}}.}
+\item{tbl}{Data frame.}
 
 \item{item}{Character vector of columns to group by.}
 
-\item{summary_fun}{Function to compute item summary (see Details).}
+\item{...}{Name-value pairs of summary functions (as in \link[dplyr:summarise]{dplyr::summarise}).}
 
-\item{...}{Additional arguments to be passed to or from methods.}
+\item{.args}{A named list of additional arguments to be added to all function
+calls (as in \link[dplyr:funs]{dplyr::funs}).}
+
+\item{.prefix}{A string to be added to all summary functions' names.}
 }
 \value{
-If \code{summary_fun} is \code{NULL} then \code{get_item_summary()} returns a
-\link[tibble:tibble]{tibble} with columns named as stored in argument \code{item}
-and which has all unique values of particular item in \code{cr_data}. If not
-\code{NULL} then there will be extra columns for every summary value that
-\code{summary_fun} produces.
-
-\code{get_game_summary()} and \code{get_player_summary()} are wrappers for
-\code{get_item_summary()} with \code{item} equals to \code{"game"} and \code{"player"}
-accordingly.
+Output of \code{summarise()} as not grouped \code{tibble}.
 }
 \description{
-This page describes functionality for computing item summary, i.e. some
-summary measurements (of arbitrary nature) of item (one or more columns)
-present in competition results.
+Functions for computing item summary, i.e. some summary measurements (of
+arbitrary nature) of item (one or more columns) present in data frame.
 }
 \details{
-Argument \code{item} defines on which columns grouping is made for
-computing item summary. Basically \code{get_item_summary()} applies
-\code{summary_fun} to groups of \code{cr_data} defined by \code{item}.
-
-\code{summary_fun} is a function that takes competition results of a particular
-item (game, player, their combination, etc.) and produces named vector of
-item summary. Also it should take \code{prefix} and \code{...} as argument for easier
-use. See \link[=item-summary-functions]{Item summary functions} for more details.
-
-One can control the names of the summaries by adding prefix stored in
-\code{prefix} as extra argument.
+Basically, \code{summarise_item()} performs the following steps:
+\itemize{
+\item Group \code{tbl} by columns stored in \code{item}.
+\item Apply dplyr's \code{summarise()}.
+\item Ungroup result.
+\item Convert to \link[tibble:tibble]{tibble}.
+}
 }
 \examples{
-cr_data <- data.frame(
-  game = rep(1:20, each = 2),
-  player = rep(1:10, times = 4),
-  score = 31:70,
-  season = rep(1:2, each = 20)
-)
+ncaa2005 \%>\%
+  dplyr::mutate(game_type = game \%\% 2) \%>\%
+  summarise_item(c("game_type", "player"), mean_score = mean(score))
 
-# Computing summaries.
-get_game_summary(cr_data = cr_data, summary_fun = summary_min_max_score)
-get_player_summary(cr_data = cr_data, summary_fun = summary_min_max_score)
-get_item_summary(
-  cr_data = cr_data, item = c("season", "player"),
-  summary_fun = summary_min_max_score
-)
-
-# Varying prefix of the summary columns.
-get_item_summary(
-  cr_data = cr_data, item = c("season", "player"),
-  summary_fun = summary_mean_sd_score, prefix = "seasonPlayer_"
-)
+ncaa2005 \%>\%
+  summarise_game(mean_score = mean(score), min_score = min(score))
 
 }
 \seealso{
-\link[=item-summary-functions]{Item summary functions}, \link[=item-summary-add]{Item summary
-addition}
+Common item \link[=summary_funs]{summary functions} for competition
+results.
+
+\link[=item-summary-join]{Join item summary}
 }

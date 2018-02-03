@@ -1,5 +1,7 @@
 # comperes 0.1.0.9001
 
+- Update "item summary" API.
+
 # comperes 0.1.0.9000 (2017-06-18)
 
 ## Features
