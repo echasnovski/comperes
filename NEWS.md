@@ -1,3 +1,7 @@
+# comperes 0.1.0.9001 (2018-02-03)
+
+- Update "summary" API.
+
 # comperes 0.1.0.9000 (2017-06-18)
 
 ## Features

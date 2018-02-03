@@ -10,93 +10,152 @@ input <- data.frame(
 )
 
 
-# get_item_summary ---------------------------------------------------------
-test_that("get_item_summary works with NULL summary_fun", {
+# summarise_item ----------------------------------------------------------
+test_that("summarise_item works with item of length one", {
+  output_ref <- dplyr::tibble(
+    game = 1:20,
+    mean_score = seq(from = 31.5, to = 69.5, by = 2),
+    sum_score = 63L + (0:19)*4L
+  )
+
+  output <- summarise_item(
+    tbl = input, item = "game",
+    mean_score = mean(score), sum_score = sum(score)
+  )
+
+  expect_equal(output, output_ref)
+})
+
+test_that("summarise_item works with item length more than one", {
+  output_ref <- dplyr::tibble(
+    season = rep(1:2, each = 10),
+    player = rep(1:10, times = 2),
+    mean_score = as.numeric(c(36:45, 56:65)),
+    sum_score = c(72L + (0:9)*2L, 112L + (0:9)*2L)
+  )
+
+  output <- summarise_item(
+    tbl = input, item = c("season", "player"),
+    mean_score = mean(score), sum_score = sum(score)
+  )
+
+  expect_equal(output, output_ref)
+})
+
+test_that("summarise_item works with no functions supplied", {
   output <- dplyr::tibble(game = 1:20)
 
-  expect_identical(
-    get_item_summary(cr_data = input, item = "game",
-                     summary_fun = NULL),
-    output
-  )
+  expect_identical(summarise_item(tbl = input, item = "game"), output)
 })
 
-test_that("get_item_summary works with not NULL summary_fun", {
-  output <- structure(
-    list(
-      game = 1:20,
-      meanScore = seq(from = 31.5, to = 69.5, by = 2),
-      sdScore = rep(0.707106781186548, 20)
-    ),
-    class = class(dplyr::tibble()),
-    row.names = c(NA, -20L),
-    .Names = c("game", "meanScore", "sdScore")
+test_that("summarise_item works with argument `.args`", {
+  input_na <- input[1:4, ]
+  input_na$score[c(1, 3)] <- NA
+
+  output_ref <- dplyr::tibble(
+    game = 1:2,
+    sum_score = c(32L, 34L)
   )
 
-  output_scores <-
-    get_item_summary(cr_data = input,
-                     item = "game",
-                     summary_fun = summary_mean_sd_score)
+  output <- summarise_item(
+    tbl = input_na, item = "game",
+    sum_score = sum(score), .args = list(na.rm = TRUE)
+  )
 
-  expect_identical(class(output_scores), class(output))
-  expect_equal(output_scores$game, output$game)
-  expect_equal(output_scores$meanScore, output$meanScore)
-  expect_equal(output_scores$sdScore, output$sdScore)
+  expect_equal(output, output_ref)
 })
 
-test_that("get_item_summary works with multiple items", {
-  output <- structure(
-    list(
-      season = rep(1:2, each = 10),
-      player = rep(1:10, times = 2),
-      meanScore = c(36:45, 56:65),
-      sdScore = rep(7.07106781186548, 20)
-    ),
-    class = class(dplyr::tibble()),
-    row.names = c(NA, -20L),
-    .Names = c("season", "player", "meanScore", "sdScore")
+test_that("summarise_item works with argument `.prefix`", {
+  output_ref <- dplyr::tibble(
+    game = 1:20,
+    game_mean_score = seq(from = 31.5, to = 69.5, by = 2),
+    game_sum_score = 63L + (0:19)*4L
   )
 
-  output_scores <- get_item_summary(
-    cr_data = input, item = c("season", "player"),
-    summary_fun = summary_mean_sd_score
+  output <- summarise_item(
+    tbl = input, item = "game",
+    mean_score = mean(score), sum_score = sum(score),
+    .prefix = "game_"
   )
 
-  expect_identical(class(output_scores), class(output))
-  expect_equal(output_scores$season, output$season)
-  expect_equal(output_scores$player, output$player)
-  expect_equal(output_scores$meanScore, output$meanScore)
-  expect_equal(output_scores$sdScore, output$sdScore)
-})
-
-test_that("get_item_summary works with extra arguments", {
-  expect_silent(
-    get_item_summary(
-      cr_data = input, item = c("season", "player"),
-      summary_fun = summary_mean_sd_score, prefix = "seasonPlayer_"
-    )
-  )
+  expect_equal(output, output_ref)
 })
 
 
-# get_game_summary --------------------------------------------------------
-test_that("get_game_summary works", {
-  output <- dplyr::tibble(game = 1:20)
-
-  expect_identical(
-    get_game_summary(cr_data = input,
-                     summary_fun = NULL),
-    output
-  )
+# summarise_game ----------------------------------------------------------
+test_that("summarise_game works", {
+  expect_equal(summarise_game(input), dplyr::tibble(game = 1:20))
 })
 
-# get_player_summary ------------------------------------------------------
-test_that("get_player_summary works", {
-  output <- dplyr::tibble(player = 1:10)
 
-  expect_identical(
-    get_player_summary(cr_data = input,
-                       summary_fun = NULL),
-    output
-  )
+# summarise_player --------------------------------------------------------
+test_that("summarise_player works", {
+  expect_equal(summarise_player(input), dplyr::tibble(player = 1:10))
+})
+
+
+# summarize_item ----------------------------------------------------------
+test_that("summarize_item works", {
+  expect_equal(summarize_item(input, "game"), dplyr::tibble(game = 1:20))
+})
+
+
+# summarize_game ----------------------------------------------------------
+test_that("summarize_game works", {
+  expect_equal(summarize_game(input), dplyr::tibble(game = 1:20))
+})
+
+
+# summarize_player --------------------------------------------------------
+test_that("summarize_player works", {
+  expect_equal(summarize_player(input), dplyr::tibble(player = 1:10))
+})
+
+
+# summary_funs ------------------------------------------------------------
+test_that("summary_funs can be used in summarise_item", {
+  library(rlang)
+
+  output_ref <- summarise_game(input, min_score = min(score))
+  output <- summarise_game(input, !!! summary_funs["min_score"])
+
+  expect_identical(output, output_ref)
+})
+
+
+# join_item_summary -------------------------------------------------------
+test_that("join_item_summary works", {
+  output_ref <- input
+  output_ref$season_mean_score <- c(rep(40.5, 20), rep(60.5, 20))
+
+  output <- join_item_summary(input, "season", season_mean_score = mean(score))
+
+  expect_equal(output, output_ref)
+})
+
+test_that("join_item_summary works with no functions supplied", {
+  expect_identical(input, join_item_summary(input, "game"))
+})
+
+
+# join_game_summary -------------------------------------------------------
+test_that("join_game_summary works", {
+  output_ref <- input
+  output_ref$game_mean_score <- rep(seq(from = 31.5, to = 69.5, by = 2),
+                                    each = 2)
+
+  output <- join_game_summary(input, game_mean_score = mean(score))
+
+  expect_equal(output, output_ref)
+})
+
+
+# join_player_summary -----------------------------------------------------
+test_that("join_player_summary works", {
+  output_ref <- input
+  output_ref$player_mean_score <- rep(as.numeric(46:55), 4)
+
+  output <- join_player_summary(input, player_mean_score = mean(score))
+
+  expect_equal(output, output_ref)
 })

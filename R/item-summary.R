@@ -1,123 +1,164 @@
+# Compute item summary ----------------------------------------------------
 #' Compute item summary
 #'
-#' This page describes functionality for computing item summary, i.e. some
-#' summary measurements (of arbitrary nature) of item (one or more columns)
-#' present in competition results.
+#' Functions for computing item summary, i.e. some summary measurements (of
+#' arbitrary nature) of item (one or more columns) present in data frame.
 #'
-#' @param cr_data Competition results in format ready for [to_longcr()].
+#' @param tbl Data frame.
 #' @param item Character vector of columns to group by.
-#' @param summary_fun Function to compute item summary (see Details).
-#' @param ... Additional arguments to be passed to or from methods.
+#' @param ... Name-value pairs of summary functions (as in [dplyr::summarise]).
+#' @param .args A named list of additional arguments to be added to all function
+#'   calls (as in [dplyr::funs]).
+#' @param .prefix A string to be added to all summary functions' names.
 #'
-#' @details Argument `item` defines on which columns grouping is made for
-#'   computing item summary. Basically `get_item_summary()` applies
-#'   `summary_fun` to groups of `cr_data` defined by `item`.
+#' @details Basically, `summarise_item()` performs the following steps:
+#' - Group `tbl` by columns stored in `item`.
+#' - Apply dplyr's `summarise()`.
+#' - Ungroup result.
+#' - Convert to [tibble][tibble::tibble].
 #'
-#'   `summary_fun` is a function that takes competition results of a particular
-#'   item (game, player, their combination, etc.) and produces named vector of
-#'   item summary. Also it should take `prefix` and `...` as argument for easier
-#'   use. See [Item summary functions][item-summary-functions] for more details.
-#'
-#'   One can control the names of the summaries by adding prefix stored in
-#'   `prefix` as extra argument.
-#'
-#' @return If `summary_fun` is `NULL` then `get_item_summary()` returns a
-#'   [tibble][tibble::tibble] with columns named as stored in argument `item`
-#'   and which has all unique values of particular item in `cr_data`. If not
-#'   `NULL` then there will be extra columns for every summary value that
-#'   `summary_fun` produces.
-#'
-#'   `get_game_summary()` and `get_player_summary()` are wrappers for
-#'   `get_item_summary()` with `item` equals to `"game"` and `"player"`
-#'   accordingly.
+#' @return Output of `summarise()` as not grouped `tibble`.
 #'
 #' @examples
-#' cr_data <- data.frame(
-#'   game = rep(1:20, each = 2),
-#'   player = rep(1:10, times = 4),
-#'   score = 31:70,
-#'   season = rep(1:2, each = 20)
-#' )
+#' ncaa2005 %>%
+#'   dplyr::mutate(game_type = game %% 2) %>%
+#'   summarise_item(c("game_type", "player"), mean_score = mean(score))
 #'
-#' # Computing summaries.
-#' get_game_summary(cr_data = cr_data, summary_fun = summary_min_max_score)
-#' get_player_summary(cr_data = cr_data, summary_fun = summary_min_max_score)
-#' get_item_summary(
-#'   cr_data = cr_data, item = c("season", "player"),
-#'   summary_fun = summary_min_max_score
-#' )
+#' ncaa2005 %>%
+#'   summarise_game(mean_score = mean(score), min_score = min(score))
 #'
-#' # Varying prefix of the summary columns.
-#' get_item_summary(
-#'   cr_data = cr_data, item = c("season", "player"),
-#'   summary_fun = summary_mean_sd_score, prefix = "seasonPlayer_"
-#' )
+#' @seealso Common item [summary functions][summary_funs] for competition
+#' results.
 #'
-#' @seealso [Item summary functions][item-summary-functions], [Item summary
-#'   addition][item-summary-add]
+#' [Join item summary][item-summary-join]
 #'
 #' @name item-summary
 NULL
 
 #' @rdname item-summary
 #' @export
-get_item_summary <- function(cr_data, item, summary_fun = NULL, ...) {
-  cr <- cr_data %>%
-    to_longcr(repair = TRUE)
-
-  if (is.null(summary_fun)) {
-    res <- distinct(cr, !!! rlang::syms(item))
-  } else {
-    res <- cr %>%
-      group_by(!!! rlang::syms(item)) %>%
-      do(dplyr::as_tibble(as.list(summary_fun(.data, ...)))) %>%
-      ungroup()
-  }
-
-  class(res) <- class(dplyr::tibble())
-
-  res
-}
-
-#' @rdname item-summary
-#' @export
-get_game_summary <- function(cr_data, summary_fun = NULL, ...) {
-  get_item_summary(cr_data = cr_data,
-                   item = "game",
-                   summary_fun = summary_fun,
-                   ...)
-}
-
-#' @rdname item-summary
-#' @export
-get_player_summary <- function(cr_data, summary_fun = NULL, ...) {
-  get_item_summary(cr_data = cr_data,
-                   item = "player",
-                   summary_fun = summary_fun,
-                   ...)
-}
-
-summarise_item <- function(cr_data, item, ..., .args = list(), .prefix = "") {
+summarise_item <- function(tbl, item, ..., .args = list(), .prefix = "") {
   dots <- funs(..., .args = .args)
-  names(dots) <- paste0(.prefix, names(dots))
+  names(dots) <- paste0(rep(.prefix, length.out = length(dots)),
+                        names(dots))
 
-  cr_data %>%
-    group_by(!!! rlang::syms(item)) %>%
+  tbl %>%
+    group_by(!!! syms(item)) %>%
     summarise(!!! dots) %>%
     ungroup() %>%
-    `class<-`(class(dplyr::tibble()))
+    as_tibble()
 }
 
-summarise_game <- function(cr_data, ..., .args = list(), .prefix = "") {
-  summarise_item(cr_data, "game", ..., .args = .args, .prefix = .prefix)
+#' @rdname item-summary
+#' @export
+summarise_game <- function(tbl, ..., .args = list(), .prefix = "") {
+  summarise_item(tbl, "game", ..., .args = .args, .prefix = .prefix)
 }
 
-summarise_player <- function(cr_data, ..., .args = list(), .prefix = "") {
-  summarise_item(cr_data, "player", ..., .args = .args, .prefix = .prefix)
+#' @rdname item-summary
+#' @export
+summarise_player <- function(tbl, ..., .args = list(), .prefix = "") {
+  summarise_item(tbl, "player", ..., .args = .args, .prefix = .prefix)
 }
 
+#' @rdname item-summary
+#' @export
 summarize_item <- summarise_item
 
+#' @rdname item-summary
+#' @export
 summarize_game <- summarise_game
 
+#' @rdname item-summary
+#' @export
 summarize_player <- summarise_player
+
+
+# Common item summary functions -------------------------------------------
+#' Common item summary functions
+#'
+#' List of commonly used functions for summarising competition results.
+#'
+#' @details `summary_funs` is a named list of [quosures][rlang::quo()]
+#'   representing commonly used expressions of summary functions for summarising
+#'   competition results with [summarise_item()]. Names of the elements will be
+#'   used as summary names. It is designed primarily to be used with [long
+#'   format][results-longcr] of competition results. To use them inside
+#'   `summarise_item()` use [unquoting][rlang::quasiquotation] mechanism from
+#'   rlang package.
+#'
+#' Currently present functions:
+#' - __min_score__ - `min(score)`.
+#' - __max_score__ - `max(score)`.
+#' - __mean_score__ - `mean(score)`.
+#' - __median_score__ - `median(score)`.
+#' - __sd_score__ - `sd(score)`.
+#' - __sum_score__ - `sum(score)`.
+#' - __num_games__ - `length(unique(game))`.
+#' - __num_players__ - `length(unique(player))`.
+#'
+#' __Note__ that it is generally better to subset `summary_funs` using names
+#' rather than indices because the order of elements might change in future
+#' versions.
+#'
+#' @examples
+#' ncaa2005 %>% summarise_game(!!! summary_funs, .prefix = "game_")
+#'
+#' @seealso [Compute item summary][item-summary], [Join item
+#'   summary][item-summary-join]
+#'
+#' @export
+summary_funs <- list(
+  min_score = quo(min(score)),
+  max_score = quo(max(score)),
+  mean_score = quo(mean(score)),
+  median_score = quo(median(score)),
+  sd_score = quo(sd(score)),
+  sum_score = quo(sum(score)),
+  num_games = quo(length(unique(game))),
+  num_players = quo(length(unique(player)))
+)
+
+
+# Join item summary -------------------------------------------------------
+#' Join item summary
+#'
+#' Functions for joining summary data to data frame. They perform respective
+#' variant of [summarise item functions][item-summary] and then [left
+#' join][dplyr::left_join()] to the input its result (by `item` columns).
+#'
+#' @inheritParams item-summary
+#'
+#' @return Result of `left_join()` to the input data frame.
+#'
+#' @examples
+#' ncaa2005 %>% join_player_summary(player_mean_score = mean(score))
+#'
+#' @seealso [Compute item summary][item-summary]
+#'
+#' Common item [summary functions][summary_funs] for competition results.
+#'
+#' @name item-summary-join
+NULL
+
+#' @rdname item-summary-join
+#' @export
+join_item_summary <- function(tbl, item, ..., .args = list(),
+                              .prefix = "") {
+  item_summary <- summarise_item(tbl, item, ..., .args = .args,
+                                 .prefix = .prefix)
+
+  left_join(x = tbl, y = item_summary, by = item)
+}
+
+#' @rdname item-summary-join
+#' @export
+join_game_summary <- function(tbl, ..., .args = list(), .prefix = "") {
+  join_item_summary(tbl, "game", ..., .args = .args, .prefix = .prefix)
+}
+
+#' @rdname item-summary-join
+#' @export
+join_player_summary <- function(tbl, ..., .args = list(), .prefix = "") {
+  join_item_summary(tbl, "player", ..., .args = .args, .prefix = .prefix)
+}
