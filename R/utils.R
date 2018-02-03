@@ -15,15 +15,32 @@ skip_action <- function(x, ...) {
   x
 }
 
-# Competition results -----------------------------------------------------
-get_formatC_width <- function(vec) {
-  floor(log10(length(unique(vec)))) + 1
-}
 
+# Operations with class ---------------------------------------------------
 add_class <- function(obj, class_char) {
   class(obj) <- c(class_char, class(obj))
 
   obj
+}
+
+add_class_cond <- function(x, class) {
+  if (class(x)[1] != class) {
+    class(x) <- c(class, class(x))
+  }
+
+  x
+}
+
+reconstruct <- function(new, old) {
+  class(new) <- class(old)
+
+  new
+}
+
+
+# Competition results -----------------------------------------------------
+get_formatC_width <- function(vec) {
+  floor(log10(length(unique(vec)))) + 1
 }
 
 assert_used_names <- function(info, prefix = "") {
@@ -31,16 +48,6 @@ assert_used_names <- function(info, prefix = "") {
   # target - names of used columns;
   # original - names of original columns.
   absent_original <- is.na(info$original)
-
-  if (any(absent_original)) {
-    message(
-      prefix,
-      sprintf(
-        "Next columns are not found. Creating with NAs.\n  %s",
-        paste0(info$target[absent_original], collapse = ", ")
-      ), "\n"
-    )
-  }
 
   target <- info$target[!absent_original]
   original <- info$original[!absent_original]
@@ -51,6 +58,16 @@ assert_used_names <- function(info, prefix = "") {
     message(prefix,
             "Some matched names are not perfectly matched:\n  ",
             used_names_message, "\n")
+  }
+
+  if (any(absent_original)) {
+    message(
+      prefix,
+      sprintf(
+        "Next columns are not found. Creating with NAs.\n  %s",
+        paste0(info$target[absent_original], collapse = ", ")
+      ), "\n"
+    )
   }
 
   invisible(TRUE)
