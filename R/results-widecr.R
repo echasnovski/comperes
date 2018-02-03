@@ -1,11 +1,10 @@
 #' Wide format of competition results
 #'
-#' Functions for converting data of competition results to wide format.
+#' Functions for dealing with competition results in wide format.
 #'
 #' @param cr_data Data of competition results (convertable to tabular).
 #' @param repair Whether to repair input.
 #' @param ... Additional arguments to be passed to or from methods.
-#' @param x An object to print.
 #'
 #' @section Wide format of competition results:
 #' It is assumed that competition consists from multiple games (matches,
@@ -27,27 +26,32 @@
 #' Column `game` for game identifier is optional. If present it will be used in
 #' conversion to `longcr` format via [as_longcr()].
 #'
-#' @details `as_widecr()` is S3 method for converting data to `widecr`.
-#' When using __default__ method if `repair` is `TRUE` it tries to fix possible
-#' problems with the following actions:
-#' - Detect columns with names containing "player" or "score". All other columns
-#' are treated as "extra".
-#' - Extract first occurrence of "player" or "score" from names of detected
-#' columns. Everything after extracted word is treated as identifier of
-#' "player"-"score" pair.
+#' @section Repairing:
+#' Option `repair = TRUE` (default) in `as_widecr()` means that its result is
+#' going to be repaired with following actions:
+#' - Detect columns with names containing "player" or "score" (ignoring case).
+#' All other columns are treated as "extra".
+#' - Extract first occurrence of "player" or "score" (ignoring case) from names
+#' of detected columns. Everything after extracted word is treated as identifier
+#' of "player"-"score" pair.
 #' - Convert these identifiers to numeric form with
 #' `as.integer(as.factor(...))`.
 #' - Convert identifiers once again to character form with possible leading
 #' zeros (to account for R standard string ordering).
-#' - Spread pairs to appropriate columns adding columns with `NA_integer_` if
-#' they were not present in original data.
-#' - __Note__ that if there is column `game` it is placed as first column.
+#' - Spread pairs to appropriate columns with possible column adding (which
+#' were missed in original pairs based on information of pair identifier) with
+#' `NA_integer_`.
+#' - __Note__ that if there is column `game` (exactly matched) it is placed as
+#' first column.
 #' __Note__ that the order (and numeration) of pairs can change.
 #'
-#' If `repair` is `FALSE` it converts `cr_data` to [tibble][tibble::tibble] and
-#' adds `widecr` class to it.
+#' @details `as_widecr()` is S3 method for converting data to `widecr`. When
+#'   using __default__ method if `repair` is `TRUE` it also tries to fix
+#' possible problems (see "Repairing"). If `repair` is `FALSE` it converts
+#' `cr_data` to [tibble][tibble::tibble] and adds `widecr` class to it.
 #'
-#' When applying `as_widecr()` to __`longcr`__ object, conversion is made:
+#' When applying `as_widecr()` to proper (check via [is_longcr()] is made)
+#' __`longcr`__ object, conversion is made:
 #' - All columns except "game", "player" and "score" are dropped.
 #' - Conversion from long to wide format is made. The number of "player"-"score"
 #' pairs is taken as the maximum number of players in game. If not all games are
@@ -59,7 +63,10 @@
 #' throws error otherwise.
 #'
 #' @return `is_widecr()` returns `TRUE` if its argument is appropriate object
-#'   of class `widecr`.
+#'   of class `widecr`: it should inherit classes `widecr`, `tbl_df` (in other
+#'   words, to be [tibble][tibble::tibble]) and have complete pairs of
+#'   "player"-"score" columns where pair is detected by __digits__ after strings
+#'   "player" and "score" respectively.
 #'
 #' `as_widecr()` returns an object of class `widecr`.
 #'
@@ -69,7 +76,6 @@
 #'   playerB = 2:11,
 #'   scoreC = 11:20,
 #'   scoreB = 12:21,
-#'   scoreA = 13:22,
 #'   otherColumn =  101:110
 #' )
 #' cr_data_wide <- as_widecr(cr_data, repair = TRUE)
@@ -86,10 +92,7 @@ is_widecr <- function(cr_data) {
     return(FALSE)
   }
   names_cr <- tolower(colnames(cr_data))
-  names_df <- data.frame(
-    name = names_cr[grepl("player|score", x = names_cr)],
-    stringsAsFactors = FALSE
-  )
+  names_df <- tibble(name = names_cr[grepl("player|score", x = names_cr)])
 
   if (nrow(names_df) == 0) {
     return(FALSE)
@@ -107,7 +110,7 @@ is_widecr <- function(cr_data) {
       name = interaction(.data$group, .data$id, sep = "")
     )
 
-  (class(cr_data)[1] == "widecr") &&
+  inherits(x = cr_data, what = "widecr") &&
     setequal(
       unique(as.character(names_df$name)),
       levels(names_df$name)
@@ -141,16 +144,18 @@ as_widecr.longcr <- function(cr_data, repair = TRUE, ...) {
   res <- cr_data %>%
     select(.data$game, .data$player, .data$score) %>%
     group_by(.data$game) %>%
-    mutate(..in_game_id = seq_len(n())) %>%
+    mutate(in_game_id = seq_len(n())) %>%
     ungroup() %>%
     mutate(
-      ..in_game_id = formatC(.data[["..in_game_id"]],
-                           width = get_formatC_width(.data[["..in_game_id"]]),
-                           format = "d", flag = "0")
+      in_game_id = formatC(
+        .data$in_game_id, width = get_formatC_width(.data$in_game_id),
+        format = "d", flag = "0"
+      )
     )
-  res <- split(res, res[["..in_game_id"]]) %>%
+
+  res <- split(res, res$in_game_id) %>%
     lapply(function(game_data) {
-      pair_id <- game_data[["..in_game_id"]][1]
+      pair_id <- game_data$in_game_id[1]
       player_name <- paste0("player", pair_id)
       score_name <- paste0("score", pair_id)
 
@@ -159,7 +164,7 @@ as_widecr.longcr <- function(cr_data, repair = TRUE, ...) {
           !! player_name := .data$player,
           !! score_name := .data$score
         ) %>%
-        select(-.data[["..in_game_id"]])
+        select(-.data$in_game_id)
     }) %>%
     reduce_full_join(by = "game") %>%
     arrange(.data$game) %>%
@@ -183,15 +188,12 @@ as_widecr.widecr <- function(cr_data, repair = TRUE, ...) {
 }
 
 repair_widecr <- function(cr_data, ...) {
-  repair_info <-
-    data.frame(
-      original = colnames(cr_data),
-      stringsAsFactors = FALSE
-    ) %>%
+  repair_info <- tibble(original_lower = tolower(colnames(cr_data))) %>%
     tidyr::extract(
-      col = .data$original, into = c("group", "pair"),
-      regex = ".*(player|score)(.*)", remove = FALSE
+      col = .data$original_lower, into = c("group", "pair"),
+      regex = ".*(player|score)(.*)", remove = TRUE
     ) %>%
+    mutate(original = colnames(cr_data)) %>%
     filter(.data$group %in% c("player", "score"))
 
   if (nrow(repair_info) == 0) {
@@ -200,13 +202,20 @@ repair_widecr <- function(cr_data, ...) {
   }
 
   repair_info <- repair_info %>%
-    mutate(pair = as.integer(factor(.data$pair))) %>%
+    mutate(
+      group = factor(.data$group, levels = c("player", "score")),
+      pair = as.integer(factor(.data$pair))
+    ) %>%
     tidyr::complete(!!! rlang::syms(c("group", "pair"))) %>%
-    mutate(pair = formatC(.data$pair,
-                          width = get_formatC_width(.data$pair),
-                          format = "d", flag = "0")) %>%
+    mutate(
+      group = as.character(.data$group),
+      pair = formatC(.data$pair, width = get_formatC_width(.data$pair),
+                     format = "d", flag = "0")
+    ) %>%
     arrange(.data$pair, .data$group) %>%
     tidyr::unite(col = "target", !!! rlang::syms(c("group", "pair")), sep = "")
+
+  assert_used_names(repair_info, prefix = "as_widecr: ")
 
   res <- renamecreate_columns(cr_data, repair_info, fill = NA_integer_)
 
@@ -222,12 +231,4 @@ repair_widecr <- function(cr_data, ...) {
   }
 
   res
-}
-
-#' @rdname results-widecr
-#' @export
-print.widecr <- function(x, ...) {
-  cat("# A widecr object:\n")
-  class(x) <- class(x)[-1]
-  print(x, ...)
 }

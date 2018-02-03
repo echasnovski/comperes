@@ -34,37 +34,37 @@ test_that("is_longcr works", {
 
 # as_longcr.default -------------------------------------------------------
 test_that("as_longcr.default handles simple repairing", {
-  output_1 <- dplyr::tibble(
+  output_ref_1 <- dplyr::tibble(
     game = input$gameId,
     player = input$playerscoregame_ID,
     score = input$scoreS,
     scoreSP = input$scoreSP
   )
-  output_1 <- add_class(output_1, "longcr")
+  output_ref_1 <- add_class(output_ref_1, "longcr")
 
-  expect_identical(as_longcr(input, repair = TRUE), output_1)
-  expect_identical(as_longcr(unclass(input), repair = TRUE), output_1)
+  expect_identical(as_longcr(input, repair = TRUE), output_ref_1)
+  expect_identical(as_longcr(unclass(input), repair = TRUE), output_ref_1)
 })
 
 test_that("as_longcr.default handles missing columns correctly", {
-  output_2 <- dplyr::tibble(
+  output_ref_2 <- dplyr::tibble(
     game = input$gameId,
     player = rep(NA_integer_, nrow(input)),
     score = input$scoreS,
     scoreSP = input$scoreSP
   )
-  output_2 <- add_class(output_2, "longcr")
+  output_ref_2 <- add_class(output_ref_2, "longcr")
 
   expect_message(as_longcr(input[, -1], repair = TRUE), "not found.*player")
   expect_identical(suppressMessages(as_longcr(input[, -1], repair = TRUE)),
-                   output_2)
+                   output_ref_2)
 })
 
 test_that("as_longcr.default works properly on good inputs", {
-  output_good <- dplyr::as_tibble(input_good)
-  output_good <- add_class(output_good, "longcr")
+  output_ref_good <- dplyr::as_tibble(input_good)
+  output_ref_good <- add_class(output_ref_good, "longcr")
 
-  expect_identical(as_longcr(input_good, repair = TRUE), output_good)
+  expect_identical(as_longcr(input_good, repair = TRUE), output_ref_good)
   expect_silent(as_longcr(input_good, repair = TRUE))
 })
 
@@ -77,67 +77,67 @@ test_that("as_longcr.default removes duplicated 'game'-'player' pairs", {
 
 test_that("as_longcr.default preserves column types", {
   input_types <- input
-  output_types <- dplyr::tibble(
+  output_ref_types <- dplyr::tibble(
     game = input$gameId,
     player = input$playerscoregame_ID,
     score = input$scoreS,
     scoreSP = input$scoreSP
   )
-  output_types <- add_class(output_types, "longcr")
+  output_ref_types <- add_class(output_ref_types, "longcr")
 
   input_types1 <- input_types
-  output_types1 <- output_types
+  output_ref_types1 <- output_ref_types
   input_types1$gameId <- factor(input_types1$gameId)
-  output_types1$game <- factor(output_types1$game)
-  expect_identical(as_longcr(input_types1, repair = TRUE), output_types1,
+  output_ref_types1$game <- factor(output_ref_types1$game)
+  expect_identical(as_longcr(input_types1, repair = TRUE), output_ref_types1,
                    info = "Factor 'game'")
 
   input_types2 <- input_types
-  output_types2 <- output_types
+  output_ref_types2 <- output_ref_types
   input_types2$gameId <- as.character(input_types2$gameId)
-  output_types2$game <- as.character(output_types2$game)
-  expect_identical(as_longcr(input_types2, repair = TRUE), output_types2,
+  output_ref_types2$game <- as.character(output_ref_types2$game)
+  expect_identical(as_longcr(input_types2, repair = TRUE), output_ref_types2,
                    info = "Character 'game'")
 
   input_types3 <- input_types
-  output_types3 <- output_types
+  output_ref_types3 <- output_ref_types
   input_types3$playerscoregame_ID  <- factor(input_types3$playerscoregame_ID)
-  output_types3$player <- factor(output_types3$player)
-  expect_identical(as_longcr(input_types3, repair = TRUE), output_types3,
-                   info = "factor 'player'")
+  output_ref_types3$player <- factor(output_ref_types3$player)
+  expect_identical(as_longcr(input_types3, repair = TRUE), output_ref_types3,
+                   info = "Factor 'player'")
 
   input_types4 <- input_types
-  output_types4 <- output_types
+  output_ref_types4 <- output_ref_types
   input_types4$playerscoregame_ID  <-
     as.character(input_types4$playerscoregame_ID)
-  output_types4$player <- as.character(output_types4$player)
-  expect_identical(as_longcr(input_types4, repair = TRUE), output_types4,
+  output_ref_types4$player <- as.character(output_ref_types4$player)
+  expect_identical(as_longcr(input_types4, repair = TRUE), output_ref_types4,
                    info = "Character 'player'")
 
   input_types5 <- input_types
-  output_types5 <- output_types
+  output_ref_types5 <- output_ref_types
   input_types5$scoreS <- as.character(input_types5$scoreS)
-  output_types5$score <- as.character(output_types5$score)
-  expect_identical(as_longcr(input_types5, repair = TRUE), output_types5,
+  output_ref_types5$score <- as.character(output_ref_types5$score)
+  expect_identical(as_longcr(input_types5, repair = TRUE), output_ref_types5,
                    info = "Character 'score'")
 
   input_types6 <- input_types
-  output_types6 <- output_types
+  output_ref_types6 <- output_ref_types
   list_scores <- lapply(1:10, function(i) {
     c(points = 100 + i, type = i %% 2)
   })
   input_types6$scoreS <- I(list_scores)
   class(input_types6$scoreS) <- NULL
-  output_types6$score <- list_scores
-  expect_identical(as_longcr(input_types6, repair = TRUE), output_types6,
+  output_ref_types6$score <- list_scores
+  expect_identical(as_longcr(input_types6, repair = TRUE), output_ref_types6,
                    info = "List-column 'score'")
 })
 
 test_that("as_longcr.default works without repairing", {
-  output_3 <- dplyr::as_tibble(input)
-  output_3 <- add_class(output_3, "longcr")
+  output_ref_3 <- dplyr::as_tibble(input)
+  output_ref_3 <- add_class(output_ref_3, "longcr")
 
-  expect_identical(as_longcr(input, repair = FALSE), output_3)
+  expect_identical(as_longcr(input, repair = FALSE), output_ref_3)
 })
 
 test_that("as_longcr.default handles extra arguments", {
@@ -148,72 +148,94 @@ test_that("as_longcr.default handles extra arguments", {
 
 # as_longcr.widecr --------------------------------------------------------
 test_that("as_longcr.widecr does simple converting", {
-  output_longcr_from_widecr <- dplyr::tibble(
+  output_ref <- dplyr::tibble(
     game = rep(2:11, each = 2),
     player = c(11L, rep(12:20, each = 2), 21L),
     score = c(101L, rep(102:110, each = 2), 111L),
     otherCol = rep(-(1:10), each = 2)
   )
-  output_longcr_from_widecr <- add_class(output_longcr_from_widecr, "longcr")
+  output_ref <- add_class(output_ref, "longcr")
 
-  as_longcr_res <- as_longcr(input_widecr, repair = TRUE)
+  output <- as_longcr(input_widecr, repair = TRUE)
 
-  expect_identical(as_longcr_res, output_longcr_from_widecr)
+  expect_identical(output, output_ref)
+})
+
+test_that("as_longcr.widecr orders by game and pair id during repair", {
+  input_widecr_1 <- dplyr::tibble(
+    player1 = 12:13, score1 = 101:102,
+    player2 = 11:12, score2 = 102:103,
+    game = 2:3,
+    otherCol = -(1:2)
+  )
+  input_widecr_1 <- add_class(input_widecr_1, "widecr")
+
+  output_ref <- dplyr::tibble(
+    game = rep(2:3, each = 2),
+    player = c(12L, 11L, 13L, 12L),
+    score = c(101L, 102L, 102L, 103L),
+    otherCol = rep(-(1:2), each = 2)
+  )
+  output_ref <- add_class(output_ref, "longcr")
+
+  output <- as_longcr(input_widecr_1, repair = TRUE)
+
+  expect_equal(output, output_ref)
 })
 
 test_that("as_longcr.widecr preserves column types", {
   input_types <- input_widecr
-  output_types <- dplyr::tibble(
+  output_ref_types <- dplyr::tibble(
     game = rep(2:11, each = 2),
     player = c(11L, rep(12:20, each = 2), 21L),
     score = c(101L, rep(102:110, each = 2), 111L),
     otherCol = rep(-(1:10), each = 2)
   )
-  output_types <- add_class(output_types, "longcr")
+  output_ref_types <- add_class(output_ref_types, "longcr")
 
   input_types1 <- input_types
-  output_types1 <- output_types
+  output_ref_types1 <- output_ref_types
   input_types1$game <- factor(input_types1$game, levels = 2:11)
-  output_types1$game <- factor(output_types1$game, levels = 2:11)
-  expect_identical(as_longcr(input_types1, repair = TRUE), output_types1,
+  output_ref_types1$game <- factor(output_ref_types1$game, levels = 2:11)
+  expect_identical(as_longcr(input_types1, repair = TRUE), output_ref_types1,
                    info = "Factor 'game'")
 
   input_types2 <- input_types
-  output_types2 <- output_types
+  output_ref_types2 <- output_ref_types
   input_types2$game <- as.character(input_types2$game)
-  output_types2$game <- as.character(output_types2$game)
-  output_types2 <- output_types2[order(output_types2$game,
-                                       output_types2$player), ]
-  output_types2 <- add_class(output_types2, "longcr")
-  expect_identical(as_longcr(input_types2, repair = TRUE), output_types2,
+  output_ref_types2$game <- as.character(output_ref_types2$game)
+  output_ref_types2 <- output_ref_types2[order(output_ref_types2$game,
+                                               output_ref_types2$player), ]
+  output_ref_types2 <- add_class_cond(output_ref_types2, "longcr")
+  expect_identical(as_longcr(input_types2, repair = TRUE), output_ref_types2,
                    info = "Character 'game'")
 
   input_types3 <- input_types
-  output_types3 <- output_types
+  output_ref_types3 <- output_ref_types
   input_types3$player1 <- factor(input_types3$player1, levels = 11:21)
   input_types3$player2 <- factor(input_types3$player2, levels = 11:21)
-  output_types3$player <- factor(output_types3$player, levels = 11:21)
-  expect_identical(as_longcr(input_types3, repair = TRUE), output_types3,
+  output_ref_types3$player <- factor(output_ref_types3$player, levels = 11:21)
+  expect_identical(as_longcr(input_types3, repair = TRUE), output_ref_types3,
                    info = "Factor 'player'")
 
   input_types4 <- input_types
-  output_types4 <- output_types
+  output_ref_types4 <- output_ref_types
   input_types4$player1 <- as.character(input_types4$player1)
   input_types4$player2 <- as.character(input_types4$player2)
-  output_types4$player <- as.character(output_types4$player)
-  expect_identical(as_longcr(input_types4, repair = TRUE), output_types4,
+  output_ref_types4$player <- as.character(output_ref_types4$player)
+  expect_identical(as_longcr(input_types4, repair = TRUE), output_ref_types4,
                    info = "Character 'player'")
 
   input_types5 <- input_types
-  output_types5 <- output_types
+  output_ref_types5 <- output_ref_types
   input_types5$score1 <- as.character(input_types5$score1)
   input_types5$score2 <- as.character(input_types5$score2)
-  output_types5$score <- as.character(output_types5$score)
-  expect_identical(as_longcr(input_types5, repair = TRUE), output_types5,
+  output_ref_types5$score <- as.character(output_ref_types5$score)
+  expect_identical(as_longcr(input_types5, repair = TRUE), output_ref_types5,
                    info = "Character 'score'")
 
   input_types6 <- input_types
-  output_types6 <- output_types
+  output_ref_types6 <- output_ref_types
   list_scores <- lapply(1:10, function(i) {
     c(points = 100 + i, type = i %% 2)
   })
@@ -221,9 +243,9 @@ test_that("as_longcr.widecr preserves column types", {
   class(input_types6$score1) <- NULL
   input_types6$score2 <- I(list_scores)
   class(input_types6$score2) <- NULL
-  output_types6$score <- I(rep(list_scores, each = 2))
-  class(output_types6$score) <- NULL
-  expect_identical(as_longcr(input_types6, repair = TRUE), output_types6,
+  output_ref_types6$score <- I(rep(list_scores, each = 2))
+  class(output_ref_types6$score) <- NULL
+  expect_identical(as_longcr(input_types6, repair = TRUE), output_ref_types6,
                    info = "List-column 'score'")
 })
 
@@ -232,40 +254,41 @@ test_that("as_longcr.widecr removes duplicated 'game'-'player'
   input_dupl <- input_widecr
   input_dupl$player2[1] <- 11L
 
-  output_dupl <- dplyr::tibble(
+  output_ref_dupl <- dplyr::tibble(
     game = rep(2:11, each = 2),
     player = c(11L, rep(12:20, each = 2), 21L),
     score = c(101L, rep(102:110, each = 2), 111L),
     otherCol = rep(-(1:10), each = 2)
   )
-  output_dupl <- output_dupl[-2, ]
-  output_dupl <- add_class(output_dupl, "longcr")
+  output_ref_dupl <- output_ref_dupl[-2, ]
+  output_ref_dupl <- add_class_cond(output_ref_dupl, "longcr")
 
-  expect_identical(as_longcr(input_dupl, repair = TRUE), output_dupl)
+  expect_identical(as_longcr(input_dupl, repair = TRUE), output_ref_dupl)
 })
 
 test_that("as_longcr.widecr works without column 'game'", {
-  output_longcr_from_widecr <- dplyr::tibble(
+  output_ref_longcr_from_widecr <- dplyr::tibble(
     game = rep(2:11, each = 2),
     player = c(11L, rep(12:20, each = 2), 21L),
     score = c(101L, rep(102:110, each = 2), 111L),
     otherCol = rep(-(1:10), each = 2)
   )
-  output_longcr_from_widecr <- add_class(output_longcr_from_widecr, "longcr")
+  output_ref_longcr_from_widecr <- add_class(output_ref_longcr_from_widecr,
+                                             "longcr")
 
   input_widecr_nogame <- input_widecr[, setdiff(colnames(input_widecr), "game")]
-  input_widecr_nogame <- add_class(input_widecr_nogame, "widecr")
+  input_widecr_nogame <- add_class_cond(input_widecr_nogame, "widecr")
 
-  output_longcr_from_widecr_nogame <- output_longcr_from_widecr
-  output_longcr_from_widecr_nogame$game <- rep(1:10, each = 2)
+  output_ref_longcr_from_widecr_nogame <- output_ref_longcr_from_widecr
+  output_ref_longcr_from_widecr_nogame$game <- rep(1:10, each = 2)
 
   expect_identical(as_longcr(input_widecr_nogame),
-                   output_longcr_from_widecr_nogame)
+                   output_ref_longcr_from_widecr_nogame)
 })
 
 test_that("as_longcr.widecr throws error on corrupted widecr object", {
   input_widecr_corrupt <- input_widecr[, -1]
-  input_widecr_corrupt <- add_class(input_widecr_corrupt, "widecr")
+  input_widecr_corrupt <- add_class_cond(input_widecr_corrupt, "widecr")
 
   expect_error(as_longcr(input_widecr_corrupt), "not.*widecr")
 })
@@ -278,11 +301,4 @@ test_that("as_longcr.longcr works", {
 
   class(as_longcr_res) <- "longcr"
   expect_error(as_longcr(as_longcr_res, repair = TRUE), "not.*longcr")
-})
-
-
-# print.longcr ------------------------------------------------------------
-test_that("print.longcr works", {
-  expect_output(print(as_longcr(input_good)),
-                "# A longcr object:\n# A tibble")
 })
