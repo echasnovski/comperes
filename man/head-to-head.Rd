@@ -9,7 +9,7 @@ get_h2h(cr_data, h2h_fun, players = NULL, absent_players = players_drop,
   absent_h2h = fill_h2h, transpose = FALSE, self_play = NULL, ...)
 }
 \arguments{
-\item{cr_data}{Competition results in format ready for \code{\link[=to_longcr]{to_longcr()}}.}
+\item{cr_data}{Competition results in format ready for \code{\link[=as_longcr]{as_longcr()}}.}
 
 \item{h2h_fun}{Head-to-Head function (see Details).}
 

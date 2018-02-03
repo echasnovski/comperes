@@ -25,9 +25,9 @@
 #' score01, ..., player10, score10.
 #'
 #' Column `game` for game identifier is optional. If present it will be used in
-#' conversion to `longcr` format via [to_longcr()].
+#' conversion to `longcr` format via [as_longcr()].
 #'
-#' @details `to_widecr()` is S3 method for converting data to `widecr`.
+#' @details `as_widecr()` is S3 method for converting data to `widecr`.
 #' When using __default__ method if `repair` is `TRUE` it tries to fix possible
 #' problems with the following actions:
 #' - Detect columns with names containing "player" or "score". All other columns
@@ -47,7 +47,7 @@
 #' If `repair` is `FALSE` it converts `cr_data` to [tibble][tibble::tibble] and
 #' adds `widecr` class to it.
 #'
-#' When applying `to_widecr()` to __`longcr`__ object, conversion is made:
+#' When applying `as_widecr()` to __`longcr`__ object, conversion is made:
 #' - All columns except "game", "player" and "score" are dropped.
 #' - Conversion from long to wide format is made. The number of "player"-"score"
 #' pairs is taken as the maximum number of players in game. If not all games are
@@ -55,13 +55,13 @@
 #' pairs. Column `game` is preserved in output and is used for arranging in
 #' increasing order.
 #'
-#' For appropriate __`widecr`__ objects `to_widecr` returns its input  and
+#' For appropriate __`widecr`__ objects `as_widecr` returns its input  and
 #' throws error otherwise.
 #'
 #' @return `is_widecr()` returns `TRUE` if its argument is appropriate object
 #'   of class `widecr`.
 #'
-#' `to_widecr()` returns an object of class `widecr`.
+#' `as_widecr()` returns an object of class `widecr`.
 #'
 #' @examples
 #' cr_data <- data.frame(
@@ -72,7 +72,7 @@
 #'   scoreA = 13:22,
 #'   otherColumn =  101:110
 #' )
-#' cr_data_wide <- to_widecr(cr_data, repair = TRUE)
+#' cr_data_wide <- as_widecr(cr_data, repair = TRUE)
 #' is_widecr(cr_data_wide)
 #'
 #' @name results-widecr
@@ -117,12 +117,12 @@ is_widecr <- function(cr_data) {
 
 #' @rdname results-widecr
 #' @export
-to_widecr <- function(cr_data, repair = TRUE, ...) {
-  UseMethod("to_widecr")
+as_widecr <- function(cr_data, repair = TRUE, ...) {
+  UseMethod("as_widecr")
 }
 
 #' @export
-to_widecr.default <- function(cr_data, repair = TRUE, ...) {
+as_widecr.default <- function(cr_data, repair = TRUE, ...) {
   res <- dplyr::as_tibble(cr_data)
   if (repair) {
     res <- repair_widecr(res, ...)
@@ -133,7 +133,7 @@ to_widecr.default <- function(cr_data, repair = TRUE, ...) {
 }
 
 #' @export
-to_widecr.longcr <- function(cr_data, repair = TRUE, ...) {
+as_widecr.longcr <- function(cr_data, repair = TRUE, ...) {
   if (!is_longcr(cr_data)) {
     stop("Input is not appropriate object of class longcr.", call. = FALSE)
   }
@@ -174,7 +174,7 @@ to_widecr.longcr <- function(cr_data, repair = TRUE, ...) {
 }
 
 #' @export
-to_widecr.widecr <- function(cr_data, repair = TRUE, ...) {
+as_widecr.widecr <- function(cr_data, repair = TRUE, ...) {
   if (!is_widecr(cr_data)) {
     stop("Input is not appropriate object of class widecr.", call. = FALSE)
   }

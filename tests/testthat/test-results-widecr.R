@@ -64,8 +64,8 @@ test_that("is_widecr handles data with no 'player' or 'score' columns", {
 })
 
 
-# to_widecr.default -------------------------------------------------------
-test_that("to_widecr.default handles simple repairing", {
+# as_widecr.default -------------------------------------------------------
+test_that("as_widecr.default handles simple repairing", {
   output_1 <- dplyr::tibble(
     player1 = 1:10,
     score1 = 13:22,
@@ -77,20 +77,20 @@ test_that("to_widecr.default handles simple repairing", {
   )
   output_1 <- add_class(output_1, "widecr")
 
-  expect_identical(to_widecr(input_1, repair = TRUE), output_1)
+  expect_identical(as_widecr(input_1, repair = TRUE), output_1)
 })
 
-test_that("to_widecr.default throws an error if no column is matched", {
+test_that("as_widecr.default throws an error if no column is matched", {
   input_bad_colnames <- input_1
   colnames(input_bad_colnames) <- seq_len(ncol(input_bad_colnames))
 
-  expect_warning(to_widecr(input_bad_colnames, repair = TRUE),
+  expect_warning(as_widecr(input_bad_colnames, repair = TRUE),
                  "Neither 'player' nor 'score' columns are detected.")
-  expect_equal(suppressWarnings(to_widecr(input_bad_colnames, repair = TRUE)),
+  expect_equal(suppressWarnings(as_widecr(input_bad_colnames, repair = TRUE)),
                input_bad_colnames)
 })
 
-test_that("to_widecr.default places column 'game' on first place", {
+test_that("as_widecr.default places column 'game' on first place", {
   input_game_col <- input_1
   input_game_col$game <- 1001:1010
 
@@ -106,26 +106,26 @@ test_that("to_widecr.default places column 'game' on first place", {
   )
   output_game_col <- add_class(output_game_col, "widecr")
 
-  expect_identical(to_widecr(input_game_col, repair = TRUE), output_game_col)
+  expect_identical(as_widecr(input_game_col, repair = TRUE), output_game_col)
 })
 
-test_that("to_widecr.default correctly renames many columns", {
+test_that("as_widecr.default correctly renames many columns", {
   expect_identical(
-    colnames(to_widecr(input_2, repair = TRUE)),
+    colnames(as_widecr(input_2, repair = TRUE)),
     paste0(rep(c("player", "score"), times = 2),
            formatC(rep(1:10, each = 2), width = 2,
                    format = "d", flag = "0"))
   )
 })
 
-test_that("to_widecr.default works properly on good inputs", {
+test_that("as_widecr.default works properly on good inputs", {
   output_good <- dplyr::as_tibble(input_good)
   output_good <- add_class(output_good, "widecr")
 
-  expect_identical(to_widecr(input_good, repair = TRUE), output_good)
+  expect_identical(as_widecr(input_good, repair = TRUE), output_good)
 })
 
-test_that("to_widecr.default preserves column types", {
+test_that("as_widecr.default preserves column types", {
   input_types <- input_good
   input_types$game <- 1:10
   input_types$extraCol <- -(1:10)
@@ -138,14 +138,14 @@ test_that("to_widecr.default preserves column types", {
   output_types1 <- output_types
   input_types1$game <- factor(input_types1$game, levels = 1:10)
   output_types1$game <- factor(output_types1$game, levels = 1:10)
-  expect_identical(to_widecr(input_types1, repair = TRUE), output_types1,
+  expect_identical(as_widecr(input_types1, repair = TRUE), output_types1,
                    info = "Factor 'game'")
 
   input_types2 <- input_types
   output_types2 <- output_types
   input_types2$game <- as.character(input_types2$game)
   output_types2$game <- as.character(output_types2$game)
-  expect_identical(to_widecr(input_types2, repair = TRUE), output_types2,
+  expect_identical(as_widecr(input_types2, repair = TRUE), output_types2,
                    info = "Character 'game'")
 
   input_types3 <- input_types
@@ -154,7 +154,7 @@ test_that("to_widecr.default preserves column types", {
   input_types3$player2 <- factor(input_types3$player2, levels = 1:11)
   output_types3$player1 <- factor(output_types3$player1, levels = 1:11)
   output_types3$player2 <- factor(output_types3$player2, levels = 1:11)
-  expect_identical(to_widecr(input_types3, repair = TRUE), output_types3,
+  expect_identical(as_widecr(input_types3, repair = TRUE), output_types3,
                    info = "Factor 'player'")
 
   input_types4 <- input_types
@@ -163,7 +163,7 @@ test_that("to_widecr.default preserves column types", {
   input_types4$player2 <- as.character(input_types4$player2)
   output_types4$player1 <- as.character(output_types4$player1)
   output_types4$player2 <- as.character(output_types4$player2)
-  expect_identical(to_widecr(input_types4, repair = TRUE), output_types4,
+  expect_identical(as_widecr(input_types4, repair = TRUE), output_types4,
                    info = "Character 'player'")
 
   input_types5 <- input_types
@@ -172,7 +172,7 @@ test_that("to_widecr.default preserves column types", {
   input_types5$score2 <- as.character(input_types5$score2)
   output_types5$score1 <- as.character(output_types5$score1)
   output_types5$score2 <- as.character(output_types5$score2)
-  expect_identical(to_widecr(input_types5, repair = TRUE), output_types5,
+  expect_identical(as_widecr(input_types5, repair = TRUE), output_types5,
                    info = "Character 'score'")
 
   input_types6 <- input_types
@@ -186,25 +186,25 @@ test_that("to_widecr.default preserves column types", {
   class(input_types6$score2) <- NULL
   output_types6$score1 <- list_scores
   output_types6$score2 <- list_scores
-  expect_identical(to_widecr(input_types6, repair = TRUE), output_types6,
+  expect_identical(as_widecr(input_types6, repair = TRUE), output_types6,
                    info = "List-column 'score'")
 })
 
-test_that("to_widecr.default works without repairing", {
+test_that("as_widecr.default works without repairing", {
   output_2 <- dplyr::as_tibble(input_2)
   output_2 <- add_class(output_2, "widecr")
 
-  expect_identical(to_widecr(input_2, repair = FALSE), output_2)
+  expect_identical(as_widecr(input_2, repair = FALSE), output_2)
 })
 
-test_that("to_widecr.default handles extra arguments", {
-  expect_silent(to_widecr(input_good, repair = TRUE, extraArg = 1))
-  expect_silent(to_widecr(input_good, repair = FALSE, extraArg = 1))
+test_that("as_widecr.default handles extra arguments", {
+  expect_silent(as_widecr(input_good, repair = TRUE, extraArg = 1))
+  expect_silent(as_widecr(input_good, repair = FALSE, extraArg = 1))
 })
 
 
-# to_widecr.longcr --------------------------------------------------------
-test_that("to_widecr.longcr does simple converting", {
+# as_widecr.longcr --------------------------------------------------------
+test_that("as_widecr.longcr does simple converting", {
   output_widecr_from_longcr <- dplyr::tibble(
     game = 1:10,
     player1 = rep(seq(from = 11L, to = 19L, by = 2L), 2),
@@ -215,11 +215,11 @@ test_that("to_widecr.longcr does simple converting", {
   output_widecr_from_longcr <- add_class(output_widecr_from_longcr,
                                          "widecr")
 
-  to_widecr_res <- to_widecr(input_longcr)
-  expect_identical(to_widecr_res, output_widecr_from_longcr)
+  as_widecr_res <- as_widecr(input_longcr)
+  expect_identical(as_widecr_res, output_widecr_from_longcr)
 })
 
-test_that("to_widecr.longcr correctly renames many columns", {
+test_that("as_widecr.longcr correctly renames many columns", {
   input_many_pairs <- input_longcr
   input_many_pairs <- dplyr::bind_rows(
     input_many_pairs,
@@ -234,19 +234,19 @@ test_that("to_widecr.longcr correctly renames many columns", {
     )
 
   expect_identical(
-    colnames(to_widecr(input_many_pairs, repair = TRUE)),
+    colnames(as_widecr(input_many_pairs, repair = TRUE)),
     output_colnames
   )
 })
 
-test_that("to_widecr.longcr throws error on corrupted longcr object", {
+test_that("as_widecr.longcr throws error on corrupted longcr object", {
   longcr_corrupt <- input_longcr[, -1]
   class(longcr_corrupt) <- "longcr"
-  expect_error(to_widecr(longcr_corrupt),
+  expect_error(as_widecr(longcr_corrupt),
                "not.*longcr")
 })
 
-test_that("to_widecr.longcr preserves column types", {
+test_that("as_widecr.longcr preserves column types", {
   input_types <- input_longcr
   output_types <- dplyr::tibble(
     game = 1:10,
@@ -261,7 +261,7 @@ test_that("to_widecr.longcr preserves column types", {
   output_types1 <- output_types
   input_types1$game <- factor(input_types1$game, levels = 1:10)
   output_types1$game <- factor(output_types1$game, levels = 1:10)
-  expect_identical(to_widecr(input_types1, repair = TRUE), output_types1,
+  expect_identical(as_widecr(input_types1, repair = TRUE), output_types1,
                    info = "Factor 'game'")
 
   input_types2 <- input_types
@@ -269,7 +269,7 @@ test_that("to_widecr.longcr preserves column types", {
   input_types2$game <- as.character(input_types2$game)
   output_types2$game <- as.character(output_types2$game)
   output_types2[, ] <- output_types2[order(output_types2$game), ]
-  expect_identical(to_widecr(input_types2, repair = TRUE), output_types2,
+  expect_identical(as_widecr(input_types2, repair = TRUE), output_types2,
                    info = "Character 'game'")
 
   input_types3 <- input_types
@@ -277,7 +277,7 @@ test_that("to_widecr.longcr preserves column types", {
   input_types3$player <- factor(input_types3$player, levels = 11:20)
   output_types3$player1 <- factor(output_types3$player1, levels = 11:20)
   output_types3$player2 <- factor(output_types3$player2, levels = 11:20)
-  expect_identical(to_widecr(input_types3, repair = TRUE), output_types3,
+  expect_identical(as_widecr(input_types3, repair = TRUE), output_types3,
                    info = "Factor 'player'")
 
   input_types4 <- input_types
@@ -285,7 +285,7 @@ test_that("to_widecr.longcr preserves column types", {
   input_types4$player <- as.character(input_types4$player)
   output_types4$player1 <- as.character(output_types4$player1)
   output_types4$player2 <- as.character(output_types4$player2)
-  expect_identical(to_widecr(input_types4, repair = TRUE), output_types4,
+  expect_identical(as_widecr(input_types4, repair = TRUE), output_types4,
                    info = "Character 'player'")
 
   input_types5 <- input_types
@@ -293,7 +293,7 @@ test_that("to_widecr.longcr preserves column types", {
   input_types5$score <- as.character(input_types5$score)
   output_types5$score1 <- as.character(output_types5$score1)
   output_types5$score2 <- as.character(output_types5$score2)
-  expect_identical(to_widecr(input_types5, repair = TRUE), output_types5,
+  expect_identical(as_widecr(input_types5, repair = TRUE), output_types5,
                    info = "Character 'score'")
 
   input_types6 <- input_types
@@ -304,23 +304,23 @@ test_that("to_widecr.longcr preserves column types", {
   input_types6$score <- rep(list_scores, each = 2)
   output_types6$score1 <- list_scores
   output_types6$score2 <- list_scores
-  expect_identical(to_widecr(input_types6, repair = TRUE), output_types6,
+  expect_identical(as_widecr(input_types6, repair = TRUE), output_types6,
                    info = "List-column 'score'")
 })
 
 
-# to_widecr.widecr --------------------------------------------------------
-test_that("to_widecr.widecr works", {
-  to_widecr_res <- to_widecr(input_1, repair = TRUE)
-  expect_identical(to_widecr(to_widecr_res, repair = TRUE), to_widecr_res)
+# as_widecr.widecr --------------------------------------------------------
+test_that("as_widecr.widecr works", {
+  as_widecr_res <- as_widecr(input_1, repair = TRUE)
+  expect_identical(as_widecr(as_widecr_res, repair = TRUE), as_widecr_res)
 
-  class(to_widecr_res) <- "widecr"
-  expect_error(to_widecr(to_widecr_res, repair = TRUE), "not.*widecr")
+  class(as_widecr_res) <- "widecr"
+  expect_error(as_widecr(as_widecr_res, repair = TRUE), "not.*widecr")
 })
 
 
 # print.widecr ------------------------------------------------------------
 test_that("print.widecr works", {
-  expect_output(print(to_widecr(input_good)),
+  expect_output(print(as_widecr(input_good)),
                 "# A widecr object:\n# A tibble")
 })

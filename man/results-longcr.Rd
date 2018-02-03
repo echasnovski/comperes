@@ -3,13 +3,13 @@
 \name{results-longcr}
 \alias{results-longcr}
 \alias{is_longcr}
-\alias{to_longcr}
+\alias{as_longcr}
 \alias{print.longcr}
 \title{Long format of competition results}
 \usage{
 is_longcr(cr_data)
 
-to_longcr(cr_data, repair = TRUE, ...)
+as_longcr(cr_data, repair = TRUE, ...)
 
 \method{print}{longcr}(x, ...)
 }
@@ -26,13 +26,13 @@ to_longcr(cr_data, repair = TRUE, ...)
 \code{is_longcr()} returns \code{TRUE} if its argument is appropriate object of
 class \code{longcr}.
 
-\code{to_longcr()} returns an object of class \code{longcr}.
+\code{as_longcr()} returns an object of class \code{longcr}.
 }
 \description{
 Functions for converting data of competition results to long format.
 }
 \details{
-\code{to_longcr()} is S3 method for converting data to \code{longcr}. When
+\code{as_longcr()} is S3 method for converting data to \code{longcr}. When
 using \strong{default} method if \code{repair} is \code{TRUE} it also tries to fix
 possible problems with the following actions:
 \itemize{
@@ -48,17 +48,17 @@ filled with \code{NA_integer_}. Also a message is given.
 If \code{repair} is \code{FALSE} it converts \code{cr_data} to \link[tibble:tibble]{tibble} and
 adds \code{longcr} class to it.
 
-When applying \code{to_longcr()} to \strong{\code{widecr}} object, conversion is made:
+When applying \code{as_longcr()} to \strong{\code{widecr}} object, conversion is made:
 \itemize{
 \item If there is column \code{game} then it is used as game identifier. Else treat
 every row as separate game data.
 \item Every "player"-"score" pair for every game is converted to separate row
 with adding the appropriate extra columns.
 \item Result is arranged by \code{game} and \code{player} in increasing order.
-\item If \code{repair} is \code{TRUE} then repair is done as in \code{to_longcr.default()}.
+\item If \code{repair} is \code{TRUE} then repair is done as in \code{as_longcr.default()}.
 }
 
-For appropriate \strong{\code{longcr}} objects \code{to_longcr()} returns its input and
+For appropriate \strong{\code{longcr}} objects \code{as_longcr()} returns its input and
 throws error otherwise.
 }
 \section{Long format of competition results}{
@@ -92,7 +92,7 @@ cr_data <- data.frame(
   scoreS = 31:40,
   scoreSS = 41:50
 )
-cr_data_long <- to_longcr(cr_data, repair = TRUE)
+cr_data_long <- as_longcr(cr_data, repair = TRUE)
 is_longcr(cr_data_long)
 
 }

@@ -11,7 +11,7 @@ to_pairgames(cr_data)
 is_pairgames(cr_data)
 }
 \arguments{
-\item{cr_data}{Competition results in format ready for \code{\link[=to_longcr]{to_longcr()}}.}
+\item{cr_data}{Competition results in format ready for \code{\link[=as_longcr]{as_longcr()}}.}
 }
 \value{
 \code{to_pairgames()} returns a competition results of pairwised games as

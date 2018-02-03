@@ -2,7 +2,7 @@
 #'
 #' Functions for competition results with games between two players.
 #'
-#' @param cr_data Competition results in format ready for [to_longcr()].
+#' @param cr_data Competition results in format ready for [as_longcr()].
 #'
 #' @details Pairgames is a term for competition results with games between two
 #'   players.
@@ -59,7 +59,7 @@ NULL
 #' @export
 to_pairgames <- function(cr_data) {
   cr <- cr_data %>%
-    to_longcr(repair = TRUE)
+    as_longcr(repair = TRUE)
 
   multiple_players_games <- cr %>%
     count(.data$game) %>%
@@ -87,8 +87,8 @@ to_pairgames <- function(cr_data) {
     left_join(y = pairgames_ids, by = c("game", "..subGame")) %>%
     select(-.data$game, -.data[["..subGame"]]) %>%
     select(game = .data$..pairgameId, everything()) %>%
-    to_longcr(repair = FALSE) %>%
-    to_widecr(repair = FALSE)
+    as_longcr(repair = FALSE) %>%
+    as_widecr(repair = FALSE)
 }
 
 
@@ -96,7 +96,7 @@ to_pairgames <- function(cr_data) {
 #' @export
 is_pairgames <- function(cr_data) {
   cr_data %>%
-    to_longcr(repair = TRUE) %>%
+    as_longcr(repair = TRUE) %>%
     count(.data$game) %>%
     summarise(isAllTwo = all(.data$n == 2)) %>%
     "[["("isAllTwo")

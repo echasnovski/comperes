@@ -47,7 +47,7 @@ test_that("to_pairgames handles NA and NaN", {
 })
 
 test_that("to_pairgames doesn't change pairgames", {
-  expect_identical(to_widecr(ncaa2005), to_pairgames(ncaa2005))
+  expect_identical(as_widecr(ncaa2005), to_pairgames(ncaa2005))
 })
 
 

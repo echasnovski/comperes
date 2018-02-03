@@ -3,13 +3,13 @@
 \name{results-widecr}
 \alias{results-widecr}
 \alias{is_widecr}
-\alias{to_widecr}
+\alias{as_widecr}
 \alias{print.widecr}
 \title{Wide format of competition results}
 \usage{
 is_widecr(cr_data)
 
-to_widecr(cr_data, repair = TRUE, ...)
+as_widecr(cr_data, repair = TRUE, ...)
 
 \method{print}{widecr}(x, ...)
 }
@@ -26,13 +26,13 @@ to_widecr(cr_data, repair = TRUE, ...)
 \code{is_widecr()} returns \code{TRUE} if its argument is appropriate object
 of class \code{widecr}.
 
-\code{to_widecr()} returns an object of class \code{widecr}.
+\code{as_widecr()} returns an object of class \code{widecr}.
 }
 \description{
 Functions for converting data of competition results to wide format.
 }
 \details{
-\code{to_widecr()} is S3 method for converting data to \code{widecr}.
+\code{as_widecr()} is S3 method for converting data to \code{widecr}.
 When using \strong{default} method if \code{repair} is \code{TRUE} it tries to fix possible
 problems with the following actions:
 \itemize{
@@ -54,7 +54,7 @@ they were not present in original data.
 If \code{repair} is \code{FALSE} it converts \code{cr_data} to \link[tibble:tibble]{tibble} and
 adds \code{widecr} class to it.
 
-When applying \code{to_widecr()} to \strong{\code{longcr}} object, conversion is made:
+When applying \code{as_widecr()} to \strong{\code{longcr}} object, conversion is made:
 \itemize{
 \item All columns except "game", "player" and "score" are dropped.
 \item Conversion from long to wide format is made. The number of "player"-"score"
@@ -64,7 +64,7 @@ pairs. Column \code{game} is preserved in output and is used for arranging in
 increasing order.
 }
 
-For appropriate \strong{\code{widecr}} objects \code{to_widecr} returns its input  and
+For appropriate \strong{\code{widecr}} objects \code{as_widecr} returns its input  and
 throws error otherwise.
 }
 \section{Wide format of competition results}{
@@ -86,7 +86,7 @@ formatted with leading zeros (when appropriate). For example: player01,
 score01, ..., player10, score10.
 
 Column \code{game} for game identifier is optional. If present it will be used in
-conversion to \code{longcr} format via \code{\link[=to_longcr]{to_longcr()}}.
+conversion to \code{longcr} format via \code{\link[=as_longcr]{as_longcr()}}.
 }
 
 \examples{
@@ -98,7 +98,7 @@ cr_data <- data.frame(
   scoreA = 13:22,
   otherColumn =  101:110
 )
-cr_data_wide <- to_widecr(cr_data, repair = TRUE)
+cr_data_wide <- as_widecr(cr_data, repair = TRUE)
 is_widecr(cr_data_wide)
 
 }

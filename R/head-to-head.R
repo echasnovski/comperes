@@ -2,7 +2,7 @@
 #'
 #' This page describes methods of computing Head-to-Head matrices.
 #'
-#' @param cr_data Competition results in format ready for [to_longcr()].
+#' @param cr_data Competition results in format ready for [as_longcr()].
 #' @param h2h_fun Head-to-Head function (see Details).
 #' @param players Vector of players for which Head-to-Head is computed.
 #' @param absent_players Function which performs actions on Head-to-Head matrix
@@ -106,7 +106,7 @@ get_h2h <- function(cr_data, h2h_fun, players = NULL,
                     absent_players = players_drop, absent_h2h = fill_h2h,
                     transpose = FALSE, self_play = NULL,
                     ...) {
-  cr <- to_longcr(cr_data, ...)
+  cr <- as_longcr(cr_data, ...)
   players <- get_cr_players(cr_data = cr, players = players, ...)
 
   h2h_long <- get_cr_matchups(cr_data = cr) %>%

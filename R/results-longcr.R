@@ -26,7 +26,7 @@
 #' extra information about "game"-"player" pair as list-column "score" which
 #' will stay untouched.
 #'
-#' @details `to_longcr()` is S3 method for converting data to `longcr`. When
+#' @details `as_longcr()` is S3 method for converting data to `longcr`. When
 #'   using __default__ method if `repair` is `TRUE` it also tries to fix
 #'   possible problems with the following actions:
 #' - Detect first columns with names containing "game", "player" or "score"
@@ -40,21 +40,21 @@
 #' If `repair` is `FALSE` it converts `cr_data` to [tibble][tibble::tibble] and
 #' adds `longcr` class to it.
 #'
-#' When applying `to_longcr()` to __`widecr`__ object, conversion is made:
+#' When applying `as_longcr()` to __`widecr`__ object, conversion is made:
 #' - If there is column `game` then it is used as game identifier. Else treat
 #' every row as separate game data.
 #' - Every "player"-"score" pair for every game is converted to separate row
 #' with adding the appropriate extra columns.
 #' - Result is arranged by `game` and `player` in increasing order.
-#' - If `repair` is `TRUE` then repair is done as in `to_longcr.default()`.
+#' - If `repair` is `TRUE` then repair is done as in `as_longcr.default()`.
 #'
-#' For appropriate __`longcr`__ objects `to_longcr()` returns its input and
+#' For appropriate __`longcr`__ objects `as_longcr()` returns its input and
 #' throws error otherwise.
 #'
 #' @return `is_longcr()` returns `TRUE` if its argument is appropriate object of
 #'   class `longcr`.
 #'
-#' `to_longcr()` returns an object of class `longcr`.
+#' `as_longcr()` returns an object of class `longcr`.
 #'
 #' @examples # Repairing example
 #' cr_data <- data.frame(
@@ -63,7 +63,7 @@
 #'   scoreS = 31:40,
 #'   scoreSS = 41:50
 #' )
-#' cr_data_long <- to_longcr(cr_data, repair = TRUE)
+#' cr_data_long <- as_longcr(cr_data, repair = TRUE)
 #' is_longcr(cr_data_long)
 #'
 #' @name results-longcr
@@ -80,12 +80,12 @@ is_longcr <- function(cr_data) {
 
 #' @rdname results-longcr
 #' @export
-to_longcr <- function(cr_data, repair = TRUE, ...) {
-  UseMethod("to_longcr")
+as_longcr <- function(cr_data, repair = TRUE, ...) {
+  UseMethod("as_longcr")
 }
 
 #' @export
-to_longcr.default <- function(cr_data, repair = TRUE, ...) {
+as_longcr.default <- function(cr_data, repair = TRUE, ...) {
   res <- dplyr::as_tibble(cr_data)
   if (repair) {
     res <- repair_longcr(res, ...)
@@ -96,7 +96,7 @@ to_longcr.default <- function(cr_data, repair = TRUE, ...) {
 }
 
 #' @export
-to_longcr.widecr <- function(cr_data, repair = TRUE, ...) {
+as_longcr.widecr <- function(cr_data, repair = TRUE, ...) {
   if (!is_widecr(cr_data)) {
     stop("Input is not appropriate object of class widecr.", call. = FALSE)
   }
@@ -142,7 +142,7 @@ to_longcr.widecr <- function(cr_data, repair = TRUE, ...) {
 }
 
 #' @export
-to_longcr.longcr <- function(cr_data, repair = TRUE, ...) {
+as_longcr.longcr <- function(cr_data, repair = TRUE, ...) {
   if (!is_longcr(cr_data)) {
     stop("Input is not appropriate object of class longcr.", call. = FALSE)
   }
@@ -171,7 +171,7 @@ repair_longcr <- function(cr_data, ...) {
       stringsAsFactors = FALSE
     )
 
-  assert_used_names(repair_info, prefix = "to_longcr: ")
+  assert_used_names(repair_info, prefix = "as_longcr: ")
 
   res <- renamecreate_columns(cr_data, repair_info, fill = NA_integer_) %>%
     select(.data$game, .data$player, .data$score,
