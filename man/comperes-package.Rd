@@ -17,6 +17,6 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Evgnei Chasnovski \email{evgeni.chasnovski@gmail.com}
+\strong{Maintainer}: Evgeni Chasnovski \email{evgeni.chasnovski@gmail.com}
 
 }

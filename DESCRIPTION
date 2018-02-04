@@ -1,7 +1,7 @@
 Package: comperes
 Title: Create and Manipulate Competition Results
 Version: 0.1.0.9001
-Authors@R: person("Evgnei", "Chasnovski", email = "evgeni.chasnovski@gmail.com",
+Authors@R: person("Evgeni", "Chasnovski", email = "evgeni.chasnovski@gmail.com",
     role = c("aut", "cre"))
 Description: Tools for creating and manipulating competition results.
 Depends: R (>= 3.4.0)
