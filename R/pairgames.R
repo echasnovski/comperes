@@ -11,7 +11,7 @@
 #'   pairwise games: it drops games with one player and for every game with 3
 #'   and more players this function transforms it into set of separate games
 #'   between unordered pairs of players. In other words the result is a set of
-#'   unordered [matchups][head-to-head-helpers] (as different games) between
+#'   unordered [matchups][head-to-head-helpers] (__as different games__) between
 #'   different players.
 #'
 #'   __Important notes__:
@@ -24,7 +24,7 @@
 #'   - `to_pairgames()` is rather compute-intensive and can take much time for
 #'   competition results with many games.
 #'
-#' @return `to_pairgames()` returns a competition results of pairwised games as
+#' @return `to_pairgames()` returns a competition results of pairwise games as
 #'   [widecr][results-widecr] object with two players.
 #'
 #'   `is_pairgames()` returns a boolean value of whether `cr_data` contains only
@@ -59,7 +59,8 @@ NULL
 #' @export
 to_pairgames <- function(cr_data) {
   cr <- cr_data %>%
-    as_longcr(repair = TRUE)
+    as_longcr(repair = TRUE) %>%
+    select(.data$game, .data$player, .data$score)
 
   multiple_players_games <- cr %>%
     count(.data$game) %>%
@@ -86,7 +87,7 @@ to_pairgames <- function(cr_data) {
   raw_pairgames %>%
     left_join(y = pairgames_ids, by = c("game", "..subGame")) %>%
     select(-.data$game, -.data[["..subGame"]]) %>%
-    select(game = .data$..pairgameId, everything()) %>%
+    select(game = .data[["..pairgameId"]], everything()) %>%
     as_longcr(repair = FALSE) %>%
     as_widecr(repair = FALSE)
 }

@@ -14,7 +14,7 @@ is_pairgames(cr_data)
 \item{cr_data}{Competition results in format ready for \code{\link[=as_longcr]{as_longcr()}}.}
 }
 \value{
-\code{to_pairgames()} returns a competition results of pairwised games as
+\code{to_pairgames()} returns a competition results of pairwise games as
 \link[=results-widecr]{widecr} object with two players.
 
 \code{is_pairgames()} returns a boolean value of whether \code{cr_data} contains only
@@ -31,7 +31,7 @@ players.
 pairwise games: it drops games with one player and for every game with 3
 and more players this function transforms it into set of separate games
 between unordered pairs of players. In other words the result is a set of
-unordered \link[=head-to-head-helpers]{matchups} (as different games) between
+unordered \link[=head-to-head-helpers]{matchups} (\strong{as different games}) between
 different players.
 
 \strong{Important notes}:
