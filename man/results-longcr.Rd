@@ -4,14 +4,11 @@
 \alias{results-longcr}
 \alias{is_longcr}
 \alias{as_longcr}
-\alias{print.longcr}
 \title{Long format of competition results}
 \usage{
 is_longcr(cr_data)
 
 as_longcr(cr_data, repair = TRUE, ...)
-
-\method{print}{longcr}(x, ...)
 }
 \arguments{
 \item{cr_data}{Data of competition results (convertable to tabular).}
@@ -19,43 +16,35 @@ as_longcr(cr_data, repair = TRUE, ...)
 \item{repair}{Whether to repair input.}
 
 \item{...}{Additional arguments to be passed to or from methods.}
-
-\item{x}{An object to print.}
 }
 \value{
 \code{is_longcr()} returns \code{TRUE} if its argument is appropriate object of
-class \code{longcr}.
+class \code{longcr}: it should inherit classes \code{longcr}, \code{tbl_df} (in other
+words, to be \link[tibble:tibble]{tibble}) and have "game", "player", "score"
+among column names.
 
 \code{as_longcr()} returns an object of class \code{longcr}.
 }
 \description{
-Functions for converting data of competition results to long format.
+Functions for dealing with competition results in long format.
 }
 \details{
 \code{as_longcr()} is S3 method for converting data to \code{longcr}. When
 using \strong{default} method if \code{repair} is \code{TRUE} it also tries to fix
-possible problems with the following actions:
-\itemize{
-\item Detect first columns with names containing "game", "player" or "score"
-(ignoring case). If there are many matching names for one output name then
-the first one is used. In case of imperfect match, message is given.
-\item If some legitimate names aren't detected respective columns are created and
-filled with \code{NA_integer_}. Also a message is given.
-\item If in one game some player listed more than once the first record is taken.
-\item Return the tibble with at least 3 appropriate columns and column names.
-}
+possible problems (see "Repairing"). If \code{repair} is \code{FALSE} it converts
+\code{cr_data} to \link[tibble:tibble]{tibble} and adds \code{longcr} class to it.
 
-If \code{repair} is \code{FALSE} it converts \code{cr_data} to \link[tibble:tibble]{tibble} and
-adds \code{longcr} class to it.
-
-When applying \code{as_longcr()} to \strong{\code{widecr}} object, conversion is made:
+When applying \code{as_longcr()} to proper (check via \code{\link[=is_widecr]{is_widecr()}} is made)
+\strong{\code{widecr}} object, conversion is made:
 \itemize{
-\item If there is column \code{game} then it is used as game identifier. Else treat
-every row as separate game data.
+\item If there is column \code{game} then it is used as game identifier. Else
+treat every row as separate game data.
 \item Every "player"-"score" pair for every game is converted to separate row
 with adding the appropriate extra columns.
-\item Result is arranged by \code{game} and \code{player} in increasing order.
-\item If \code{repair} is \code{TRUE} then repair is done as in \code{as_longcr.default()}.
+\item Result is arranged by \code{game} and identifier of a "player"-"score" pair
+(extra symbols after "player" and "score" strings in input column names) in
+increasing order.
+\item If \code{repair} is \code{TRUE} then repair is done.
 }
 
 For appropriate \strong{\code{longcr}} objects \code{as_longcr()} returns its input and
@@ -82,6 +71,24 @@ Extra columns are allowed. \strong{Note} that if object is converted to
 \link[=results-widecr]{widecr}, they will be dropped. So it is better to store
 extra information about "game"-"player" pair as list-column "score" which
 will stay untouched.
+}
+
+\section{Repairing}{
+
+Option \code{repair = TRUE} (default) in \code{as_longcr()} means that its result is
+going to be repaired with following actions:
+\itemize{
+\item Detect first columns with names containing "game", "player" or "score"
+(ignoring case). If there are many matching names for one output name then
+the first one is used. In case of imperfect match, message is given. All
+other columns are treated as "extra".
+\item If some legitimate names aren't detected, respective columns are created
+and filled with \code{NA_integer_}. Also a message is given.
+\item If in one game some player listed more than once, the first record is
+taken.
+\item Return the tibble with at least 3 appropriate for \code{longcr} columns and
+column names.
+}
 }
 
 \examples{

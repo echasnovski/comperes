@@ -4,14 +4,11 @@
 \alias{results-widecr}
 \alias{is_widecr}
 \alias{as_widecr}
-\alias{print.widecr}
 \title{Wide format of competition results}
 \usage{
 is_widecr(cr_data)
 
 as_widecr(cr_data, repair = TRUE, ...)
-
-\method{print}{widecr}(x, ...)
 }
 \arguments{
 \item{cr_data}{Data of competition results (convertable to tabular).}
@@ -19,42 +16,27 @@ as_widecr(cr_data, repair = TRUE, ...)
 \item{repair}{Whether to repair input.}
 
 \item{...}{Additional arguments to be passed to or from methods.}
-
-\item{x}{An object to print.}
 }
 \value{
 \code{is_widecr()} returns \code{TRUE} if its argument is appropriate object
-of class \code{widecr}.
+of class \code{widecr}: it should inherit classes \code{widecr}, \code{tbl_df} (in other
+words, to be \link[tibble:tibble]{tibble}) and have complete pairs of
+"player"-"score" columns where pair is detected by \strong{digits} after strings
+"player" and "score" respectively.
 
 \code{as_widecr()} returns an object of class \code{widecr}.
 }
 \description{
-Functions for converting data of competition results to wide format.
+Functions for dealing with competition results in wide format.
 }
 \details{
-\code{as_widecr()} is S3 method for converting data to \code{widecr}.
-When using \strong{default} method if \code{repair} is \code{TRUE} it tries to fix possible
-problems with the following actions:
-\itemize{
-\item Detect columns with names containing "player" or "score". All other columns
-are treated as "extra".
-\item Extract first occurrence of "player" or "score" from names of detected
-columns. Everything after extracted word is treated as identifier of
-"player"-"score" pair.
-\item Convert these identifiers to numeric form with
-\code{as.integer(as.factor(...))}.
-\item Convert identifiers once again to character form with possible leading
-zeros (to account for R standard string ordering).
-\item Spread pairs to appropriate columns adding columns with \code{NA_integer_} if
-they were not present in original data.
-\item \strong{Note} that if there is column \code{game} it is placed as first column.
-\strong{Note} that the order (and numeration) of pairs can change.
-}
+\code{as_widecr()} is S3 method for converting data to \code{widecr}. When
+using \strong{default} method if \code{repair} is \code{TRUE} it also tries to fix
+possible problems (see "Repairing"). If \code{repair} is \code{FALSE} it converts
+\code{cr_data} to \link[tibble:tibble]{tibble} and adds \code{widecr} class to it.
 
-If \code{repair} is \code{FALSE} it converts \code{cr_data} to \link[tibble:tibble]{tibble} and
-adds \code{widecr} class to it.
-
-When applying \code{as_widecr()} to \strong{\code{longcr}} object, conversion is made:
+When applying \code{as_widecr()} to proper (check via \code{\link[=is_longcr]{is_longcr()}} is made)
+\strong{\code{longcr}} object, conversion is made:
 \itemize{
 \item All columns except "game", "player" and "score" are dropped.
 \item Conversion from long to wide format is made. The number of "player"-"score"
@@ -89,13 +71,35 @@ Column \code{game} for game identifier is optional. If present it will be used i
 conversion to \code{longcr} format via \code{\link[=as_longcr]{as_longcr()}}.
 }
 
+\section{Repairing}{
+
+Option \code{repair = TRUE} (default) in \code{as_widecr()} means that its result is
+going to be repaired with following actions:
+\itemize{
+\item Detect columns with names containing "player" or "score" (ignoring case).
+All other columns are treated as "extra".
+\item Extract first occurrence of "player" or "score" (ignoring case) from names
+of detected columns. Everything after extracted word is treated as identifier
+of "player"-"score" pair.
+\item Convert these identifiers to numeric form with
+\code{as.integer(as.factor(...))}.
+\item Convert identifiers once again to character form with possible leading
+zeros (to account for R standard string ordering).
+\item Spread pairs to appropriate columns with possible column adding (which
+were missed in original pairs based on information of pair identifier) with
+\code{NA_integer_}.
+\item \strong{Note} that if there is column \code{game} (exactly matched) it is placed as
+first column.
+\strong{Note} that the order (and numeration) of pairs can change.
+}
+}
+
 \examples{
 cr_data <- data.frame(
   playerA = 1:10,
   playerB = 2:11,
   scoreC = 11:20,
   scoreB = 12:21,
-  scoreA = 13:22,
   otherColumn =  101:110
 )
 cr_data_wide <- as_widecr(cr_data, repair = TRUE)

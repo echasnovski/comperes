@@ -1,7 +1,7 @@
 # comperes 0.1.0.9001
 
 - Update "item summary" API.
-- Rename `to_longcr` and `to_widecr` to `as_longcr` and `as_widecr` for consistency with other R packages.
+- Rename `to_longcr` and `to_widecr` to `as_longcr` and `as_widecr` for consistency with other R packages. Slightly tweak their logic.
 
 
 # comperes 0.1.0.9000 (2017-06-18)

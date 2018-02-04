@@ -1,11 +1,10 @@
 #' Long format of competition results
 #'
-#' Functions for converting data of competition results to long format.
+#' Functions for dealing with competition results in long format.
 #'
 #' @param cr_data Data of competition results (convertable to tabular).
 #' @param repair Whether to repair input.
 #' @param ... Additional arguments to be passed to or from methods.
-#' @param x An object to print.
 #'
 #' @section Long format of competition results:
 #' It is assumed that competition consists from multiple games (matches,
@@ -26,33 +25,43 @@
 #' extra information about "game"-"player" pair as list-column "score" which
 #' will stay untouched.
 #'
-#' @details `as_longcr()` is S3 method for converting data to `longcr`. When
-#'   using __default__ method if `repair` is `TRUE` it also tries to fix
-#'   possible problems with the following actions:
+#' @section Repairing:
+#' Option `repair = TRUE` (default) in `as_longcr()` means that its result is
+#' going to be repaired with following actions:
 #' - Detect first columns with names containing "game", "player" or "score"
 #' (ignoring case). If there are many matching names for one output name then
-#' the first one is used. In case of imperfect match, message is given.
-#' - If some legitimate names aren't detected respective columns are created and
-#' filled with `NA_integer_`. Also a message is given.
-#' - If in one game some player listed more than once the first record is taken.
-#' - Return the tibble with at least 3 appropriate columns and column names.
+#' the first one is used. In case of imperfect match, message is given. All
+#' other columns are treated as "extra".
+#' - If some legitimate names aren't detected, respective columns are created
+#' and filled with `NA_integer_`. Also a message is given.
+#' - If in one game some player listed more than once, the first record is
+#' taken.
+#' - Return the tibble with at least 3 appropriate for `longcr` columns and
+#' column names.
 #'
-#' If `repair` is `FALSE` it converts `cr_data` to [tibble][tibble::tibble] and
-#' adds `longcr` class to it.
+#' @details `as_longcr()` is S3 method for converting data to `longcr`. When
+#'   using __default__ method if `repair` is `TRUE` it also tries to fix
+#'   possible problems (see "Repairing"). If `repair` is `FALSE` it converts
+#'   `cr_data` to [tibble][tibble::tibble] and adds `longcr` class to it.
 #'
-#' When applying `as_longcr()` to __`widecr`__ object, conversion is made:
-#' - If there is column `game` then it is used as game identifier. Else treat
-#' every row as separate game data.
+#' When applying `as_longcr()` to proper (check via [is_widecr()] is made)
+#' __`widecr`__ object, conversion is made:
+#' - If there is column `game` then it is used as game identifier. Else
+#' treat every row as separate game data.
 #' - Every "player"-"score" pair for every game is converted to separate row
 #' with adding the appropriate extra columns.
-#' - Result is arranged by `game` and `player` in increasing order.
-#' - If `repair` is `TRUE` then repair is done as in `as_longcr.default()`.
+#' - Result is arranged by `game` and identifier of a "player"-"score" pair
+#' (extra symbols after "player" and "score" strings in input column names) in
+#' increasing order.
+#' - If `repair` is `TRUE` then repair is done.
 #'
 #' For appropriate __`longcr`__ objects `as_longcr()` returns its input and
 #' throws error otherwise.
 #'
 #' @return `is_longcr()` returns `TRUE` if its argument is appropriate object of
-#'   class `longcr`.
+#'   class `longcr`: it should inherit classes `longcr`, `tbl_df` (in other
+#'   words, to be [tibble][tibble::tibble]) and have "game", "player", "score"
+#'   among column names.
 #'
 #' `as_longcr()` returns an object of class `longcr`.
 #'
@@ -73,9 +82,9 @@ NULL
 #' @rdname results-longcr
 #' @export
 is_longcr <- function(cr_data) {
-  (class(cr_data)[1] == "longcr") &&
-    (inherits(x = cr_data, what = "tbl_df")) &&
-    (length(setdiff(c("game", "player", "score"), colnames(cr_data))) == 0)
+  inherits(x = cr_data, what = "longcr") &&
+    inherits(x = cr_data, what = "tbl_df") &&
+    all(c("game", "player", "score") %in% colnames(cr_data))
 }
 
 #' @rdname results-longcr
@@ -105,11 +114,7 @@ as_longcr.widecr <- function(cr_data, repair = TRUE, ...) {
     cr_data$game <- seq_len(nrow(cr_data))
   }
 
-  column_info <-
-    data.frame(
-      name = colnames(cr_data),
-      stringsAsFactors = FALSE
-    ) %>%
+  column_info <- tibble(name = colnames(cr_data)) %>%
     tidyr::extract(
       col = .data$name, into = c("group", "pair"),
       regex = "(player|score)([0-9]+)", remove = FALSE
@@ -117,10 +122,11 @@ as_longcr.widecr <- function(cr_data, repair = TRUE, ...) {
     arrange(.data$pair, .data$group)
 
   extra_columns <- column_info %>%
-    filter(.data$name != "game",
+    filter(
+      .data$name != "game",
       !(.data$group %in% c("player", "score"))
     ) %>%
-    "$"("name")
+    pull("name")
 
   res <- split(column_info, column_info$pair) %>%
     lapply(function(pair_info) {
@@ -128,10 +134,12 @@ as_longcr.widecr <- function(cr_data, repair = TRUE, ...) {
       names(pair_names) <- pair_info$group
 
       cr_data %>%
-        select(!!! rlang::syms(c("game", pair_names, extra_columns)))
+        select(!!! rlang::syms(c("game", pair_names, extra_columns))) %>%
+        mutate(..pair = pair_info$pair[1])
     }) %>%
     bind_rows() %>%
-    arrange(.data$game, .data$player)
+    arrange(.data$game, .data[["..pair"]]) %>%
+    select(-.data[["..pair"]])
 
   if (repair) {
     res <- repair_longcr(cr_data = res)
@@ -181,12 +189,4 @@ repair_longcr <- function(cr_data, ...) {
     is.na(res$game) | is.na(res$player)
 
   res[not_dupl_records, ]
-}
-
-#' @rdname results-longcr
-#' @export
-print.longcr <- function(x, ...) {
-  cat("# A longcr object:\n")
-  class(x) <- class(x)[-1]
-  print(x, ...)
 }
