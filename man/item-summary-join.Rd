@@ -7,11 +7,11 @@
 \alias{join_player_summary}
 \title{Join item summary}
 \usage{
-join_item_summary(tbl, item, ..., .args = list(), .prefix = "")
+join_item_summary(tbl, item, ..., .prefix = "")
 
-join_game_summary(tbl, ..., .args = list(), .prefix = "")
+join_game_summary(tbl, ..., .prefix = "")
 
-join_player_summary(tbl, ..., .args = list(), .prefix = "")
+join_player_summary(tbl, ..., .prefix = "")
 }
 \arguments{
 \item{tbl}{Data frame.}
@@ -19,9 +19,6 @@ join_player_summary(tbl, ..., .args = list(), .prefix = "")
 \item{item}{Character vector of columns to group by.}
 
 \item{...}{Name-value pairs of summary functions (as in \link[dplyr:summarise]{dplyr::summarise}).}
-
-\item{.args}{A named list of additional arguments to be added to all function
-calls (as in \link[dplyr:funs]{dplyr::funs}).}
 
 \item{.prefix}{A string to be added to all summary functions' names.}
 }
@@ -32,6 +29,11 @@ Result of \code{left_join()} to the input data frame.
 Functions for joining summary data to data frame. They perform respective
 variant of \link[=item-summary]{summarise item functions} and then \link[dplyr:left_join]{left
 join} to the input its result (by \code{item} columns).
+}
+\details{
+\code{join_game_summary()} and \code{join_player_summary()} are wrappers for
+\code{join_item_summary()} using \code{item = "game"} and \code{item = "player"}
+respectively.
 }
 \examples{
 ncaa2005 \%>\% join_player_summary(player_mean_score = mean(score))

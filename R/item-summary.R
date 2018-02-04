@@ -7,8 +7,6 @@
 #' @param tbl Data frame.
 #' @param item Character vector of columns to group by.
 #' @param ... Name-value pairs of summary functions (as in [dplyr::summarise]).
-#' @param .args A named list of additional arguments to be added to all function
-#'   calls (as in [dplyr::funs]).
 #' @param .prefix A string to be added to all summary functions' names.
 #'
 #' @details Basically, `summarise_item()` performs the following steps:
@@ -16,6 +14,10 @@
 #' - Apply dplyr's `summarise()`.
 #' - Ungroup result.
 #' - Convert to [tibble][tibble::tibble].
+#' - Add `.prefix` to names of summary functions.
+#'
+#' `summarise_game()` and `summarise_player()` are wrappers for
+#' `summarise_item()` using `item = "game"` and `item = "player"` respectively.
 #'
 #' @return Output of `summarise()` as not grouped `tibble`.
 #'
@@ -37,28 +39,29 @@ NULL
 
 #' @rdname item-summary
 #' @export
-summarise_item <- function(tbl, item, ..., .args = list(), .prefix = "") {
-  dots <- funs(..., .args = .args)
-  names(dots) <- paste0(rep(.prefix, length.out = length(dots)),
-                        names(dots))
+summarise_item <- function(tbl, item, ..., .prefix = "") {
+  if (!is.character(item)) {
+    stop("`item` must be character.", call. = FALSE)
+  }
 
   tbl %>%
     group_by(!!! syms(item)) %>%
-    summarise(!!! dots) %>%
+    summarise(...) %>%
     ungroup() %>%
-    as_tibble()
+    as_tibble() %>%
+    add_name_prefix(prefix = .prefix, except = item)
 }
 
 #' @rdname item-summary
 #' @export
-summarise_game <- function(tbl, ..., .args = list(), .prefix = "") {
-  summarise_item(tbl, "game", ..., .args = .args, .prefix = .prefix)
+summarise_game <- function(tbl, ..., .prefix = "") {
+  summarise_item(tbl, "game", ..., .prefix = .prefix)
 }
 
 #' @rdname item-summary
 #' @export
-summarise_player <- function(tbl, ..., .args = list(), .prefix = "") {
-  summarise_item(tbl, "player", ..., .args = .args, .prefix = .prefix)
+summarise_player <- function(tbl, ..., .prefix = "") {
+  summarise_item(tbl, "player", ..., .prefix = .prefix)
 }
 
 #' @rdname item-summary
@@ -129,6 +132,10 @@ summary_funs <- list(
 #'
 #' @inheritParams item-summary
 #'
+#' @details `join_game_summary()` and `join_player_summary()` are wrappers for
+#' `join_item_summary()` using `item = "game"` and `item = "player"`
+#' respectively.
+#'
 #' @return Result of `left_join()` to the input data frame.
 #'
 #' @examples
@@ -143,22 +150,20 @@ NULL
 
 #' @rdname item-summary-join
 #' @export
-join_item_summary <- function(tbl, item, ..., .args = list(),
-                              .prefix = "") {
-  item_summary <- summarise_item(tbl, item, ..., .args = .args,
-                                 .prefix = .prefix)
+join_item_summary <- function(tbl, item, ..., .prefix = "") {
+  item_summary <- summarise_item(tbl, item, ..., .prefix = .prefix)
 
   left_join(x = tbl, y = item_summary, by = item)
 }
 
 #' @rdname item-summary-join
 #' @export
-join_game_summary <- function(tbl, ..., .args = list(), .prefix = "") {
-  join_item_summary(tbl, "game", ..., .args = .args, .prefix = .prefix)
+join_game_summary <- function(tbl, ..., .prefix = "") {
+  join_item_summary(tbl, "game", ..., .prefix = .prefix)
 }
 
 #' @rdname item-summary-join
 #' @export
-join_player_summary <- function(tbl, ..., .args = list(), .prefix = "") {
-  join_item_summary(tbl, "player", ..., .args = .args, .prefix = .prefix)
+join_player_summary <- function(tbl, ..., .prefix = "") {
+  join_item_summary(tbl, "player", ..., .prefix = .prefix)
 }

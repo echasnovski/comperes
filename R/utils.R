@@ -15,6 +15,22 @@ skip_action <- function(x, ...) {
   x
 }
 
+add_name_prefix <- function(tbl, prefix = "", except = character(0)) {
+  if (identical(prefix, "") || (length(prefix) == 0)) {
+    return(tbl)
+  }
+
+  rename_cols <- setdiff(colnames(tbl), except)
+  if (length(rename_cols) > 0) {
+    rename_list <- as.list(rename_cols)
+    names(rename_list) <- paste0(prefix, rename_cols)
+
+    tbl <- tbl %>%
+      rename(!!! rename_list)
+  }
+
+  tbl
+}
 
 # Operations with class ---------------------------------------------------
 add_class <- function(obj, class_char) {

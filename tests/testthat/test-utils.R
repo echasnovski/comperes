@@ -13,6 +13,19 @@ test_that("skip_action works", {
 })
 
 
+# add_name_prefix ---------------------------------------------------------
+test_that("add_name_prefix works", {
+  input <- dplyr::tibble(x = 1:2, y = 3:4)
+
+  expect_identical(add_name_prefix(input, ""), input)
+
+  output <- add_name_prefix(input, "a_")
+  output_ref <- dplyr::tibble(a_x = input$x, a_y = input$y)
+
+  expect_identical(output, output_ref)
+})
+
+
 # add_class ---------------------------------------------------------------
 test_that("add_class works", {
   input <- 1:10

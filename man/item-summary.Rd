@@ -10,17 +10,17 @@
 \alias{summarize_player}
 \title{Compute item summary}
 \usage{
-summarise_item(tbl, item, ..., .args = list(), .prefix = "")
+summarise_item(tbl, item, ..., .prefix = "")
 
-summarise_game(tbl, ..., .args = list(), .prefix = "")
+summarise_game(tbl, ..., .prefix = "")
 
-summarise_player(tbl, ..., .args = list(), .prefix = "")
+summarise_player(tbl, ..., .prefix = "")
 
-summarize_item(tbl, item, ..., .args = list(), .prefix = "")
+summarize_item(tbl, item, ..., .prefix = "")
 
-summarize_game(tbl, ..., .args = list(), .prefix = "")
+summarize_game(tbl, ..., .prefix = "")
 
-summarize_player(tbl, ..., .args = list(), .prefix = "")
+summarize_player(tbl, ..., .prefix = "")
 }
 \arguments{
 \item{tbl}{Data frame.}
@@ -28,9 +28,6 @@ summarize_player(tbl, ..., .args = list(), .prefix = "")
 \item{item}{Character vector of columns to group by.}
 
 \item{...}{Name-value pairs of summary functions (as in \link[dplyr:summarise]{dplyr::summarise}).}
-
-\item{.args}{A named list of additional arguments to be added to all function
-calls (as in \link[dplyr:funs]{dplyr::funs}).}
 
 \item{.prefix}{A string to be added to all summary functions' names.}
 }
@@ -48,7 +45,11 @@ Basically, \code{summarise_item()} performs the following steps:
 \item Apply dplyr's \code{summarise()}.
 \item Ungroup result.
 \item Convert to \link[tibble:tibble]{tibble}.
+\item Add \code{.prefix} to names of summary functions.
 }
+
+\code{summarise_game()} and \code{summarise_player()} are wrappers for
+\code{summarise_item()} using \code{item = "game"} and \code{item = "player"} respectively.
 }
 \examples{
 ncaa2005 \%>\%
