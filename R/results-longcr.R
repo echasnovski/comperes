@@ -28,10 +28,13 @@
 #' @section Repairing:
 #' Option `repair = TRUE` (default) in `as_longcr()` means that its result is
 #' going to be repaired with following actions:
-#' - Detect first columns with names containing "game", "player" or "score"
-#' (ignoring case). If there are many matching names for one output name then
-#' the first one is used. In case of imperfect match, message is given. All
-#' other columns are treated as "extra".
+#' - Detect columns exactly matching "game", "player" or "score". Those are used
+#' in the output. If all are detected matched columns are put in the beginning.
+#' Other columns are preserved.
+#' - If not all columns were exactly matched, detect first columns with names
+#' containing "game", "player" or "score" (ignoring case). If there are many
+#' matching names for one output name then the first one is used. In case of
+#' imperfect match, message is given. All other columns are treated as "extra".
 #' - If some legitimate names aren't detected, respective columns are created
 #' and filled with `NA_integer_`. Also a message is given.
 #' - If in one game some player listed more than once, the first record is
@@ -40,9 +43,9 @@
 #' column names.
 #'
 #' @details `as_longcr()` is S3 method for converting data to `longcr`. When
-#'   using __default__ method if `repair` is `TRUE` it also tries to fix
-#'   possible problems (see "Repairing"). If `repair` is `FALSE` it converts
-#'   `cr_data` to [tibble][tibble::tibble] and adds `longcr` class to it.
+#' using __default__ method if `repair` is `TRUE` it also tries to fix possible
+#' problems (see "Repairing"). If `repair` is `FALSE` it converts `cr_data` to
+#' [tibble][tibble::tibble] and adds `longcr` class to it.
 #'
 #' When applying `as_longcr()` to proper (check via [is_widecr()] is made)
 #' __`widecr`__ object, conversion is made:
@@ -164,9 +167,23 @@ repair_longcr <- function(cr_data, ...) {
   }
 
   longcr_colnames <- c("game", "player", "score")
-  longcr_pattern <- paste0(longcr_colnames, collapse = "|")
 
+  # Exact matching
+  exact_pattern <- paste0("^", longcr_colnames, "$", collapse = "|")
+  exact_inds <- which(grepl(pattern = exact_pattern, x = colnames(cr_data),
+                            ignore.case = TRUE))
+  if (length(exact_inds) > 0) {
+    res <- cr_data[, exact_inds]
+    cr_data <- cr_data[, -exact_inds]
+  } else {
+    res <- cr_data[, integer(0)]
+  }
+
+  # Relaxed matching
   names_cr <- tolower(colnames(cr_data))
+  left_longcr_colnames <- setdiff(longcr_colnames, colnames(res))
+  longcr_pattern <- paste0(left_longcr_colnames, collapse = "|")
+
   matched_which <- which(grepl(pattern = longcr_pattern, x = names_cr))
   names_cr_extracted <-
     regexpr(
@@ -175,17 +192,20 @@ repair_longcr <- function(cr_data, ...) {
     ) %>%
     regmatches(x = names_cr[matched_which])
 
-  matched_inds <- match(x = longcr_colnames, table = names_cr_extracted)
+  matched_inds <- match(x = left_longcr_colnames, table = names_cr_extracted)
   repair_info <-
     data.frame(
-      target = longcr_colnames,
+      target = left_longcr_colnames,
       original = names(cr_data)[matched_which[matched_inds]],
       stringsAsFactors = FALSE
     )
 
   assert_used_names(repair_info, prefix = "as_longcr: ")
 
-  res <- renamecreate_columns(cr_data, repair_info, fill = NA_integer_) %>%
+  res <- res %>%
+    bind_cols(
+      renamecreate_columns(cr_data, repair_info, fill = NA_integer_)
+    ) %>%
     select(.data$game, .data$player, .data$score,
            everything())
 

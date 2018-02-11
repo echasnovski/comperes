@@ -46,6 +46,22 @@ test_that("as_longcr.default handles simple repairing", {
   expect_identical(as_longcr(unclass(input), repair = TRUE), output_ref_1)
 })
 
+test_that("as_longcr.default makes exact matching first during repairing", {
+  input <- data.frame(
+    PlayerRS = "a", gameSS = "b", extra = -1,
+    score_player = 10, player = 1,
+    stringsAsFactors = FALSE
+  )
+  output <- as_longcr(input, repair = TRUE)
+  output_ref <- dplyr::tibble(
+    game = "b", player = 1, score = 10,
+    PlayerRS = "a", extra = -1
+  )
+  class(output_ref) <- c("longcr", class(dplyr::tibble()))
+
+  expect_identical(output, output_ref)
+})
+
 test_that("as_longcr.default handles missing columns correctly", {
   output_ref_2 <- dplyr::tibble(
     game = input$gameId,

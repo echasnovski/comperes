@@ -30,9 +30,9 @@ Functions for dealing with competition results in long format.
 }
 \details{
 \code{as_longcr()} is S3 method for converting data to \code{longcr}. When
-using \strong{default} method if \code{repair} is \code{TRUE} it also tries to fix
-possible problems (see "Repairing"). If \code{repair} is \code{FALSE} it converts
-\code{cr_data} to \link[tibble:tibble]{tibble} and adds \code{longcr} class to it.
+using \strong{default} method if \code{repair} is \code{TRUE} it also tries to fix possible
+problems (see "Repairing"). If \code{repair} is \code{FALSE} it converts \code{cr_data} to
+\link[tibble:tibble]{tibble} and adds \code{longcr} class to it.
 
 When applying \code{as_longcr()} to proper (check via \code{\link[=is_widecr]{is_widecr()}} is made)
 \strong{\code{widecr}} object, conversion is made:
@@ -78,10 +78,13 @@ will stay untouched.
 Option \code{repair = TRUE} (default) in \code{as_longcr()} means that its result is
 going to be repaired with following actions:
 \itemize{
-\item Detect first columns with names containing "game", "player" or "score"
-(ignoring case). If there are many matching names for one output name then
-the first one is used. In case of imperfect match, message is given. All
-other columns are treated as "extra".
+\item Detect columns exactly matching "game", "player" or "score". Those are used
+in the output. If all are detected matched columns are put in the beginning.
+Other columns are preserved.
+\item If not all columns were exactly matched, detect first columns with names
+containing "game", "player" or "score" (ignoring case). If there are many
+matching names for one output name then the first one is used. In case of
+imperfect match, message is given. All other columns are treated as "extra".
 \item If some legitimate names aren't detected, respective columns are created
 and filled with \code{NA_integer_}. Also a message is given.
 \item If in one game some player listed more than once, the first record is
