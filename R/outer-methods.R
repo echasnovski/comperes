@@ -20,7 +20,7 @@ mutate.longcr <- function(.data, ...) {
 
 #' @export
 summarise.longcr <- function(.data, ...) {
-  NextMethod()
+  remove_class_cond(NextMethod(), "longcr")
 }
 
 #' @export
@@ -122,7 +122,7 @@ mutate.widecr <- function(.data, ...) {
 
 #' @export
 summarise.widecr <- function(.data, ...) {
-  NextMethod()
+  remove_class_cond(NextMethod(), "widecr")
 }
 
 #' @export
@@ -204,4 +204,123 @@ print.widecr <- function(x, ...) {
   cat("# A widecr object:\n")
 
   NextMethod()
+}
+
+
+# Methods for h2h_long ----------------------------------------------------
+#' @export
+select.h2h_long <- function(.data, ...) {
+  reconstruct(NextMethod(), .data)
+}
+
+#' @export
+rename.h2h_long <- function(.data, ...) {
+  reconstruct(NextMethod(), .data)
+}
+
+#' @export
+mutate.h2h_long <- function(.data, ...) {
+  reconstruct(NextMethod(), .data)
+}
+
+#' @export
+summarise.h2h_long <- function(.data, ...) {
+  remove_class_cond(NextMethod(), "h2h_long")
+}
+
+#' @export
+group_by.h2h_long <- function(.data, ..., add = FALSE) {
+  add_class_cond(NextMethod(), "h2h_long")
+}
+
+#' @export
+ungroup.h2h_long <- function(x, ...) {
+  add_class_cond(NextMethod(), "h2h_long")
+}
+
+#' @export
+distinct.h2h_long <- function(.data, ..., .keep_all = FALSE) {
+  reconstruct(NextMethod(), .data)
+}
+
+#' @export
+do.h2h_long <- function(.data, ...) {
+  reconstruct(NextMethod(), .data)
+}
+
+#' @export
+arrange.h2h_long <- function(.data, ..., .by_group = FALSE) {
+  reconstruct(NextMethod(), .data)
+}
+
+#' @export
+filter.h2h_long <- function(.data, ...) {
+  reconstruct(NextMethod(), .data)
+}
+
+#' @export
+slice.h2h_long <- function(.data, ...) {
+  reconstruct(NextMethod(), .data)
+}
+
+#' @export
+inner_join.h2h_long <- function(x, y, by = NULL, copy = FALSE,
+                              suffix = c(".x", ".y"), ...) {
+  reconstruct(NextMethod(), x)
+}
+
+#' @export
+left_join.h2h_long <- function(x, y, by = NULL, copy = FALSE,
+                               suffix = c(".x", ".y"), ...) {
+  reconstruct(NextMethod(), x)
+}
+
+#' @export
+right_join.h2h_long <- function(x, y, by = NULL, copy = FALSE,
+                                suffix = c(".x", ".y"), ...) {
+  reconstruct(NextMethod(), x)
+}
+
+#' @export
+full_join.h2h_long <- function(x, y, by = NULL, copy = FALSE,
+                               suffix = c(".x", ".y"), ...) {
+  reconstruct(NextMethod(), x)
+}
+
+#' @export
+semi_join.h2h_long <- function(x, y, by = NULL, copy = FALSE, ...) {
+  reconstruct(NextMethod(), x)
+}
+
+#' @export
+anti_join.h2h_long <- function(x, y, by = NULL, copy = FALSE, ...) {
+  reconstruct(NextMethod(), x)
+}
+
+#' @export
+`[.h2h_long` <- function(x, i, j, ...) {
+  reconstruct(NextMethod(), x)
+}
+
+#' @export
+print.h2h_long <- function(x, ...) {
+  cat("# A long format of Head-to-Head values:\n")
+
+  NextMethod()
+}
+
+
+# Methods for h2h_mat -----------------------------------------------------
+#' @export
+`[.h2h_mat` <- function(x, i, j, ...) {
+  reconstruct(NextMethod(), x)
+}
+
+#' @export
+print.h2h_mat <- function(x, ...) {
+  cat("# A matrix format of Head-to-Head values:\n")
+
+  y <- remove_class_cond(x, "h2h_mat")
+
+  print(y)
 }

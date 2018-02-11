@@ -20,8 +20,24 @@ input_widecr <- add_class(input_widecr, "widecr")
 
 input_join <- dplyr::tibble(
   game = 10:6,
-  extra = -(1:5)
+  value1 = -(1:5)
 )
+
+input_h2h_long <- dplyr::tibble(
+  player1 = c(1, 1, 2, 2),
+  player2 = c(1, NA, 1, NA),
+  value1 = 1:4,
+  value2 = -(1:4)
+)
+input_h2h_long <- add_class(input_h2h_long, "h2h_long")
+
+input_h2h_mat <- matrix(
+  c(1, NA,
+    0, 2),
+  nrow = 2, dimnames = list(c("1", "2"), c("1", "2")),
+  byrow = TRUE
+)
+class(input_h2h_mat) <- c("h2h_mat", "matrix")
 
 
 # select.longcr -----------------------------------------------------------
@@ -44,7 +60,9 @@ test_that("mutate.longcr works", {
 
 # summarise.longcr --------------------------------------------------------
 test_that("summarise.longcr works", {
-  expect_is(dplyr::summarise(input_longcr, n = n()), "longcr")
+  output <- dplyr::summarise(input_longcr, n = n())
+
+  expect_false(class(output)[1] == "longcr")
 })
 
 
@@ -188,7 +206,9 @@ test_that("mutate.widecr works", {
 
 # summarise.widecr --------------------------------------------------------
 test_that("summarise.widecr works", {
-  expect_is(dplyr::summarise(input_widecr, n = n()), "widecr")
+  output <- dplyr::summarise(input_widecr, n = n())
+
+  expect_false(class(output)[1] == "widecr")
 })
 
 
@@ -306,7 +326,175 @@ test_that("print.widecr works", {
   tibble_output_ref <- capture_output(print(input))
 
   expect_output(
-    print(as_widecr(input_widecr)),
+    print(input_widecr),
     paste0("# A widecr object:\n.*", tibble_output_ref)
+  )
+})
+
+
+# select.h2h_long -----------------------------------------------------------
+test_that("select.h2h_long works", {
+  expect_is(dplyr::select(input_h2h_long, everything()), "h2h_long")
+})
+
+
+# rename.h2h_long -----------------------------------------------------------
+test_that("rename.h2h_long works", {
+  expect_is(dplyr::rename(input_h2h_long, value = value1), "h2h_long")
+})
+
+
+# mutate.h2h_long -----------------------------------------------------------
+test_that("mutate.h2h_long works", {
+  expect_is(dplyr::mutate(input_h2h_long, value = value1), "h2h_long")
+})
+
+
+# summarise.h2h_long --------------------------------------------------------
+test_that("summarise.h2h_long works", {
+  output <- dplyr::summarise(input_h2h_long, n = n())
+
+  expect_false(class(output)[1] == "h2h_long")
+})
+
+
+# group_by.h2h_long ---------------------------------------------------------
+test_that("group_by.h2h_long works", {
+  output <- dplyr::group_by(input_h2h_long, player1)
+
+  expect_is(output, "h2h_long")
+  expect_is(output, "grouped_df")
+})
+
+
+# ungroup.h2h_long ----------------------------------------------------------
+test_that("ungroup.h2h_long works", {
+  input_h2h_long %>%
+    dplyr::group_by(player1) %>%
+    dplyr::ungroup() %>%
+    expect_is("h2h_long")
+})
+
+
+# distinct.h2h_long ---------------------------------------------------------
+test_that("distinct.h2h_long works", {
+  expect_is(dplyr::distinct(input_h2h_long, player1), "h2h_long")
+})
+
+
+# do.h2h_long ---------------------------------------------------------------
+test_that("do.h2h_long works", {
+  input_h2h_long %>%
+    dplyr::group_by(player1) %>%
+    dplyr::do(n = nrow(.)) %>%
+    expect_is("h2h_long")
+})
+
+
+# arrange.h2h_long ----------------------------------------------------------
+test_that("arrange.h2h_long works", {
+  expect_is(dplyr::arrange(input_h2h_long, player1), "h2h_long")
+})
+
+
+# filter.h2h_long -----------------------------------------------------------
+test_that("filter.h2h_long works", {
+  expect_is(dplyr::filter(input_h2h_long, player1 %% 2 == 0), "h2h_long")
+})
+
+
+# slice.h2h_long ------------------------------------------------------------
+test_that("slice.h2h_long works", {
+  expect_is(dplyr::slice(input_h2h_long, 1:2), "h2h_long")
+})
+
+
+# inner_join.h2h_long -------------------------------------------------------
+test_that("inner_join.h2h_long works", {
+  input_h2h_long %>%
+    dplyr::inner_join(y = input_join, by = "value1") %>%
+    expect_is("h2h_long")
+})
+
+
+# left_join.h2h_long --------------------------------------------------------
+test_that("left_join.h2h_long works", {
+  input_h2h_long %>%
+    dplyr::left_join(y = input_join, by = "value1") %>%
+    expect_is("h2h_long")
+})
+
+
+# right_join.h2h_long -------------------------------------------------------
+test_that("right_join.h2h_long works", {
+  input_h2h_long %>%
+    dplyr::right_join(y = input_join, by = "value1") %>%
+    expect_is("h2h_long")
+})
+
+
+# full_join.h2h_long --------------------------------------------------------
+test_that("full_join.h2h_long works", {
+  input_h2h_long %>%
+    dplyr::full_join(y = input_join, by = "value1") %>%
+    expect_is("h2h_long")
+})
+
+
+# semi_join.h2h_long --------------------------------------------------------
+test_that("semi_join.h2h_long works", {
+  input_h2h_long %>%
+    dplyr::semi_join(y = input_join, by = "value1") %>%
+    expect_is("h2h_long")
+})
+
+
+# anti_join.h2h_long --------------------------------------------------------
+test_that("anti_join.h2h_long works", {
+  input_h2h_long %>%
+    dplyr::anti_join(y = input_join, by = "value1") %>%
+    expect_is("h2h_long")
+})
+
+
+# [.h2h_long ----------------------------------------------------------------
+test_that("[.h2h_long works", {
+  expect_is(input_h2h_long[1:2, ], "h2h_long")
+  expect_is(input_h2h_long[, 1:2], "h2h_long")
+})
+
+
+# print.h2h_long ------------------------------------------------------------
+test_that("print.h2h_long works", {
+  input <- input_h2h_long
+  class(input) <- class(dplyr::tibble())
+
+  tibble_output_ref <- capture_output(print(input))
+
+  expect_output(
+    print(input_h2h_long),
+    paste0("# A long format of Head-to-Head values:\n.*", tibble_output_ref)
+  )
+})
+
+
+# [.h2h_mat ----------------------------------------------------------------
+test_that("[.h2h_mat works", {
+  expect_is(input_h2h_mat[1:2, ], "h2h_mat")
+  expect_is(input_h2h_mat[, 1:2], "h2h_mat")
+})
+
+
+# print.h2h_mat ------------------------------------------------------------
+test_that("print.h2h_mat works", {
+  input <- input_h2h_mat
+  class(input) <- "matrix"
+
+  matrix_output_ref <- capture_output(print(input))
+
+  expect_false(grepl("h2h_mat", matrix_output_ref))
+  expect_output(
+    print(input_h2h_mat),
+    paste0("# A matrix format of Head-to-Head values:\n.*", matrix_output_ref)
   )
 })

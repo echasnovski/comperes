@@ -11,7 +11,7 @@
 #'   pairwise games: it drops games with one player and for every game with 3
 #'   and more players this function transforms it into set of separate games
 #'   between unordered pairs of players. In other words the result is a set of
-#'   unordered [matchups][head-to-head-helpers] (__as different games__) between
+#'   unordered [matchups][get_matchups()] (__as different games__) between
 #'   different players.
 #'
 #'   __Important notes__:

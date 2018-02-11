@@ -1,150 +1,272 @@
-#' Compute Head-to-Head matrix
+# Long format of Head-to-Head values --------------------------------------
+#' Compute long format of Head-to-Head values
 #'
-#' This page describes methods of computing Head-to-Head matrices.
+#' Functions to compute Head-to-Head values in long pair-value format.
 #'
-#' @param cr_data Competition results in format ready for [as_longcr()].
-#' @param h2h_fun Head-to-Head function (see Details).
-#' @param players Vector of players for which Head-to-Head is computed.
-#' @param absent_players Function which performs actions on Head-to-Head matrix
-#'   dealing with players which absent in `cr_data`.
-#' @param absent_h2h Function which performs actions on Head-to-Head matrix
-#'   dealing with absent Head-to-Head records for some pairs of players.
-#' @param transpose Whether to transpose Head-to-Head matrix.
-#' @param self_play Values for self-play matchups.
-#' @param ... Additional arguments to be passed to or from methods.
+#' @param cr_data Competition results ready for [as_longcr()].
+#' @param ... Name-value pairs of Head-to-Head functions (see Details).
+#' @param fill A named list that for each variable supplies a single value to
+#'   use instead of NA for missing pairs (see tidyr's
+#'   [complete()][tidyr::complete()]).
+#' @param mat Matrix of Head-to-Head values.
+#' @param value String name to be used for column with Head-to-Head value.
+#' @param drop Use `TRUE` to drop rows with missing Head-to-Head values (see
+#'   Details).
 #'
-#' @details Head-to-Head value is a measure of a quality of direct
-#' confrontation between two players. It is assumed that this value can be
-#' computed based only on the players' scores in their common games. If it is
-#' not true for some case then competition results should be changed by
-#' transformation or addition of more information (in form of extra columns or
-#' extra field in `score` column(s) making list-column(s)).
+#' @section Head-to-Head value:
+#' Head-to-Head value is a summary statistic of direct confrontation between two
+#' players. It is assumed that this value can be computed based only on the
+#' players' [matchups][get_matchups()]. In other words, every game is converted
+#' into series of "subgames" between ordered pairs of players (including
+#' selfplay) which is stored as [widecr][results-widecr] object. After that,
+#' summary of item, defined by columns `player1` and `player2`, is computed
+#' using [summarise_item()].
 #'
-#' `get_h2h()` performs computation of Head-to-Head matrix: square matrix with
-#' number of rows (and columns) equal to number of players for which it is
-#' computed. Head-to-Head values are computed based only on
-#' [matchups][head-to-head-helpers] (pairs of players from one game) between
-#' players from argument `players`. __Note__ to be careful with Head-to-Head
-#' values of players with themselves: it can be inaccurate if `players` is not
-#' `NULL` because it will be based on possibly undesirable data.
+#' That said, name-value pairs of Head-to-Head functions should be defined as
+#' for `summarise_item()` applied to data with columns `game`, `player1`,
+#' `score1`, `player2`, `score2`.
 #'
-#' The following algorithm is used:
-#' 1. Compute for every present in `cr_data` matchup between players from
-#' `players` its Head-to-Head value via `h2h_fun` based on these players'
-#' scores in common games. `h2h_fun` should accept two arguments:
-#'     - A tibble of [matchups][head-to-head-helpers] data. Structure is like
-#'     [widecr][results-widecr] with two players, i.e. with columns `game`,
-#'     `player1`, `score1`, `player2`, `score2` (in input of `h2h_fun()` columns
-#'     `player1` and `player2` will contain constant values).
-#'     - Argument `...` for easier use of `get_h2h()`.
-#' Also `h2h_fun` should return a single value.
-#' __Note__ that order of the players in matchups matters. So, for example,
-#' matchup "player1"-"player2" is considered different from "player2"-"player1"
-#' in order to except not symmetrical Head-to-Head values.
-#' For absent in `cr_data` matchups `NA_real_`s are produced.
+#' @details `h2h_long()` computes Head-to-Head values in
+#' [long][convert-pair-value] format. It allows computation of multiple
+#' Head-to-Head values at the same time by supplying multiple summary functions
+#' in `...`. If no function is supplied in `...`, it returns all appropriate
+#' combinations of [matchups][get_matchups()] (see next paragraph).
 #'
-#' 1. Perform actions via `absent_players`. It should, based on Head-to-Head
-#' matrix, do something with data of players that have not enough games played.
-#' For no actions use [skip_action()]. For other options see [Head-to-Head
-#' helpers][head-to-head-helpers].
+#' After computing Head-to-Head values of actually present matchups, they are
+#' aligned with "levels" (see [levels2()]) of `player` vector (after applying
+#' `as_longcr()`). This is a way to target function on fixed set of players by
+#' using factor columns. The procedure is:
+#' - Implicit missing matchups are turned into explicit (by adding corresponding
+#' rows with filling values in Head-to-Head columns) by using tidyr's
+#' [complete()][tidyr::complete()].
+#' - All matchups not containing players from "levels" are removed.
 #'
-#' 1. Perform actions via `absent_h2h`. It should do something with those
-#' entries of Head-to-Head matrix which are `NA`. For no actions use
-#' [skip_action()]. For other options see [Head-to-Head
-#' helpers][head-to-head-helpers].
+#' Use `fill` as in `complete()` to control filling values. To drop those rows
+#' use tidyr's [drop_na()][tidyr::drop_na()].
 #'
-#' 1. If `transpose` is `TRUE` do transposition of Head-to-Head matrix. This
-#' option is added to minimize the need in almost duplicated `h2h_fun`s.
+#' `to_h2h_long()` takes __object of [h2h_mat][h2h-mat] structure__ and converts
+#' it into `h2h_long` object with value column named as stored in `value`. Use
+#' `drop = TRUE` to remove rows with missing values in value column (but not in
+#' players').
 #'
-#' 1. If `self_play` is not `NULL` replace values on diagonal of Head-to-Head
-#' matrix with `self_play`.
-#'
-#' If argument `players` is `NULL` then Head-to-Head matrix is computed for all
-#' present in `cr_data` players. __Note__ that `players` can contain values that
-#' are not present in `cr_data`: in this case rows and columns in Head-to-Head
-#' matrix for these values will contain only `NA`s (before applying
-#' `absent_players`).
-#'
-#' @return An object of class `h2h` which is a square matrix of Head-to-Head
-#'   values. Rows correspond to `player1` and columns to `player2` (as in input
-#'   for `h2h_fun`). Row and column names are made with `as.character()` on
-#'   players used for computation.
+#' @return An object of class `h2h_long` which is a
+#'   [tibble][tibble::tibble] with columns `player1`, `player2` and those,
+#'   produced by Head-to-Head functions (for `h2h_long()` maybe none).
 #'
 #' @examples
-#' set.seed(1002)
-#' cr_data <- data.frame(
-#'   game = rep(1:5, each = 3),
-#'   player = rep(1:5, times = 3),
-#'   score = rnorm(15)
-#' )
+#' ncaa2005 %>%
+#'   h2h_long(
+#'     mean_score = mean(score1),
+#'     mean_abs_score = mean(abs(score1 - score2))
+#'   )
 #'
-#' # Compute Head-to-Head matrix with mean score difference.
-#' get_h2h(
-#'   cr_data = cr_data, h2h_fun = h2h_mean_score_diff,
-#'   players = NULL, absent_players = players_drop,
-#'   absent_h2h = fill_h2h
-#' )
+#' ncaa2005[-(1:2), ] %>%
+#'   h2h_long(
+#'     mean_score = mean(score1),
+#'     fill = list(mean_score = 0)
+#'   )
 #'
-#' # Use arguments for post modification
-#' get_h2h(
-#'   cr_data = cr_data, h2h_fun = h2h_mean_score_diff,
-#'   transpose = TRUE
-#' )
-#' get_h2h(
-#'   cr_data = cr_data, h2h_fun = h2h_mean_score_diff,
-#'   self_play = 1
-#' )
+#' @seealso [Matrix format][h2h-mat] of Head-to-Head values.
 #'
-#' @seealso [Head-to-Head functions][head-to-head-functions], [Head-to-Head
-#'   helpers][head-to-head-helpers]
-#' @name head-to-head
+#' [Common Head-to-Head functions][h2h_funs].
+#'
+#' @name h2h_long
 NULL
 
-#' @rdname head-to-head
+#' @rdname h2h_long
 #' @export
-get_h2h <- function(cr_data, h2h_fun, players = NULL,
-                    absent_players = players_drop, absent_h2h = fill_h2h,
-                    transpose = FALSE, self_play = NULL,
-                    ...) {
-  cr <- as_longcr(cr_data, ...)
-  players <- get_cr_players(cr_data = cr, players = players, ...)
+h2h_long <- function(cr_data, ..., fill = list()) {
+  cr <- cr_data %>%
+    as_longcr(repair = TRUE)
+  player_levs <- levels2(cr$player)
 
-  h2h_long <- get_cr_matchups(cr_data = cr) %>%
+  cr %>%
+    get_matchups() %>%
+    summarise_item(c("player1", "player2"), ...) %>%
+    # This seems more consistent than `player1 = .data$player1` etc.
+    tidyr::complete(
+      !!! syms(c("player1", "player2")),
+      fill = fill
+    ) %>%
     filter(
-      .data$player1 %in% players,
-      .data$player2 %in% players
+      as.character(.data$player1) %in% player_levs,
+      as.character(.data$player2) %in% player_levs
     ) %>%
-    group_by(.data$player1, .data$player2) %>%
-    do(data.frame(h2hVal = h2h_fun(.data, ...))) %>%
-    ungroup() %>%
-    mutate(
-      player1 = factor(.data$player1, levels = players),
-      player2 = factor(.data$player2, levels = players)
-    ) %>%
-    tidyr::complete(!!! rlang::syms(c("player1", "player2"))) %>%
-    mutate(
-      player1 = as.character(.data$player1),
-      player2 = as.character(.data$player2)
-    )
+    add_class("h2h_long")
+}
 
-  players <- as.character(players)
-  res <- matrix(NA_real_, nrow = length(players), ncol = length(players),
-                dimnames = list(players, players))
-  res[as.matrix(h2h_long[, c("player1", "player2")])] <- h2h_long$h2hVal
+#' @rdname h2h_long
+#' @export
+to_h2h_long <- function(mat, value = "h2h_value", drop = FALSE) {
+  mat %>%
+    mat_to_long("player1", "player2", value, drop = drop) %>%
+    add_class_cond("h2h_long")
+}
 
-  res <- res %>%
-    absent_players(...) %>%
-    absent_h2h(...)
 
-  class(res) <- c("h2h", "matrix")
+# Matrix format of Head-to-Head values ------------------------------------
+#' Compute matrix format of Head-to-Head values
+#'
+#' Functions to compute Head-to-Head values in matrix pair-value format.
+#'
+#' @param cr_data Competition results ready for [as_longcr()].
+#' @param ... Name-value pairs of Head-to-Head functions (see Details).
+#' @param fill A single value to use instead of `NA` for missing pairs.
+#' @param tbl Data frame in [long format][h2h_long] of Head-to-Head values.
+#' @param value String name for column with Head-to-Head value.
+#'
+#' @inheritSection h2h_long Head-to-Head value
+#'
+#' @details `h2h_mat()` computes Head-to-Head values in
+#' [matrix][convert-pair-value] format. It allows multiple Head-to-Head
+#' functions in `...` but only first (if present) will be used. Basically, it
+#' uses supplied function to compute long format of Head-to-Head values and then
+#' [transforms][long_to_mat()] it naturally to matrix, filling missing values
+#' with `fill`.
+#'
+#' `to_h2h_mat()` takes __object of [h2h_long] structure__ and converts it into
+#' `h2h_mat` using column with name `value` for values and filling data for
+#' implicitly missing (not explicitly provided in `tbl`) player pairs with
+#' `fill`. If `value` is `NULL` it takes first non-player column. If there is no
+#' such column, it will use vector of dummy values (`NA`s or `fill`s).
+#'
+#' @return An object of class `h2h_mat` which is a [matrix] with row names
+#'   indicating first player in matchup, col names - second and values -
+#'   Head-to-Head values.
+#'
+#' @examples
+#' # Only first function is used
+#' ncaa2005 %>%
+#'   h2h_mat(
+#'     mean_score = mean(score1),
+#'     mean_abs_score = mean(abs(score1 - score2))
+#'   )
+#'
+#' ncaa2005[-(1:2), ] %>%
+#'   h2h_mat(mean_score = mean(score1), fill = 0)
+#'
+#' @seealso [Long format][h2h_long] of Head-to-Head values.
+#'
+#' [Common Head-to-Head functions][h2h_funs].
+#'
+#' @name h2h-mat
+NULL
 
-  if (!is.null(self_play)) {
-    diag(res) <- self_play
-  }
-
-  if (transpose) {
-    t(res)
+#' @rdname h2h-mat
+#' @export
+h2h_mat <- function(cr_data, ..., fill = NULL) {
+  dots <- rlang::quos(...)
+  if (length(dots) > 1) {
+    dots <- dots[1]
+    was_trunc <- TRUE
   } else {
-    res
+    was_trunc <- FALSE
   }
+
+  res_long <- cr_data %>% h2h_long(!!! dots)
+
+  value_col <- setdiff(colnames(res_long), c("player1", "player2"))
+  if (was_trunc) {
+    assert_used_value_col(value_col)
+  }
+
+  # If some value column is actually supplied missing values should be removed
+  # in order to use `fill` from `to_h2h_mat`.
+  # If don't do it conditionally then call `h2h_mat(cr_data)` will produce
+  # output after dropping NAs in __all__ columns (behavior of `drop_na()`)
+  if (length(value_col) > 0) {
+    res_long <- res_long %>%
+      # This might be even faster then `fill` as list-argument to `h2h_long`
+      # in case of many players
+      tidyr::drop_na(one_of(value_col))
+  }
+
+   res_long %>%
+    to_h2h_mat(value = value_col, fill = fill)
+}
+
+#' @rdname h2h-mat
+#' @export
+to_h2h_mat <- function(tbl, value = NULL, fill = NULL) {
+  tbl %>%
+    long_to_mat("player1", "player2", value, fill = fill,
+                silent = !identical(value, NULL)) %>%
+    add_class_cond("h2h_mat")
+}
+
+
+# Head-to-Head functions --------------------------------------------------
+#' Common Head-to-Head functions
+#'
+#' List of commonly used functions for computing Head-to-Head values.
+#'
+#' @details `h2h_funs` is a named list of [quosures][rlang::quo()]
+#'   representing commonly used expressions of Head-to-Head functions for
+#'   computing Head-to-Head values with [h2h_long()] or [h2h_mat()]. Names of
+#'   the elements will be used as Head-to-Head value names. To use them inside
+#'   `h2h_long()` or `h2h_mat()` use [unquoting][rlang::quasiquotation]
+#'   mechanism from rlang package.
+#'
+#' Currently present functions:
+#' - `mean_score_diff` - computes mean score difference of `player1`
+#' compared to `player2`.
+#' - `mean_score_diff_pos` - equivalent to `mean_score_diff` but
+#' returns 0 if result is negative.
+#' - `mean_score` - computes mean score of `player1`.
+#' - `sum_score_diff` - computes sum of score differences of
+#'   `player1` compared to `player2`.
+#' - `sum_score_diff_pos` - equivalent to `sum_score_diff` but
+#' returns 0 if result is negative.
+#' - `sum_score` - computes sum of scores of `player1`.
+#' - `num_wins` - computes number of matchups `player1` scored __more__
+#' than `player2`. Draws (determined by [dplyr::near()]) are omitted.
+#' - `num_wins2` - computes number of matchups `player1` scored __more__ than
+#' `player2` __plus__ half the number of matchups where they had draw. __Note__
+#' that for equal `player1` and `player2` there might be non-zero output.
+#' - `num` - computes number of matchups.
+#'
+#' __Note__ that it is generally better to subset `h2h_funs` using names
+#' rather than indices because the order of elements might change in future
+#' versions.
+#'
+#' @examples
+#' ncaa2005 %>% h2h_long(!!! h2h_funs)
+#'
+#' ncaa2005 %>% h2h_mat(!!! h2h_funs["num_wins2"])
+#'
+#' @seealso [Long format][h2h_long] of Head-to-Head values.
+#'
+#' [Matrix format][h2h-mat] of Head-to-Head values.
+#'
+#' @export
+h2h_funs <- list(
+  mean_score_diff = quo(mean(score1 - score2)),
+  mean_score_diff_pos = quo(max(mean(score1 - score2), 0)),
+  mean_score = quo(mean(score1)),
+  sum_score_diff = quo(sum(score1 - score2)),
+  sum_score_diff_pos = quo(max(sum(score1 - score2), 0)),
+  sum_score = quo(sum(score1)),
+  num_wins = quo(num_wins(score1, score2, half_for_draw = FALSE)),
+  num_wins2 = quo(num_wins(score1, score2, half_for_draw = TRUE)),
+  num = quo(n())
+)
+
+#' Compute number of wins
+#'
+#' Function to accompany `num_wins` and `num_wins2` in [h2h_funs]. May be useful
+#' for outer usage.
+#'
+#' @param score_1 Vector of scores for first player.
+#' @param score_2 Vector of scores for second player.
+#' @param half_for_draw Use `TRUE` to add half the matchups with draws.
+#' @param na.rm Use `TRUE` to not count pair of scores with at least one `NA`.
+#'
+#' @keywords internal
+#'
+#' @export
+num_wins <- function(score_1, score_2, half_for_draw = FALSE, na.rm = TRUE) {
+  near_score <- near(score_1, score_2)
+
+  sum(score_1[!near_score] > score_2[!near_score], na.rm = na.rm) +
+    half_for_draw * 0.5 * sum(near_score, na.rm = na.rm)
 }

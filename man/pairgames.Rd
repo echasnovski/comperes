@@ -31,7 +31,7 @@ players.
 pairwise games: it drops games with one player and for every game with 3
 and more players this function transforms it into set of separate games
 between unordered pairs of players. In other words the result is a set of
-unordered \link[=head-to-head-helpers]{matchups} (\strong{as different games}) between
+unordered \link[=get_matchups]{matchups} (\strong{as different games}) between
 different players.
 
 \strong{Important notes}:
