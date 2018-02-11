@@ -1,20 +1,4 @@
 # General -----------------------------------------------------------------
-#' Skip some action
-#'
-#' Function for skipping action.
-#'
-#' @param x Input object
-#' @param ... Additional arguments to be passed to or from methods.
-#'
-#' @return An exact copy of `x`.
-#'
-#' @examples identical(skip_action(1), 1)
-#'
-#' @export
-skip_action <- function(x, ...) {
-  x
-}
-
 add_name_prefix <- function(tbl, prefix = "", except = NULL) {
   if (identical(prefix, "") || (length(prefix) == 0)) {
     return(tbl)

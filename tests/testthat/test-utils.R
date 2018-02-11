@@ -1,17 +1,5 @@
 context("utils")
 
-# skip_action -----------------------------------------------------------------
-test_that("skip_action works", {
-  x <- 1
-  expect_identical(skip_action(x), x)
-
-  x <- list(list(1:10), list(list(c("a", "b"))))
-  class(x) <- "someclass"
-  expect_identical(skip_action(x), x)
-
-  expect_silent(skip_action(x, extraArg = TRUE))
-})
-
 
 # add_name_prefix ---------------------------------------------------------
 test_that("add_name_prefix works", {
