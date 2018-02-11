@@ -1,0 +1,139 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+
+options(tibble.print_min = 6, tibble.print_max = 6)
+```
+
+# comperes
+
+[![Build Status](https://travis-ci.org/echasnovski/comperes.svg?branch=master)](https://travis-ci.org/echasnovski/comperes) [![codecov](https://codecov.io/gh/echasnovski/comperes/branch/master/graph/badge.svg)](https://codecov.io/gh/echasnovski/comperes)
+
+`comperes` offers a pipe (`%>%`) friendly set of tools for storing and managing competition results. Understanding of __competition__ is quite general: is is a set of __games__ (abstract event) in which __players__ (abstract entity) gain some abstract __scores__. The most natural example is sport results, however not the only one. For example, product rating can be considered as a competition between products as "players". Here a "game" is a customer that reviews a set of products by rating them with numerical "score" (stars, points, etc.).
+
+## Overview
+
+`comperes` provides the following functionality:
+
+- __Store and convert__ competition results:
+    - In _long format_ as a [tibble](http://tibble.tidyverse.org) with one row per game-player pair. Functions: `as_longcr()`, `is_longcr()`.
+    - In _wide format_ as a `tibble` with one row per game with fixed amount of players. Functions: `as_widecr()`, `is_widecr()`.
+- __Summarise__:
+    - Compute _item summaries_ with functions using [dplyr](http://dplyr.tidyverse.org)'s grammar of data manipulation. Functions: `summarise_item()`, `summarise_game()`, `summarise_player()`.
+    - Compute and _join_ item summaries to data for easy transformation. Functions: `join_item_summary()`, `join_game_summary()`, `join_player_summary()`.
+    - Use _common item summary functions_ with [rlang](http://rlang.tidyverse.org/)'s [unquoting][rlang::quasiquotation] mechanism. Example: `. %>% summarise_player(!!! summary_funs["mean_score"])`.
+- __Compute Head-to-Head values__ (a summary statistic of direct confrontation between two players) with functions also using `dplyr`'s grammar:
+    - Store output in _long format_ as a `tibble` with one row per pair of players. Function: `h2h_long()`.
+    - Store output in _matrix format_ as a matrix with rows and columns describing players and entries - Head-to-Head values. Function: `h2h_mat()`.
+    - Use _common Head-to-Head functions_ with rlang's unquoting mechanism. Example: `. %>% h2h_mat(!!! h2h_funs["num_wins"])`.
+
+## Installation
+
+You can install comperes from GitHub with:
+
+```{r gh-installation, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("echasnovski/comperes")
+```
+
+## Examples
+
+### Store and Convert
+
+We will be using `ncaa2005`, data from `comperes` package. It is an example competition results (hereafter - results) of an isolated group of Atlantic Coast Conference teams provided in book ["Who's #1"](https://www.amazon.com/Whos-1-Science-Rating-Ranking/dp/069116231X) by Langville and Meyer. It looks like this:
+
+```{r ncaa2005, message = FALSE, warning = FALSE}
+library(comperes)
+ncaa2005
+```
+
+This is an object of class `longcr` which describes results in long form. Because in this competition a game always consists from two players, more natural way to look at `ncaa2005` is in wide format:
+
+```{r ncaa2005-wide}
+as_widecr(ncaa2005)
+```
+
+This converted `ncaa2005` into an object of `widecr` class which describes results in wide format. All `comperes` functions expect either a data frame with results structured in long format or one of supported classes: `longcr`, `widecr`.
+
+### Summarise
+
+With `compere` the following summaries are possible:
+
+```{r item-summary}
+ncaa2005 %>%
+  summarise_player(min_score = min(score), mean_score = mean(score))
+
+# Using list of common summary functions
+library(rlang)
+ncaa2005 %>%
+  summarise_game(!!! summary_funs[c("sum_score", "num_players")])
+```
+
+Supplied list of common summary functions has `r length(summary_funs)` entries, which are quoted expressions to be used in `dplyr` grammar:
+
+```{r summary_funs}
+ncaa2005 %>% summarise_player(!!! summary_funs)
+```
+
+To modify scores based on the rest of results one can use `join_*_summary()` functions:
+
+```{r join-item-summary, warning = FALSE}
+library(dplyr)
+ncaa2005_mod <- ncaa2005 %>%
+  join_player_summary(player_mean_score = mean(score)) %>%
+  join_game_summary(game_mean_score = mean(score)) %>%
+  mutate(score = player_mean_score - game_mean_score)
+
+ncaa2005_mod
+
+ncaa2005_mod %>% summarise_player(mean_score = mean(score))
+```
+
+This code modifies `score` to be average player score minus average game score. Negative values indicate poor game performance.
+
+### Head-to-Head
+
+Computation of Head-to-Head performance is done with `h2h_long()` (output is a tibble; allows multiple Head-to-Head values per pair of players) or `h2h_mat()` (output is a matrix; only one value per pair of players).
+
+Head-to-Head functions should be supplied in `dplyr` grammar but for players' matchups: direct confrontation between __ordered__ pairs of players (including playing with themselves) stored in wide format:
+
+```{r matchups}
+ncaa2005 %>% get_matchups()
+```
+
+Typical Head-to-Head computation is done like this:
+
+```{r h2h}
+ncaa2005 %>%
+  h2h_long(
+    mean_score_diff = mean(score1 - score2),
+    num_wins = sum(score1 > score2)
+  )
+
+ncaa2005 %>% h2h_mat(mean(score1 - score2))
+```
+
+Supplied list of common Head-to-Head functions has `r length(h2h_funs)` entries, which are also quoted expressions:
+
+```{r h2h_funs}
+ncaa2005 %>% h2h_long(!!! h2h_funs)
+```
+
+To compute Head-to-Head for only subset of players or include values for players that are not in the results, use factor `player` column:
+
+```{r h2h-factor}
+ncaa2005 %>%
+  mutate(player = factor(player, levels = c("Duke", "Miami", "Extra"))) %>%
+  h2h_mat(!!! h2h_funs["num_wins"], fill = 0)
+```
+
