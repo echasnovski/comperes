@@ -1,0 +1,127 @@
+---
+title: "Formats of Competition Results"
+author: "Evgeni Chasnovski"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Formats of Competition Results}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+`comperes` offers a pipe (`%>%`) friendly set of tools for storing and managing competition results (hereafter - results). This vignette discusses following topics:
+
+- Storage of results.
+- Conversion between different formats of results.
+- Notes on package application.
+
+Understanding of __competition__ is quite general: it is a set of __games__ (abstract event) in which __players__ (abstract entity) gain some abstract __scores__ (typically numeric). The most natural example is sport results, however not the only one. For example, product rating can be considered as a competition between products as "players". Here a "game" is a customer that reviews a set of products by rating them with numerical "score" (stars, points, etc.).
+
+We will need the following packages:
+
+```{r library, warning = FALSE}
+library(comperes)
+library(tibble)
+```
+
+## Storage
+
+### Long format
+
+Results in long format are stored in object of class `longcr`. It is considered to be a `tibble` with one row per game-player pair. It should have at least columns with names "game", "player" and "score". For example:
+
+```{r cr_long_raw}
+cr_long_raw <- tibble(
+  game   = c(1,  1,  1, 2, 2, 3, 3, 4),
+  player = c(1, NA, NA, 1, 2, 2, 1, 2),
+  score  = 1:8
+)
+```
+
+To convert `cr_long_raw` into `longcr` object use `as_longcr()`:
+
+```{r cr_long}
+cr_long <- as_longcr(cr_long_raw)
+cr_long
+```
+
+By default, `as_longcr()` repairs its input by applying set of heuristics to extract relevant data:
+
+```{r as_longcr-repair}
+tibble(
+  PlayerRS = "a",
+  gameSS = "b",
+  extra = -1,
+  score_game = 10,
+  player = 1
+) %>%
+  as_longcr()
+```
+
+### Wide format
+
+Results in wide format are stored in object of class `widecr`. It is considered to be a `tibble` with one row per game with fixed amount of players. Data should be organized in pairs of columns "player"-"score". Identifier of a pair should go after respective keyword and consist only from digits. For example: player1, score1, player2, score2. Order doesn't matter.
+
+Extra columns are allowed. Column game for game identifier is optional.
+
+Example of correct wide format:
+
+```{r cr_wide_raw}
+cr_wide_raw <- tibble(
+  player1 = c(1, 1, 2),
+  score1  = -(1:3),
+  player2 = c(2, 3, 3),
+  score2  = -(4:6)
+)
+```
+
+To convert `cr_wide_raw` into `widecr` object use `as_widecr()`:
+
+```{r cr_wide}
+cr_wide <- cr_wide_raw %>% as_widecr()
+cr_wide
+```
+
+By default, `as_widecr()` also does repairing of its input:
+
+```{r as_widecr-repair}
+tibble(
+  score = 2,
+  PlayerRS = "a",
+  scoreRS = 1,
+  player = "b",
+  player1 = "c",
+  extra = -1,
+  game = "game"
+) %>%
+  as_widecr()
+```
+
+## Conversion
+
+`as_longcr()` and `as_widecr()` do actual conversion applied to `widecr` and `longcr` objects respectively:
+
+```{r conversion}
+as_longcr(cr_wide)
+
+# Determines number of players in game as
+# actual maximum number of players in games
+as_widecr(cr_long)
+```
+
+## Notes
+
+- Functions in `comperes` expect data that can be a proper input to `as_longcr()`, i.e. `longcr` object, `widecr` object, or raw data aligned with long format.
+- The preferred way to do data analysis with `comperes` is to have three data frames:
+    - One with description of __games__ (with column `game` for game identifiers).
+    - One with description of __players__ (with column `player` for player identifiers).
+    - One with __competition results__ in long format.
+    
+    This way one can operate with games between variable number of players with minimum storage overhead.

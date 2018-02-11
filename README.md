@@ -5,7 +5,7 @@ comperes
 
 [![Build Status](https://travis-ci.org/echasnovski/comperes.svg?branch=master)](https://travis-ci.org/echasnovski/comperes) [![codecov](https://codecov.io/gh/echasnovski/comperes/branch/master/graph/badge.svg)](https://codecov.io/gh/echasnovski/comperes)
 
-`comperes` offers a pipe (`%>%`) friendly set of tools for storing and managing competition results. Understanding of **competition** is quite general: it is a set of **games** (abstract event) in which **players** (abstract entity) gain some abstract **scores**. The most natural example is sport results, however not the only one. For example, product rating can be considered as a competition between products as "players". Here a "game" is a customer that reviews a set of products by rating them with numerical "score" (stars, points, etc.).
+`comperes` offers a pipe (`%>%`) friendly set of tools for storing and managing competition results. Understanding of **competition** is quite general: it is a set of **games** (abstract event) in which **players** (abstract entity) gain some abstract **scores** (typically numeric). The most natural example is sport results, however not the only one. For example, product rating can be considered as a competition between products as "players". Here a "game" is a customer that reviews a set of products by rating them with numerical "score" (stars, points, etc.).
 
 This package leverages [dplyr](http://dplyr.tidyverse.org)'s grammar of data manipulation. Only basic knowledge is enough to use `comperes`.
 
