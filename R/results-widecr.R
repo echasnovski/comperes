@@ -2,7 +2,7 @@
 #'
 #' Functions for dealing with competition results in wide format.
 #'
-#' @param cr_data Data of competition results (convertable to tabular).
+#' @param cr_data Data of competition results (convertible to tabular).
 #' @param repair Whether to repair input.
 #' @param ... Additional arguments to be passed to or from methods.
 #'
@@ -81,11 +81,11 @@
 #' cr_data_wide <- as_widecr(cr_data, repair = TRUE)
 #' is_widecr(cr_data_wide)
 #'
-#' @name results-widecr
-#' @seealso [Long format][results-longcr]
+#' @name widecr
+#' @seealso [Long format][longcr]
 NULL
 
-#' @rdname results-widecr
+#' @rdname widecr
 #' @export
 is_widecr <- function(cr_data) {
   if (!(inherits(x = cr_data, what = "tbl_df"))) {
@@ -118,7 +118,7 @@ is_widecr <- function(cr_data) {
 }
 
 
-#' @rdname results-widecr
+#' @rdname widecr
 #' @export
 as_widecr <- function(cr_data, repair = TRUE, ...) {
   UseMethod("as_widecr")

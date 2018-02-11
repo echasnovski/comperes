@@ -55,7 +55,7 @@ rows with filling values in Head-to-Head columns) by using tidyr's
 Use \code{fill} as in \code{complete()} to control filling values. To drop those rows
 use tidyr's \link[tidyr:drop_na]{drop_na()}.
 
-\code{to_h2h_long()} takes \strong{object of \link[=h2h-mat]{h2h_mat} structure} and converts
+\code{to_h2h_long()} takes \strong{object of \link{h2h_mat} structure} and converts
 it into \code{h2h_long} object with value column named as stored in \code{value}. Use
 \code{drop = TRUE} to remove rows with missing values in value column (but not in
 players').
@@ -66,9 +66,9 @@ Head-to-Head value is a summary statistic of direct confrontation between two
 players. It is assumed that this value can be computed based only on the
 players' \link[=get_matchups]{matchups}. In other words, every game is converted
 into series of "subgames" between ordered pairs of players (including
-selfplay) which is stored as \link[=results-widecr]{widecr} object. After that,
-summary of item, defined by columns \code{player1} and \code{player2}, is computed
-using \code{\link[=summarise_item]{summarise_item()}}.
+selfplay) which is stored as \link{widecr} object. After that, summary of item,
+defined by columns \code{player1} and \code{player2}, is computed using
+\code{\link[=summarise_item]{summarise_item()}}.
 
 That said, name-value pairs of Head-to-Head functions should be defined as
 for \code{summarise_item()} applied to data with columns \code{game}, \code{player1},
@@ -90,7 +90,7 @@ ncaa2005[-(1:2), ] \%>\%
 
 }
 \seealso{
-\link[=h2h-mat]{Matrix format} of Head-to-Head values.
+\link[=h2h_mat]{Matrix format} of Head-to-Head values.
 
 \link[=h2h_funs]{Common Head-to-Head functions}.
 }

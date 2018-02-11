@@ -86,7 +86,7 @@ summarize_player <- summarise_player
 #'   representing commonly used expressions of summary functions for summarising
 #'   competition results with [summarise_item()]. Names of the elements will be
 #'   used as summary names. It is designed primarily to be used with [long
-#'   format][results-longcr] of competition results. To use them inside
+#'   format][longcr] of competition results. To use them inside
 #'   `summarise_item()` use [unquoting][rlang::quasiquotation] mechanism from
 #'   rlang package.
 #'

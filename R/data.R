@@ -4,6 +4,6 @@
 #' Atlantic Coast Conference teams provided in book "Who's #1" by Langville and
 #' Meyer.
 #'
-#' @format An object of class [longcr][results-longcr] containing information
+#' @format An object of class [longcr] containing information
 #'   about 10 games.
 "ncaa2005"

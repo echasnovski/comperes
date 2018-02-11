@@ -18,9 +18,9 @@
 #' players. It is assumed that this value can be computed based only on the
 #' players' [matchups][get_matchups()]. In other words, every game is converted
 #' into series of "subgames" between ordered pairs of players (including
-#' selfplay) which is stored as [widecr][results-widecr] object. After that,
-#' summary of item, defined by columns `player1` and `player2`, is computed
-#' using [summarise_item()].
+#' selfplay) which is stored as [widecr] object. After that, summary of item,
+#' defined by columns `player1` and `player2`, is computed using
+#' [summarise_item()].
 #'
 #' That said, name-value pairs of Head-to-Head functions should be defined as
 #' for `summarise_item()` applied to data with columns `game`, `player1`,
@@ -44,7 +44,7 @@
 #' Use `fill` as in `complete()` to control filling values. To drop those rows
 #' use tidyr's [drop_na()][tidyr::drop_na()].
 #'
-#' `to_h2h_long()` takes __object of [h2h_mat][h2h-mat] structure__ and converts
+#' `to_h2h_long()` takes __object of [h2h_mat] structure__ and converts
 #' it into `h2h_long` object with value column named as stored in `value`. Use
 #' `drop = TRUE` to remove rows with missing values in value column (but not in
 #' players').
@@ -66,7 +66,7 @@
 #'     fill = list(mean_score = 0)
 #'   )
 #'
-#' @seealso [Matrix format][h2h-mat] of Head-to-Head values.
+#' @seealso [Matrix format][h2h_mat] of Head-to-Head values.
 #'
 #' [Common Head-to-Head functions][h2h_funs].
 #'
@@ -149,10 +149,10 @@ to_h2h_long <- function(mat, value = "h2h_value", drop = FALSE) {
 #'
 #' [Common Head-to-Head functions][h2h_funs].
 #'
-#' @name h2h-mat
+#' @name h2h_mat
 NULL
 
-#' @rdname h2h-mat
+#' @rdname h2h_mat
 #' @export
 h2h_mat <- function(cr_data, ..., fill = NULL) {
   dots <- rlang::quos(...)
@@ -185,7 +185,7 @@ h2h_mat <- function(cr_data, ..., fill = NULL) {
     to_h2h_mat(value = value_col, fill = fill)
 }
 
-#' @rdname h2h-mat
+#' @rdname h2h_mat
 #' @export
 to_h2h_mat <- function(tbl, value = NULL, fill = NULL) {
   tbl %>%
@@ -236,7 +236,7 @@ to_h2h_mat <- function(tbl, value = NULL, fill = NULL) {
 #'
 #' @seealso [Long format][h2h_long] of Head-to-Head values.
 #'
-#' [Matrix format][h2h-mat] of Head-to-Head values.
+#' [Matrix format][h2h_mat] of Head-to-Head values.
 #'
 #' @export
 h2h_funs <- list(

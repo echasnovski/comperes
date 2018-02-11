@@ -52,6 +52,6 @@ ncaa2005 \%>\% h2h_mat(!!! h2h_funs["num_wins2"])
 \seealso{
 \link[=h2h_long]{Long format} of Head-to-Head values.
 
-\link[=h2h-mat]{Matrix format} of Head-to-Head values.
+\link[=h2h_mat]{Matrix format} of Head-to-Head values.
 }
 \keyword{datasets}

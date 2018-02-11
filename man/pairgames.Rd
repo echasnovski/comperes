@@ -15,7 +15,7 @@ is_pairgames(cr_data)
 }
 \value{
 \code{to_pairgames()} returns a competition results of pairwise games as
-\link[=results-widecr]{widecr} object with two players.
+\link{widecr} object with two players.
 
 \code{is_pairgames()} returns a boolean value of whether \code{cr_data} contains only
 games between two players.
@@ -39,7 +39,7 @@ different players.
 \item Order in which players are assigned to \code{player1} or \code{player2} column in
 general shouldn't agree with any order in \code{cr_data}.
 \item Any column except \code{game}, \code{player} and \code{score} will be dropped after
-conversion to \link[=results-longcr]{longcr}.
+conversion to \link{longcr}.
 \item \code{NA} and \code{NaN} in \code{players} are allowed. They are treated as different
 players.
 \item \code{to_pairgames()} is rather compute-intensive and can take much time for

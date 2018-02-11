@@ -2,7 +2,7 @@
 #'
 #' Functions for dealing with competition results in long format.
 #'
-#' @param cr_data Data of competition results (convertable to tabular).
+#' @param cr_data Data of competition results (convertible to tabular).
 #' @param repair Whether to repair input.
 #' @param ... Additional arguments to be passed to or from methods.
 #'
@@ -21,7 +21,7 @@
 #' - `score` - score of particular player in particular game.
 #'
 #' Extra columns are allowed. __Note__ that if object is converted to
-#' [widecr][results-widecr], they will be dropped. So it is better to store
+#' [widecr], they will be dropped. So it is better to store
 #' extra information about "game"-"player" pair as list-column "score" which
 #' will stay untouched.
 #'
@@ -75,11 +75,11 @@
 #' cr_data_long <- as_longcr(cr_data, repair = TRUE)
 #' is_longcr(cr_data_long)
 #'
-#' @name results-longcr
-#' @seealso [Wide format][results-widecr]
+#' @name longcr
+#' @seealso [Wide format][widecr]
 NULL
 
-#' @rdname results-longcr
+#' @rdname longcr
 #' @export
 is_longcr <- function(cr_data) {
   inherits(x = cr_data, what = "longcr") &&
@@ -87,7 +87,7 @@ is_longcr <- function(cr_data) {
     all(c("game", "player", "score") %in% colnames(cr_data))
 }
 
-#' @rdname results-longcr
+#' @rdname longcr
 #' @export
 as_longcr <- function(cr_data, repair = TRUE, ...) {
   UseMethod("as_longcr")

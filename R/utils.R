@@ -147,7 +147,7 @@ reduce_full_join <- function(x, by) {
 #' Get matchups from competition results
 #'
 #' This function powers computing Head-to-Head values (both [long][h2h_long] and
-#' [matrix][h2h-mat]).
+#' [matrix][h2h_mat]).
 #'
 #' @param cr_data Competition results ready for [as_longcr()].
 #'
@@ -170,14 +170,14 @@ reduce_full_join <- function(x, by) {
 #' identifiers are not known. However, when computing Head-to-Head values they
 #' treated as single player.
 #'
-#' @return A [widecr][results-widecr] for games with two players.
+#' @return A [widecr] for games with two players.
 #'
 #' @examples
 #' get_matchups(ncaa2005)
 #'
 #' @seealso [Long format][h2h_long] of Head-to-Head values.
 #'
-#' [Matrix format][h2h-mat] of Head-to-Head values.
+#' [Matrix format][h2h_mat] of Head-to-Head values.
 #'
 #' @export
 get_matchups <- function(cr_data) {

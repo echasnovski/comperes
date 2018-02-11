@@ -18,14 +18,14 @@
 #'   - Order in which players are assigned to `player1` or `player2` column in
 #'   general shouldn't agree with any order in `cr_data`.
 #'   - Any column except `game`, `player` and `score` will be dropped after
-#'   conversion to [longcr][results-longcr].
+#'   conversion to [longcr].
 #'   - `NA` and `NaN` in `players` are allowed. They are treated as different
 #'   players.
 #'   - `to_pairgames()` is rather compute-intensive and can take much time for
 #'   competition results with many games.
 #'
 #' @return `to_pairgames()` returns a competition results of pairwise games as
-#'   [widecr][results-widecr] object with two players.
+#'   [widecr] object with two players.
 #'
 #'   `is_pairgames()` returns a boolean value of whether `cr_data` contains only
 #'   games between two players.
