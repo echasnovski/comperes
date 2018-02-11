@@ -9,7 +9,7 @@ Description: Tools for storing and managing competition results. Competition is
     and wide (one row per game with fixed amount of players) formats. This
     package provides functions for creation and conversion between them. Also
     there are functions for computing their summary and Head-to-Head values for
-    players.
+    players. They leverage grammar of data manipulation from 'dplyr'.
 Depends: R (>= 3.4.0)
 License: MIT + file LICENSE
 Encoding: UTF-8

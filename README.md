@@ -5,7 +5,9 @@ comperes
 
 [![Build Status](https://travis-ci.org/echasnovski/comperes.svg?branch=master)](https://travis-ci.org/echasnovski/comperes) [![codecov](https://codecov.io/gh/echasnovski/comperes/branch/master/graph/badge.svg)](https://codecov.io/gh/echasnovski/comperes)
 
-`comperes` offers a pipe (`%>%`) friendly set of tools for storing and managing competition results. Understanding of **competition** is quite general: is is a set of **games** (abstract event) in which **players** (abstract entity) gain some abstract **scores**. The most natural example is sport results, however not the only one. For example, product rating can be considered as a competition between products as "players". Here a "game" is a customer that reviews a set of products by rating them with numerical "score" (stars, points, etc.).
+`comperes` offers a pipe (`%>%`) friendly set of tools for storing and managing competition results. Understanding of **competition** is quite general: it is a set of **games** (abstract event) in which **players** (abstract entity) gain some abstract **scores**. The most natural example is sport results, however not the only one. For example, product rating can be considered as a competition between products as "players". Here a "game" is a customer that reviews a set of products by rating them with numerical "score" (stars, points, etc.).
+
+This package leverages [dplyr](http://dplyr.tidyverse.org)'s grammar of data manipulation. Only basic knowledge is enough to use `comperes`.
 
 Overview
 --------
@@ -16,7 +18,7 @@ Overview
     -   In *long format* as a [tibble](http://tibble.tidyverse.org) with one row per game-player pair. Functions: `as_longcr()`, `is_longcr()`.
     -   In *wide format* as a `tibble` with one row per game with fixed amount of players. Functions: `as_widecr()`, `is_widecr()`.
 -   **Summarise**:
-    -   Compute *item summaries* with functions using [dplyr](http://dplyr.tidyverse.org)'s grammar of data manipulation. Functions: `summarise_item()`, `summarise_game()`, `summarise_player()`.
+    -   Compute *item summaries* with functions using `dplyr`'s grammar. Functions: `summarise_item()`, `summarise_game()`, `summarise_player()`.
     -   Compute and *join* item summaries to data for easy transformation. Functions: `join_item_summary()`, `join_game_summary()`, `join_player_summary()`.
     -   Use *common item summary functions* with [rlang](http://rlang.tidyverse.org/)'s \[unquoting\]\[rlang::quasiquotation\] mechanism. Example: `. %>% summarise_player(!!! summary_funs["mean_score"])`.
 -   **Compute Head-to-Head values** (a summary statistic of direct confrontation between two players) with functions also using `dplyr`'s grammar:

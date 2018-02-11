@@ -7,11 +7,11 @@
 \title{comperes: Manage Competition Results}
 \description{
 \code{comperes} offers a set of tools for storing and managing competition
-results. \strong{Competition} is understood as a set of \emph{games} (abstract event) in
-which \emph{players} (abstract entity) gain some abstract \emph{scores}. The most
-natural example is sport results, however not the only one. For example,
+results. \strong{Competition} is understood as a set of \strong{games} (abstract event)
+in which \strong{players} (abstract entity) gain some abstract \strong{scores}. The
+most natural example is sport results, however not the only one. For example,
 product rating can be considered as a competition between products as
-"players". Then a "game" is a customer that reviews a set of products by
+"players". Here a "game" is a customer that reviews a set of products by
 rating them with numerical "score" (stars, points, etc.).
 }
 \details{
@@ -31,7 +31,7 @@ amount of players.
 \item Compute and \link[=item-summary-join]{join} item summaries to data for easy
 transformation.
 \item Use \link[=summary_funs]{common item summary functions} with
-\link[=https://CRAN.R-project.org/package=rlang]{rlang}'s
+\href{https://CRAN.R-project.org/package=rlang}{rlang}'s
 \link[rlang:quasiquotation]{unquoting} mechanism.
 }
 \item \strong{Compute Head-to-Head values} (a summary statistic of direct
@@ -41,6 +41,8 @@ confrontation between two players) with functions also using dplyr's grammar:
 pair of players.
 \item Store output in \link[=h2h_mat]{matrix format} as a matrix with rows and
 columns describing players and entries - Head-to-Head values.
+\item Use \link[=h2h_funs]{common Head-to-Head functions} with rlang's unquoting
+mechanism.
 }
 }
 
