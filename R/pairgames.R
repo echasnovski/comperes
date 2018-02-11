@@ -5,30 +5,33 @@
 #' @param cr_data Competition results in format ready for [as_longcr()].
 #'
 #' @details Pairgames is a term for competition results with games between two
-#'   players.
+#' players.
 #'
-#'   `to_pairgames()` is a function that converts competition results into
-#'   pairwise games: it drops games with one player and for every game with 3
-#'   and more players this function transforms it into set of separate games
-#'   between unordered pairs of players. In other words the result is a set of
-#'   unordered [matchups][get_matchups()] (__as different games__) between
-#'   different players.
+#' `to_pairgames()` is a function that converts competition results into
+#' pairwise games: it drops games with one player and for every game with 3 and
+#' more players this function transforms it into set of separate games between
+#' unordered pairs of players. In other words the result is a set of unordered
+#' [matchups][get_matchups()] (__as different games__) between different
+#' players.
 #'
-#'   __Important notes__:
-#'   - Order in which players are assigned to `player1` or `player2` column in
-#'   general shouldn't agree with any order in `cr_data`.
-#'   - Any column except `game`, `player` and `score` will be dropped after
-#'   conversion to [longcr].
-#'   - `NA` and `NaN` in `players` are allowed. They are treated as different
-#'   players.
-#'   - `to_pairgames()` is rather compute-intensive and can take much time for
-#'   competition results with many games.
+#' __Important notes__:
+#' - New game identifiers are integers, order of which respects order of
+#' games stored in `cr_data` (based on first occurrence in long format). There
+#' is no particular order in subgames of games with 3 and more players.
+#' - Order in which players are assigned to `player1` or `player2` column in
+#' general shouldn't agree with any order in `cr_data`.
+#' - Any column except `game`, `player` and `score` will be dropped after
+#' conversion to [longcr].
+#' - `NA` and `NaN` in `players` are allowed. They are treated as different
+#' players.
+#' - `to_pairgames()` is rather compute-intensive and can take much time for
+#' competition results with many games.
 #'
 #' @return `to_pairgames()` returns a competition results of pairwise games as
-#'   [widecr] object with two players.
+#' [widecr] object with two players.
 #'
-#'   `is_pairgames()` returns a boolean value of whether `cr_data` contains only
-#'   games between two players.
+#' `is_pairgames()` returns a boolean value of whether `cr_data` contains only
+#' games between two players.
 #'
 #' @examples
 #' cr_data <- data.frame(

@@ -16,7 +16,7 @@ to_h2h_long(mat, value = "h2h_value", drop = FALSE)
 \item{...}{Name-value pairs of Head-to-Head functions (see Details).}
 
 \item{fill}{A named list that for each variable supplies a single value to
-use instead of NA for missing pairs (see tidyr's
+use instead of \code{NA} for missing pairs (see tidyr's
 \link[tidyr:complete]{complete()}).}
 
 \item{mat}{Matrix of Head-to-Head values.}

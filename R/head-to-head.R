@@ -6,7 +6,7 @@
 #' @param cr_data Competition results ready for [as_longcr()].
 #' @param ... Name-value pairs of Head-to-Head functions (see Details).
 #' @param fill A named list that for each variable supplies a single value to
-#'   use instead of NA for missing pairs (see tidyr's
+#'   use instead of `NA` for missing pairs (see tidyr's
 #'   [complete()][tidyr::complete()]).
 #' @param mat Matrix of Head-to-Head values.
 #' @param value String name to be used for column with Head-to-Head value.

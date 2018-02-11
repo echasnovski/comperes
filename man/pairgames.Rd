@@ -28,14 +28,17 @@ Pairgames is a term for competition results with games between two
 players.
 
 \code{to_pairgames()} is a function that converts competition results into
-pairwise games: it drops games with one player and for every game with 3
-and more players this function transforms it into set of separate games
-between unordered pairs of players. In other words the result is a set of
-unordered \link[=get_matchups]{matchups} (\strong{as different games}) between
-different players.
+pairwise games: it drops games with one player and for every game with 3 and
+more players this function transforms it into set of separate games between
+unordered pairs of players. In other words the result is a set of unordered
+\link[=get_matchups]{matchups} (\strong{as different games}) between different
+players.
 
 \strong{Important notes}:
 \itemize{
+\item New game identifiers are integers, order of which respects order of
+games stored in \code{cr_data} (based on first occurrence in long format). There
+is no particular order in subgames of games with 3 and more players.
 \item Order in which players are assigned to \code{player1} or \code{player2} column in
 general shouldn't agree with any order in \code{cr_data}.
 \item Any column except \code{game}, \code{player} and \code{score} will be dropped after
