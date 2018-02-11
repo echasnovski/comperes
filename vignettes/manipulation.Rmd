@@ -1,0 +1,163 @@
+---
+title: "Manipulate Competition Results"
+author: "Evgeni Chasnovski"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Manipulate Competition Results}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette will describe `comperes` functionality for manipulating (summarising and transforming) competition results (hereafter - results):
+
+- Computation of item summaries.
+- Computation of Head-to-Head values and conversion between its formats.
+- Creating pairgaimes.
+
+We will need the following packages:
+
+```{r library, warning = FALSE}
+library(comperes)
+library(dplyr)
+library(rlang)
+```
+
+Example results in long format:
+
+```{r cr_long}
+cr_long <- tibble(
+  game   = c("a1", "a1", "a1", "a2", "a2", "b1", "b1", "b2"),
+  player = c(1, NA, NA, 1, 2, 2, 1, 2),
+  score  = 1:8,
+  season = c(rep("A", 5), rep("B", 3))
+) %>%
+  as_longcr()
+```
+
+Functions discussed in these topics leverage `dplyr`'s grammar of data manipulation. Only basic knowledge is enough to use them. Also a knowledge of `rlang`'s quotation mechanism is preferred.
+
+## Item summaries
+
+Item summary is understand as some summary measurements (of arbitrary nature) of item (one or more columns) present in data. To compute them, `comperes` offers `summarise_*()` family of functions in which summary functions should be provided as in `dplyr::summarise()`. Basically, they are wrappers for grouped summarise with forced ungrouping, conversion to `tibble` and possible adding prefix to summaries. Couple of examples:
+
+```{r item-summary}
+cr_long %>% summarise_player(mean_score = mean(score))
+
+cr_long %>% summarise_game(min_score = min(score), max_score = max(score))
+
+cr_long %>% summarise_item("season", sd_score = sd(score))
+```
+
+For convenient transformation of results there are `join_*_summary()` family of functions, which compute respective summaries and join them to original data:
+
+```{r item-summary-join}
+cr_long %>%
+  join_item_summary("season", season_mean_score = mean(score)) %>%
+  mutate(score = score - season_mean_score)
+```
+
+For common summary functions `comperes` has a list `summary_funs` with `r length(summary_funs)` quoted expressions to be used with `rlang`'s unquoting mechanism:
+
+```{r summary_funs}
+# Use .prefix to add prefix to summary columns
+cr_long %>%
+  join_player_summary(!!! summary_funs[1:2], .prefix = "player_") %>%
+  join_item_summary("season", !!! summary_funs[1:2], .prefix = "season_")
+```
+
+## Head-to-Head values
+
+Head-to-Head value is a summary statistic of direct confrontation between two players. It is assumed that this value can be computed based only on the players' __matchups__, data of actual participation for ordered pair of players in one game.
+
+To compute matchups, `comperes` has `get_matchups()`, which returns a `widecr` object with all matchups actually present in results (including matchups of players with themselves). __Note__ that missing values in `player` column are treated as separate players. It allows operating with games where multiple players' identifiers are not known. However, when computing Head-to-Head values they treated as single player. Example:
+
+```{r matchups}
+get_matchups(cr_long)
+```
+
+Head-to-Head values can be stored in two ways:
+
+- __Long__, a tibble with columns `player1` and `player2` which identify ordered pair of players, and columns corresponding to Head-to-Head values. Computation is done with `h2h_long()` which returns an object of class `h2h_long`. Head-to-Head functions are specified as in `dplyr`'s grammar __for results matchups__:
+
+```{r h2h_long}
+cr_long %>%
+  h2h_long(
+    abs_diff = mean(abs(score1 - score2)),
+    num_wins = sum(score1 > score2)
+  )
+```
+
+- __Matrix__, a matrix where rows and columns describe ordered pair of players and entries - Head-to-Head values. This allows convenient storage of only one Head-to-Head value. Computation is done with `h2h_mat()` which returns an object of class `h2h_mat`. Head-to-Head functions are specified as in `h2h_long()`:
+
+```{r h2h_mat}
+cr_long %>% h2h_mat(sum_score = sum(score1 + score2))
+```
+
+`comperes` also offers a list `h2h_funs` of `r length(h2h_funs)` common Head-to-Head functions as quoted expressions to be used with `rlang`'s unquoting mechanism:
+
+```{r h2h_funs}
+cr_long %>% h2h_long(!!! h2h_funs)
+```
+
+To compute Head-to-Head for only subset of players or include values for players that are not in the results, use factor `player` column. __Note__ different use of `fill` argument.
+```{r h2h-factors}
+cr_long_fac <- cr_long %>%
+  mutate(player = factor(player, levels = c(1, 2, 3)))
+
+cr_long_fac %>%
+  h2h_long(abs_diff = mean(abs(score1 - score2)),
+           fill = list(abs_diff = -100))
+
+cr_long_fac %>%
+  h2h_mat(mean(abs(score1 - score2)),
+          fill = -100)
+```
+
+### Conversion
+
+To convert between long and matrix formats of Head-to-Head values, `comperes` has `to_h2h_long()` and `to_h2h_mat()` which convert from matrix to long and from long to matrix respectively. __Note__ that output of `to_h2h_long()` has `player1` and `player2` columns as characters. Examples:
+
+```{r h2h-conversion}
+cr_long %>% h2h_mat(mean(score1)) %>% to_h2h_long()
+
+cr_long %>%
+  h2h_long(mean_score1 = mean(score1), mean_score2 = mean(score2)) %>%
+  to_h2h_mat()
+```
+
+All this functionality is powered by useful outside of `comperes` functions `long_to_mat()` and `mat_to_long()`. They convert general pair-value data between long and matrix format:
+
+```{r convert-pair-value}
+pair_value_long <- tibble(
+  key_1 = c(1, 1, 2),
+  key_2 = c(2, 3, 3),
+  val = 1:3
+)
+
+pair_value_mat <- pair_value_long %>%
+  long_to_mat(row_key = "key_1", col_key = "key_2", value = "val")
+pair_value_mat
+
+pair_value_mat %>%
+  mat_to_long(
+    row_key = "key_1", col_key = "key_2", value = "val",
+    drop = TRUE
+  )
+```
+
+
+## Pairgames
+
+For some ranking algorithms it crucial that games should only be between two players. `comperes` has function `to_pairgames()` for this. It removes games with one player. Games with three and more players `to_pairgames()` splits into __separate games__ between unordered pairs of different players without specific order. __Note__ that game identifiers are changed to integers but order of initial games is preserved. Example:
+
+```{r pairgames}
+to_pairgames(cr_long)
+```
