@@ -159,6 +159,10 @@ as_longcr.longcr <- function(cr_data, repair = TRUE, ...) {
 }
 
 repair_longcr <- function(cr_data, ...) {
+  if (is_longcr(cr_data)) {
+    return(cr_data)
+  }
+
   longcr_colnames <- c("game", "player", "score")
   longcr_pattern <- paste0(longcr_colnames, collapse = "|")
 

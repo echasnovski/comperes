@@ -330,3 +330,13 @@ test_that("as_widecr.widecr works", {
   class(as_widecr_res) <- "widecr"
   expect_error(as_widecr(as_widecr_res, repair = TRUE), "not.*widecr")
 })
+
+
+# repair_widecr -----------------------------------------------------------
+test_that("repair_widecr works", {
+  # Most essential tests are provided in as_widecr() methods
+  input <- dplyr::as_tibble(input_good)
+  input <- add_class(input, "widecr")
+
+  expect_identical(repair_widecr(input), input)
+})

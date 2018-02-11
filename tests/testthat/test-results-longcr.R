@@ -302,3 +302,13 @@ test_that("as_longcr.longcr works", {
   class(as_longcr_res) <- "longcr"
   expect_error(as_longcr(as_longcr_res, repair = TRUE), "not.*longcr")
 })
+
+
+# repair_longcr -----------------------------------------------------------
+test_that("repair_longcr works", {
+  # Most essential tests are provided in as_longcr() methods
+  input <- dplyr::as_tibble(input_good)
+  input <- add_class(input, "longcr")
+
+  expect_identical(repair_longcr(input), input)
+})

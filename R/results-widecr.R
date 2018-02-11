@@ -188,6 +188,10 @@ as_widecr.widecr <- function(cr_data, repair = TRUE, ...) {
 }
 
 repair_widecr <- function(cr_data, ...) {
+  if (is_widecr(cr_data)) {
+    return(cr_data)
+  }
+
   repair_info <- tibble(original_lower = tolower(colnames(cr_data))) %>%
     tidyr::extract(
       col = .data$original_lower, into = c("group", "pair"),
