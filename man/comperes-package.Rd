@@ -4,9 +4,50 @@
 \name{comperes-package}
 \alias{comperes}
 \alias{comperes-package}
-\title{comperes: Create and Manipulate Competition Results}
+\title{comperes: Manage Competition Results}
 \description{
-Tools for creating and manipulating competition results.
+\code{comperes} offers a set of tools for storing and managing competition
+results. \strong{Competition} is understood as a set of \strong{games} (abstract event)
+in which \strong{players} (abstract entity) gain some abstract \strong{scores}. The
+most natural example is sport results, however not the only one. For example,
+product rating can be considered as a competition between products as
+"players". Here a "game" is a customer that reviews a set of products by
+rating them with numerical "score" (stars, points, etc.).
+}
+\details{
+This package provides the following functionality:
+\itemize{
+\item \strong{Store and convert} competition results:
+\itemize{
+\item In \link[=longcr]{long format} as a \link[tibble:tibble]{tibble} with one row per
+game-player pair.
+\item In \link[=widecr]{wide format} as a \code{tibble} with one row per game with fixed
+amount of players.
+}
+\item \strong{Summarise}:
+\itemize{
+\item Compute \link[=item-summary]{item summaries} with functions using
+\href{http://dplyr.tidyverse.org}{dplyr}'s grammar of data manipulation.
+\item Compute and \link[=item-summary-join]{join} item summaries to data for easy
+transformation.
+\item Use \link[=summary_funs]{common item summary functions} with
+\href{https://CRAN.R-project.org/package=rlang}{rlang}'s
+\link[rlang:quasiquotation]{unquoting} mechanism.
+}
+\item \strong{Compute Head-to-Head values} (a summary statistic of direct
+confrontation between two players) with functions also using dplyr's grammar:
+\itemize{
+\item Store output in \link[=h2h_long]{long format} as a \code{tibble} with one row per
+pair of players.
+\item Store output in \link[=h2h_mat]{matrix format} as a matrix with rows and
+columns describing players and entries - Head-to-Head values.
+\item Use \link[=h2h_funs]{common Head-to-Head functions} with rlang's unquoting
+mechanism.
+}
+}
+
+To learn more about \code{comperes} browse vignettes with
+\code{browseVignettes(package = "comperes")}.
 }
 \seealso{
 Useful links:
