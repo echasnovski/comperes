@@ -484,6 +484,15 @@ test_that("[.h2h_mat works", {
   expect_is(input_h2h_mat[, 1:2], "h2h_mat")
 })
 
+test_that("[.h2h_mat works with only one argument", {
+  expect_identical(input_h2h_mat[c(1, 3)], c(1, NA))
+
+  output <- c(1, 2)
+  names(output) <- c("1", "2")
+
+  expect_identical(diag(input_h2h_mat), output)
+})
+
 
 # print.h2h_mat ------------------------------------------------------------
 test_that("print.h2h_mat works", {

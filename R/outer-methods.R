@@ -313,7 +313,13 @@ print.h2h_long <- function(x, ...) {
 # Methods for h2h_mat -----------------------------------------------------
 #' @export
 `[.h2h_mat` <- function(x, i, j, ...) {
-  reconstruct(NextMethod(), x)
+  res <- NextMethod()
+
+  if (is.matrix(res)) {
+    res <- add_class_cond(res, "h2h_mat")
+  }
+
+  res
 }
 
 #' @export
