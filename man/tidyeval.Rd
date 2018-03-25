@@ -6,11 +6,12 @@
 \alias{enquo}
 \alias{sym}
 \alias{syms}
+\alias{expr}
 \alias{enexpr}
 \title{Tidy eval helpers}
 \description{
 These functions provide tidy eval-compatible ways to capture symbols
-(\code{sym()}, \code{syms()}), expressions (\code{enexpr()}), and quosures (\code{quo()},
+(\code{sym()}, \code{syms()}), expressions (\code{expr()}, \code{enexpr()}), and quosures (\code{quo()},
 \code{enquo()}). To learn more about tidy eval and how to use these tools, read
 \url{http://rlang.tidyverse.org/articles/tidy-evaluation.html}
 }

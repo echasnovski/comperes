@@ -209,26 +209,26 @@ to_h2h_mat <- function(tbl, value = NULL, fill = NULL) {
 #'
 #' List of commonly used functions for computing Head-to-Head values.
 #'
-#' @details `h2h_funs` is a named list of [quosures][rlang::quo()]
-#'   representing commonly used expressions of Head-to-Head functions for
-#'   computing Head-to-Head values with [h2h_long()] or [h2h_mat()]. Names of
-#'   the elements will be used as Head-to-Head value names. To use them inside
-#'   `h2h_long()` or `h2h_mat()` use [unquoting][rlang::quasiquotation]
-#'   mechanism from rlang package.
+#' @details `h2h_funs` is a named list of [expressions][rlang::expr()]
+#' representing commonly used expressions of Head-to-Head functions for
+#' computing Head-to-Head values with [h2h_long()] or [h2h_mat()]. Names of the
+#' elements will be used as Head-to-Head value names. To use them inside
+#' `h2h_long()` or `h2h_mat()` use [unquoting][rlang::quasiquotation] mechanism
+#' from rlang package.
 #'
 #' Currently present functions:
-#' - `mean_score_diff` - computes mean score difference of `player1`
-#' compared to `player2`.
-#' - `mean_score_diff_pos` - equivalent to `mean_score_diff` but
-#' returns 0 if result is negative.
+#' - `mean_score_diff` - computes mean score difference of `player1` compared to
+#' `player2`.
+#' - `mean_score_diff_pos` - equivalent to `mean_score_diff` but returns 0 if
+#' result is negative.
 #' - `mean_score` - computes mean score of `player1`.
-#' - `sum_score_diff` - computes sum of score differences of
-#'   `player1` compared to `player2`.
-#' - `sum_score_diff_pos` - equivalent to `sum_score_diff` but
-#' returns 0 if result is negative.
+#' - `sum_score_diff` - computes sum of score differences of `player1` compared
+#' to `player2`.
+#' - `sum_score_diff_pos` - equivalent to `sum_score_diff` but returns 0 if
+#' result is negative.
 #' - `sum_score` - computes sum of scores of `player1`.
-#' - `num_wins` - computes number of matchups `player1` scored __more__
-#' than `player2`. Draws (determined by [dplyr::near()]) are omitted.
+#' - `num_wins` - computes number of matchups `player1` scored __more__ than
+#' `player2`. Draws (determined by [dplyr::near()]) are omitted.
 #' - `num_wins2` - computes number of matchups `player1` scored __more__ than
 #' `player2` __plus__ half the number of matchups where they had draw. __Note__
 #' that for equal `player1` and `player2` there might be non-zero output.
@@ -249,15 +249,15 @@ to_h2h_mat <- function(tbl, value = NULL, fill = NULL) {
 #'
 #' @export
 h2h_funs <- list(
-  mean_score_diff = quo(mean(score1 - score2)),
-  mean_score_diff_pos = quo(max(mean(score1 - score2), 0)),
-  mean_score = quo(mean(score1)),
-  sum_score_diff = quo(sum(score1 - score2)),
-  sum_score_diff_pos = quo(max(sum(score1 - score2), 0)),
-  sum_score = quo(sum(score1)),
-  num_wins = quo(num_wins(score1, score2, half_for_draw = FALSE)),
-  num_wins2 = quo(num_wins(score1, score2, half_for_draw = TRUE)),
-  num = quo(n())
+  mean_score_diff = expr(mean(score1 - score2)),
+  mean_score_diff_pos = expr(max(mean(score1 - score2), 0)),
+  mean_score = expr(mean(score1)),
+  sum_score_diff = expr(sum(score1 - score2)),
+  sum_score_diff_pos = expr(max(sum(score1 - score2), 0)),
+  sum_score = expr(sum(score1)),
+  num_wins = expr(num_wins(score1, score2, half_for_draw = FALSE)),
+  num_wins2 = expr(num_wins(score1, score2, half_for_draw = TRUE)),
+  num = expr(n())
 )
 
 #' Compute number of wins

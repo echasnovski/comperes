@@ -82,13 +82,12 @@ summarize_player <- summarise_player
 #'
 #' List of commonly used functions for summarising competition results.
 #'
-#' @details `summary_funs` is a named list of [quosures][rlang::quo()]
-#'   representing commonly used expressions of summary functions for summarising
-#'   competition results with [summarise_item()]. Names of the elements will be
-#'   used as summary names. It is designed primarily to be used with [long
-#'   format][longcr] of competition results. To use them inside
-#'   `summarise_item()` use [unquoting][rlang::quasiquotation] mechanism from
-#'   rlang package.
+#' @details `summary_funs` is a named list of [expressions][rlang::expr()]
+#' representing commonly used expressions of summary functions for summarising
+#' competition results with [summarise_item()]. Names of the elements will be
+#' used as summary names. It is designed primarily to be used with [long
+#' format][longcr] of competition results. To use them inside `summarise_item()`
+#' use [unquoting][rlang::quasiquotation] mechanism from rlang package.
 #'
 #' Currently present functions:
 #' - __min_score__ - `min(score)`.
@@ -112,14 +111,14 @@ summarize_player <- summarise_player
 #'
 #' @export
 summary_funs <- list(
-  min_score = quo(min(score)),
-  max_score = quo(max(score)),
-  mean_score = quo(mean(score)),
-  median_score = quo(median(score)),
-  sd_score = quo(sd(score)),
-  sum_score = quo(sum(score)),
-  num_games = quo(length(unique(game))),
-  num_players = quo(length(unique(player)))
+  min_score = expr(min(score)),
+  max_score = expr(max(score)),
+  mean_score = expr(mean(score)),
+  median_score = expr(median(score)),
+  sd_score = expr(sd(score)),
+  sum_score = expr(sum(score)),
+  num_games = expr(length(unique(game))),
+  num_players = expr(length(unique(player)))
 )
 
 

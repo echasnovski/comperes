@@ -12,27 +12,27 @@ h2h_funs
 List of commonly used functions for computing Head-to-Head values.
 }
 \details{
-\code{h2h_funs} is a named list of \link[rlang:quo]{quosures}
+\code{h2h_funs} is a named list of \link[rlang:expr]{expressions}
 representing commonly used expressions of Head-to-Head functions for
-computing Head-to-Head values with \code{\link[=h2h_long]{h2h_long()}} or \code{\link[=h2h_mat]{h2h_mat()}}. Names of
-the elements will be used as Head-to-Head value names. To use them inside
-\code{h2h_long()} or \code{h2h_mat()} use \link[rlang:quasiquotation]{unquoting}
-mechanism from rlang package.
+computing Head-to-Head values with \code{\link[=h2h_long]{h2h_long()}} or \code{\link[=h2h_mat]{h2h_mat()}}. Names of the
+elements will be used as Head-to-Head value names. To use them inside
+\code{h2h_long()} or \code{h2h_mat()} use \link[rlang:quasiquotation]{unquoting} mechanism
+from rlang package.
 
 Currently present functions:
 \itemize{
-\item \code{mean_score_diff} - computes mean score difference of \code{player1}
-compared to \code{player2}.
-\item \code{mean_score_diff_pos} - equivalent to \code{mean_score_diff} but
-returns 0 if result is negative.
+\item \code{mean_score_diff} - computes mean score difference of \code{player1} compared to
+\code{player2}.
+\item \code{mean_score_diff_pos} - equivalent to \code{mean_score_diff} but returns 0 if
+result is negative.
 \item \code{mean_score} - computes mean score of \code{player1}.
-\item \code{sum_score_diff} - computes sum of score differences of
-\code{player1} compared to \code{player2}.
-\item \code{sum_score_diff_pos} - equivalent to \code{sum_score_diff} but
-returns 0 if result is negative.
+\item \code{sum_score_diff} - computes sum of score differences of \code{player1} compared
+to \code{player2}.
+\item \code{sum_score_diff_pos} - equivalent to \code{sum_score_diff} but returns 0 if
+result is negative.
 \item \code{sum_score} - computes sum of scores of \code{player1}.
-\item \code{num_wins} - computes number of matchups \code{player1} scored \strong{more}
-than \code{player2}. Draws (determined by \code{\link[dplyr:near]{dplyr::near()}}) are omitted.
+\item \code{num_wins} - computes number of matchups \code{player1} scored \strong{more} than
+\code{player2}. Draws (determined by \code{\link[dplyr:near]{dplyr::near()}}) are omitted.
 \item \code{num_wins2} - computes number of matchups \code{player1} scored \strong{more} than
 \code{player2} \strong{plus} half the number of matchups where they had draw. \strong{Note}
 that for equal \code{player1} and \code{player2} there might be non-zero output.
