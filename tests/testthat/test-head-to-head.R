@@ -105,6 +105,16 @@ test_that("to_h2h_long works", {
 })
 
 
+# as_tibble.h2h_long --------------------------------------------------------
+test_that("as_tibble.h2h_long removes `h2h_long` class", {
+  input <- output_long
+  output_ref <- input
+  class(output_ref) <- class(dplyr::tibble())
+
+  expect_identical(dplyr::as_tibble(input), output_ref)
+})
+
+
 # h2h_mat -----------------------------------------------------------------
 test_that("h2h_mat works", {
   expect_equal(

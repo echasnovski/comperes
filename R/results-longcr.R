@@ -5,6 +5,7 @@
 #' @param cr_data Data of competition results (convertible to tabular).
 #' @param repair Whether to repair input.
 #' @param ... Additional arguments to be passed to or from methods.
+#' @param x Object to be converted to [tibble][tibble::tibble].
 #'
 #' @section Long format of competition results:
 #' It is assumed that competition consists from multiple games (matches,
@@ -14,8 +15,8 @@
 #' that fully characterizes player's performance in particular game (in most
 #' cases it is some numeric value).
 #'
-#' `longcr` inherits from [tibble][tibble::tibble]. Data should have at least
-#' three columns with the following names:
+#' `longcr` inherits from `tibble`. Data should have at least three columns with
+#' the following names:
 #' - `game` - game identifier.
 #' - `player` - player identifier.
 #' - `score` - score of particular player in particular game.
@@ -68,6 +69,8 @@
 #'
 #' `as_longcr()` returns an object of class `longcr`.
 #'
+#' `as_tibble()` applied to `longcr` object drops `longcr` class.
+#'
 #' @examples # Repairing example
 #' cr_data <- data.frame(
 #'   playerscoregame_ID = rep(1:5, times = 2),
@@ -76,7 +79,10 @@
 #'   scoreSS = 41:50
 #' )
 #' cr_data_long <- as_longcr(cr_data, repair = TRUE)
+#'
 #' is_longcr(cr_data_long)
+#'
+#' as_tibble(cr_data_long)
 #'
 #' @name longcr
 #' @seealso [Wide format][widecr]
@@ -94,6 +100,12 @@ is_longcr <- function(cr_data) {
 #' @export
 as_longcr <- function(cr_data, repair = TRUE, ...) {
   UseMethod("as_longcr")
+}
+
+#' @rdname longcr
+#' @export
+as_tibble.longcr <- function(x, ...) {
+  as_tibble(remove_class_cond(x, "longcr"), ...)
 }
 
 #' @export

@@ -63,6 +63,21 @@ test_that("is_widecr handles data with no 'player' or 'score' columns", {
 })
 
 
+# as_tibble.widecr --------------------------------------------------------
+test_that("as_tibble.widecr removes `widecr` class", {
+  input_1 <- input_good
+  class(input_1) <- c("widecr", "data.frame")
+  output_ref <- dplyr::as_tibble(input_good)
+
+  expect_identical(dplyr::as_tibble(input_1), output_ref)
+
+  input_2 <- dplyr::as_tibble(input_good)
+  class(input_2) <- c("widecr", class(dplyr::tibble()))
+
+  expect_identical(as_tibble(input_2), output_ref)
+})
+
+
 # as_widecr.default -------------------------------------------------------
 test_that("as_widecr.default handles simple repairing", {
   output_ref_1 <- dplyr::tibble(

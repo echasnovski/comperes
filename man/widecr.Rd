@@ -4,11 +4,14 @@
 \alias{widecr}
 \alias{is_widecr}
 \alias{as_widecr}
+\alias{as_tibble.widecr}
 \title{Wide format of competition results}
 \usage{
 is_widecr(cr_data)
 
 as_widecr(cr_data, repair = TRUE, ...)
+
+\method{as_tibble}{widecr}(x, ...)
 }
 \arguments{
 \item{cr_data}{Data of competition results (convertible to tabular).}
@@ -16,6 +19,8 @@ as_widecr(cr_data, repair = TRUE, ...)
 \item{repair}{Whether to repair input.}
 
 \item{...}{Additional arguments to be passed to or from methods.}
+
+\item{x}{Object to be converted to \link[tibble:tibble]{tibble}.}
 }
 \value{
 \code{is_widecr()} returns \code{TRUE} if its argument is appropriate object
@@ -25,6 +30,8 @@ words, to be \link[tibble:tibble]{tibble}) and have complete pairs of
 "player" and "score" respectively.
 
 \code{as_widecr()} returns an object of class \code{widecr}.
+
+\code{as_tibble()} applied to \code{widecr} object drops \code{widecr} class.
 }
 \description{
 Functions for dealing with competition results in wide format.
@@ -58,10 +65,10 @@ In every game every player has some score: the value of arbitrary nature
 that fully characterizes player's performance in particular game (in most
 cases it is some numeric value).
 
-\code{widecr} inherits from \link[tibble:tibble]{tibble}. Data should be organized in
-pairs of columns "player"-"score". Identifier of a pair should go after
-respective keyword and consist only from digits. For example: player1,
-score1, player2, score2. Order doesn't matter. Extra columns are allowed.
+\code{widecr} inherits from \code{tibble}. Data should be organized in pairs of columns
+"player"-"score". Identifier of a pair should go after respective keyword and
+consist only from digits. For example: player1, score1, player2, score2.
+Order doesn't matter. Extra columns are allowed.
 
 To account for R standard string ordering, identifiers of pairs should be
 formatted with leading zeros (when appropriate). For example: player01,
@@ -103,7 +110,10 @@ cr_data <- data.frame(
   otherColumn =  101:110
 )
 cr_data_wide <- as_widecr(cr_data, repair = TRUE)
+
 is_widecr(cr_data_wide)
+
+as_tibble(cr_data_wide)
 
 }
 \seealso{

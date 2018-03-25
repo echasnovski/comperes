@@ -12,6 +12,7 @@
 #' @param value String name to be used for column with Head-to-Head value.
 #' @param drop Use `TRUE` to drop rows with missing Head-to-Head values (see
 #'   Details).
+#' @param x Object to be converted to [tibble][tibble::tibble].
 #'
 #' @section Head-to-Head value:
 #' Head-to-Head value is a summary statistic of direct confrontation between two
@@ -49,9 +50,11 @@
 #' `drop = TRUE` to remove rows with missing values in value column (but not in
 #' players').
 #'
-#' @return An object of class `h2h_long` which is a
-#'   [tibble][tibble::tibble] with columns `player1`, `player2` and those,
-#'   produced by Head-to-Head functions (for `h2h_long()` maybe none).
+#' @return An object of class `h2h_long` which is a [tibble][tibble::tibble]
+#' with columns `player1`, `player2` and those, produced by Head-to-Head
+#' functions (for `h2h_long()` maybe none).
+#'
+#' `as_tibble()` applied to `h2h_long` object drops `h2h_long` class.
 #'
 #' @examples
 #' ncaa2005 %>%
@@ -101,6 +104,12 @@ to_h2h_long <- function(mat, value = "h2h_value", drop = FALSE) {
   mat %>%
     mat_to_long("player1", "player2", value, drop = drop) %>%
     add_class_cond("h2h_long")
+}
+
+#' @rdname h2h_long
+#' @export
+as_tibble.h2h_long <- function(x, ...) {
+  as_tibble(remove_class_cond(x, "h2h_long"), ...)
 }
 
 

@@ -1,4 +1,7 @@
 # General -----------------------------------------------------------------
+#' @export
+tibble::as_tibble
+
 add_name_prefix <- function(tbl, prefix = "", except = NULL) {
   if (identical(prefix, "") || (length(prefix) == 0)) {
     return(tbl)

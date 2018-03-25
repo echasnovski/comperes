@@ -4,11 +4,14 @@
 \alias{longcr}
 \alias{is_longcr}
 \alias{as_longcr}
+\alias{as_tibble.longcr}
 \title{Long format of competition results}
 \usage{
 is_longcr(cr_data)
 
 as_longcr(cr_data, repair = TRUE, ...)
+
+\method{as_tibble}{longcr}(x, ...)
 }
 \arguments{
 \item{cr_data}{Data of competition results (convertible to tabular).}
@@ -16,6 +19,8 @@ as_longcr(cr_data, repair = TRUE, ...)
 \item{repair}{Whether to repair input.}
 
 \item{...}{Additional arguments to be passed to or from methods.}
+
+\item{x}{Object to be converted to \link[tibble:tibble]{tibble}.}
 }
 \value{
 \code{is_longcr()} returns \code{TRUE} if its argument is appropriate object of
@@ -24,6 +29,8 @@ words, to be \link[tibble:tibble]{tibble}) and have "game", "player", "score"
 among column names.
 
 \code{as_longcr()} returns an object of class \code{longcr}.
+
+\code{as_tibble()} applied to \code{longcr} object drops \code{longcr} class.
 }
 \description{
 Functions for dealing with competition results in long format.
@@ -59,8 +66,8 @@ In every game every player has some score: the value of arbitrary nature
 that fully characterizes player's performance in particular game (in most
 cases it is some numeric value).
 
-\code{longcr} inherits from \link[tibble:tibble]{tibble}. Data should have at least
-three columns with the following names:
+\code{longcr} inherits from \code{tibble}. Data should have at least three columns with
+the following names:
 \itemize{
 \item \code{game} - game identifier.
 \item \code{player} - player identifier.
@@ -103,7 +110,10 @@ cr_data <- data.frame(
   scoreSS = 41:50
 )
 cr_data_long <- as_longcr(cr_data, repair = TRUE)
+
 is_longcr(cr_data_long)
+
+as_tibble(cr_data_long)
 
 }
 \seealso{

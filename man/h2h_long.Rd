@@ -4,11 +4,14 @@
 \alias{h2h_long}
 \alias{h2h_long}
 \alias{to_h2h_long}
+\alias{as_tibble.h2h_long}
 \title{Compute long format of Head-to-Head values}
 \usage{
 h2h_long(cr_data, ..., fill = list())
 
 to_h2h_long(mat, value = "h2h_value", drop = FALSE)
+
+\method{as_tibble}{h2h_long}(x, ...)
 }
 \arguments{
 \item{cr_data}{Competition results ready for \code{\link[=as_longcr]{as_longcr()}}.}
@@ -25,11 +28,15 @@ use instead of \code{NA} for missing pairs (see tidyr's
 
 \item{drop}{Use \code{TRUE} to drop rows with missing Head-to-Head values (see
 Details).}
+
+\item{x}{Object to be converted to \link[tibble:tibble]{tibble}.}
 }
 \value{
-An object of class \code{h2h_long} which is a
-\link[tibble:tibble]{tibble} with columns \code{player1}, \code{player2} and those,
-produced by Head-to-Head functions (for \code{h2h_long()} maybe none).
+An object of class \code{h2h_long} which is a \link[tibble:tibble]{tibble}
+with columns \code{player1}, \code{player2} and those, produced by Head-to-Head
+functions (for \code{h2h_long()} maybe none).
+
+\code{as_tibble()} applied to \code{h2h_long} object drops \code{h2h_long} class.
 }
 \description{
 Functions to compute Head-to-Head values in long pair-value format.

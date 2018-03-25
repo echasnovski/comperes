@@ -5,6 +5,7 @@
 #' @param cr_data Data of competition results (convertible to tabular).
 #' @param repair Whether to repair input.
 #' @param ... Additional arguments to be passed to or from methods.
+#' @param x Object to be converted to [tibble][tibble::tibble].
 #'
 #' @section Wide format of competition results:
 #' It is assumed that competition consists from multiple games (matches,
@@ -14,10 +15,10 @@
 #' that fully characterizes player's performance in particular game (in most
 #' cases it is some numeric value).
 #'
-#' `widecr` inherits from [tibble][tibble::tibble]. Data should be organized in
-#' pairs of columns "player"-"score". Identifier of a pair should go after
-#' respective keyword and consist only from digits. For example: player1,
-#' score1, player2, score2. Order doesn't matter. Extra columns are allowed.
+#' `widecr` inherits from `tibble`. Data should be organized in pairs of columns
+#' "player"-"score". Identifier of a pair should go after respective keyword and
+#' consist only from digits. For example: player1, score1, player2, score2.
+#' Order doesn't matter. Extra columns are allowed.
 #'
 #' To account for R standard string ordering, identifiers of pairs should be
 #' formatted with leading zeros (when appropriate). For example: player01,
@@ -70,6 +71,8 @@
 #'
 #' `as_widecr()` returns an object of class `widecr`.
 #'
+#' `as_tibble()` applied to `widecr` object drops `widecr` class.
+#'
 #' @examples
 #' cr_data <- data.frame(
 #'   playerA = 1:10,
@@ -79,7 +82,10 @@
 #'   otherColumn =  101:110
 #' )
 #' cr_data_wide <- as_widecr(cr_data, repair = TRUE)
+#'
 #' is_widecr(cr_data_wide)
+#'
+#' as_tibble(cr_data_wide)
 #'
 #' @name widecr
 #' @seealso [Long format][longcr]
@@ -122,6 +128,12 @@ is_widecr <- function(cr_data) {
 #' @export
 as_widecr <- function(cr_data, repair = TRUE, ...) {
   UseMethod("as_widecr")
+}
+
+#' @rdname widecr
+#' @export
+as_tibble.widecr <- function(x, ...) {
+  as_tibble(remove_class_cond(x, "widecr"), ...)
 }
 
 #' @export

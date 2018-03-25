@@ -32,6 +32,21 @@ test_that("is_longcr works", {
 })
 
 
+# as_tibble.longcr --------------------------------------------------------
+test_that("as_tibble.longcr removes `longcr` class", {
+  input_1 <- input_good
+  class(input_1) <- c("longcr", "data.frame")
+  output_ref <- dplyr::as_tibble(input_good)
+
+  expect_identical(dplyr::as_tibble(input_1), output_ref)
+
+  input_2 <- dplyr::as_tibble(input_good)
+  class(input_2) <- c("longcr", class(dplyr::tibble()))
+
+  expect_identical(as_tibble(input_2), output_ref)
+})
+
+
 # as_longcr.default -------------------------------------------------------
 test_that("as_longcr.default handles simple repairing", {
   output_ref_1 <- dplyr::tibble(
