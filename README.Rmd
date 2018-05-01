@@ -90,7 +90,7 @@ ncaa2005 %>% summarise_player(!!! summary_funs)
 To modify scores based on the rest of results one can use `join_*_summary()` functions:
 
 ```{r join-item-summary, warning = FALSE}
-library(dplyr)
+suppressPackageStartupMessages(library(dplyr))
 ncaa2005_mod <- ncaa2005 %>%
   join_player_summary(player_mean_score = mean(score)) %>%
   join_game_summary(game_mean_score = mean(score)) %>%

@@ -88,11 +88,11 @@ ncaa2005 %>%
 #> # A tibble: 5 x 3
 #>   player min_score mean_score
 #>   <chr>      <dbl>      <dbl>
-#> 1 Duke        0          8.75
-#> 2 Miami      25.0       34.5 
-#> 3 UNC         3.00      12.5 
-#> 4 UVA         5.00      18.5 
-#> 5 VT          7.00      33.5
+#> 1 Duke          0.       8.75
+#> 2 Miami        25.      34.5 
+#> 3 UNC           3.      12.5 
+#> 4 UVA           5.      18.5 
+#> 5 VT            7.      33.5
 
 # Using list of common summary functions
 library(rlang)
@@ -117,26 +117,18 @@ ncaa2005 %>% summarise_player(!!! summary_funs)
 #> # A tibble: 5 x 9
 #>   player min_score max_score mean_score median_score sd_score sum_score
 #>   <chr>      <dbl>     <dbl>      <dbl>        <dbl>    <dbl>     <int>
-#> 1 Duke        0         21.0       8.75         7.00     8.81        35
-#> 2 Miami      25.0       52.0      34.5         30.5     12.3        138
-#> 3 UNC         3.00      24.0      12.5         11.5      9.40        50
-#> 4 UVA         5.00      38.0      18.5         15.5     14.0         74
-#> 5 VT          7.00      52.0      33.5         37.5     19.9        134
+#> 1 Duke          0.       21.       8.75         7.00     8.81        35
+#> 2 Miami        25.       52.      34.5         30.5     12.3        138
+#> 3 UNC           3.       24.      12.5         11.5      9.40        50
+#> 4 UVA           5.       38.      18.5         15.5     14.0         74
+#> 5 VT            7.       52.      33.5         37.5     19.9        134
 #> # ... with 2 more variables: num_games <int>, num_players <int>
 ```
 
 To modify scores based on the rest of results one can use `join_*_summary()` functions:
 
 ``` r
-library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
+suppressPackageStartupMessages(library(dplyr))
 ncaa2005_mod <- ncaa2005 %>%
   join_player_summary(player_mean_score = mean(score)) %>%
   join_game_summary(game_mean_score = mean(score)) %>%
@@ -152,7 +144,7 @@ ncaa2005_mod
 #> 3     2 Duke   -13.8               8.75            22.5
 #> 4     2 UNC    -10.0              12.5             22.5
 #> 5     3 Duke   -13.8               8.75            22.5
-#> 6     3 UVA    - 4.00             18.5             22.5
+#> 6     3 UVA     -4.00             18.5             22.5
 #> # ... with 14 more rows
 
 ncaa2005_mod %>% summarise_player(mean_score = mean(score))
@@ -161,8 +153,8 @@ ncaa2005_mod %>% summarise_player(mean_score = mean(score))
 #>   <chr>       <dbl>
 #> 1 Duke       -15.5 
 #> 2 Miami       11.4 
-#> 3 UNC        - 5.00
-#> 4 UVA        - 2.12
+#> 3 UNC         -5.00
+#> 4 UVA         -2.12
 #> 5 VT          11.2
 ```
 
@@ -201,12 +193,12 @@ ncaa2005 %>%
 #> # A tibble: 25 x 4
 #>   player1 player2 mean_score_diff num_wins
 #>   <chr>   <chr>             <dbl>    <int>
-#> 1 Duke    Duke               0           0
-#> 2 Duke    Miami            -45.0         0
-#> 3 Duke    UNC              - 3.00        0
-#> 4 Duke    UVA              -31.0         0
-#> 5 Duke    VT               -45.0         0
-#> 6 Miami   Duke              45.0         1
+#> 1 Duke    Duke                 0.        0
+#> 2 Duke    Miami              -45.        0
+#> 3 Duke    UNC                 -3.        0
+#> 4 Duke    UVA                -31.        0
+#> 5 Duke    VT                 -45.        0
+#> 6 Miami   Duke                45.        1
 #> # ... with 19 more rows
 
 ncaa2005 %>% h2h_mat(mean(score1 - score2))
@@ -227,12 +219,12 @@ ncaa2005 %>% h2h_long(!!! h2h_funs)
 #> # A tibble: 25 x 11
 #>   player1 player2 mean_score_diff mean_score_diff_pos mean_score
 #>   <chr>   <chr>             <dbl>               <dbl>      <dbl>
-#> 1 Duke    Duke               0                    0         8.75
-#> 2 Duke    Miami            -45.0                  0         7.00
-#> 3 Duke    UNC              - 3.00                 0        21.0 
-#> 4 Duke    UVA              -31.0                  0         7.00
-#> 5 Duke    VT               -45.0                  0         0   
-#> 6 Miami   Duke              45.0                 45.0      52.0 
+#> 1 Duke    Duke                 0.                  0.       8.75
+#> 2 Duke    Miami              -45.                  0.       7.00
+#> 3 Duke    UNC                 -3.                  0.      21.0 
+#> 4 Duke    UVA                -31.                  0.       7.00
+#> 5 Duke    VT                 -45.                  0.       0.  
+#> 6 Miami   Duke                45.                 45.      52.0 
 #> # ... with 19 more rows, and 6 more variables: sum_score_diff <int>,
 #> #   sum_score_diff_pos <dbl>, sum_score <int>, num_wins <dbl>,
 #> #   num_wins2 <dbl>, num <int>
