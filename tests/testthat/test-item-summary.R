@@ -12,10 +12,10 @@ input <- data.frame(
 
 # summarise_item ----------------------------------------------------------
 test_that("summarise_item works with item of length zero", {
-  expect_equal(summarise_item(input, character(0)), dplyr::tibble())
+  expect_equal(summarise_item(input, character(0)), tibble::tibble())
 
   output <- summarise_item(input, character(0), mean_score = mean(score))
-  output_ref <- dplyr::tibble(mean_score = 50.5)
+  output_ref <- tibble::tibble(mean_score = 50.5)
 
   expect_equal(output, output_ref)
 })
@@ -25,7 +25,7 @@ test_that("summarise_item works with item of length one", {
     tbl = input, item = "game",
     mean_score = mean(score), sum_score = sum(score)
   )
-  output_ref <- dplyr::tibble(
+  output_ref <- tibble::tibble(
     game = 1:20,
     mean_score = seq(from = 31.5, to = 69.5, by = 2),
     sum_score = 63L + (0:19)*4L
@@ -39,7 +39,7 @@ test_that("summarise_item works with item length more than one", {
     tbl = input, item = c("season", "player"),
     mean_score = mean(score), sum_score = sum(score)
   )
-  output_ref <- dplyr::tibble(
+  output_ref <- tibble::tibble(
     season = rep(1:2, each = 10),
     player = rep(1:10, times = 2),
     mean_score = as.numeric(c(36:45, 56:65)),
@@ -50,7 +50,7 @@ test_that("summarise_item works with item length more than one", {
 })
 
 test_that("summarise_item works with no functions supplied", {
-  output_ref <- dplyr::tibble(game = 1:20)
+  output_ref <- tibble::tibble(game = 1:20)
 
   expect_identical(summarise_item(tbl = input, item = "game"), output_ref)
 })
@@ -63,7 +63,7 @@ test_that("summarise_item works with argument `.prefix`", {
     NA,
     .prefix = "game_"
   )
-  output_ref <- dplyr::tibble(
+  output_ref <- tibble::tibble(
     game = 1:20,
     game_mean_score = seq(from = 31.5, to = 69.5, by = 2),
     game_sum_score = 63L + (0:19)*4L,
@@ -73,11 +73,13 @@ test_that("summarise_item works with argument `.prefix`", {
   expect_equal(output, output_ref)
 
   # Check that it works with zero-length item
-  expect_equal(summarise_item(input, character(0), .prefix = "a_"), tibble())
+  expect_equal(
+    summarise_item(input, character(0), .prefix = "a_"), tibble::tibble()
+  )
 
   output <- summarise_item(input, character(0), mean_score = mean(score),
                            .prefix = "a_")
-  output_ref <- dplyr::tibble(a_mean_score = 50.5)
+  output_ref <- tibble::tibble(a_mean_score = 50.5)
   expect_equal(output, output_ref)
 })
 
@@ -89,31 +91,31 @@ test_that("summarise_item throws errors", {
 
 # summarise_game ----------------------------------------------------------
 test_that("summarise_game works", {
-  expect_equal(summarise_game(input), dplyr::tibble(game = 1:20))
+  expect_equal(summarise_game(input), tibble::tibble(game = 1:20))
 })
 
 
 # summarise_player --------------------------------------------------------
 test_that("summarise_player works", {
-  expect_equal(summarise_player(input), dplyr::tibble(player = 1:10))
+  expect_equal(summarise_player(input), tibble::tibble(player = 1:10))
 })
 
 
 # summarize_item ----------------------------------------------------------
 test_that("summarize_item works", {
-  expect_equal(summarize_item(input, "game"), dplyr::tibble(game = 1:20))
+  expect_equal(summarize_item(input, "game"), tibble::tibble(game = 1:20))
 })
 
 
 # summarize_game ----------------------------------------------------------
 test_that("summarize_game works", {
-  expect_equal(summarize_game(input), dplyr::tibble(game = 1:20))
+  expect_equal(summarize_game(input), tibble::tibble(game = 1:20))
 })
 
 
 # summarize_player --------------------------------------------------------
 test_that("summarize_player works", {
-  expect_equal(summarize_player(input), dplyr::tibble(player = 1:10))
+  expect_equal(summarize_player(input), tibble::tibble(player = 1:10))
 })
 
 

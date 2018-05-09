@@ -85,7 +85,7 @@ get_matchups(cr_long)
 
 Head-to-Head values can be stored in two ways:
 
-- __Long__, a tibble with columns `player1` and `player2` which identify ordered pair of players, and columns corresponding to Head-to-Head values. Computation is done with `h2h_long()` which returns an object of class `h2h_long`. Head-to-Head functions are specified as in `dplyr`'s grammar __for results matchups__:
+- __Long__, a `tibble` with columns `player1` and `player2` which identify ordered pair of players, and columns corresponding to Head-to-Head values. Computation is done with `h2h_long()` which returns an object of class `h2h_long`. Head-to-Head functions are specified as in `dplyr`'s grammar __for results matchups__:
 
 ```{r h2h_long}
 cr_long %>%

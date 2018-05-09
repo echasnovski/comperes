@@ -9,13 +9,13 @@ cr_data <- data.frame(
   scoreSP = -(1:8)
 )
 
-output_long <- dplyr::tibble(
+output_long <- tibble::tibble(
   player1 = rep(c(1, 2, NA), each = 3),
   player2 = rep(c(1, 2, NA), times = 3),
   mean_score1 = c(4, 5.5, 1, 5.5, 19/3, NA, 2.5, NA, 2.5),
   sum_score = c(24, 22, 7, 22, 38, NA, 7, NA, 20)
 )
-class(output_long) <- c("h2h_long", class(dplyr::tibble()))
+class(output_long) <- c("h2h_long", class(tibble::tibble()))
 
 output_mat <- matrix(
   c(  4,  5.5,   1,
@@ -48,12 +48,12 @@ test_that("h2h_long handles `player` as factor", {
   input$player <- factor(input$player, levels = c(1, 2, 3))
 
   output <- h2h_long(input, sum_score = sum(score1 + score2))
-  output_ref <- dplyr::tibble(
+  output_ref <- tibble::tibble(
     player1 = factor(rep(c(1, 2, 3), each = 3), levels = c(1, 2, 3)),
     player2 = factor(rep(c(1, 2, 3), times = 3), levels = c(1, 2, 3)),
     sum_score = c(24, 22, NA, 22, 38, rep(NA, 4))
   )
-  class(output_ref) <- c("h2h_long", class(dplyr::tibble()))
+  class(output_ref) <- c("h2h_long", class(tibble::tibble()))
 
   expect_is(output, "h2h_long")
   expect_equal(output, output_ref)
@@ -109,9 +109,9 @@ test_that("to_h2h_long works", {
 test_that("as_tibble.h2h_long removes `h2h_long` class", {
   input <- output_long
   output_ref <- input
-  class(output_ref) <- class(dplyr::tibble())
+  class(output_ref) <- class(tibble::tibble())
 
-  expect_identical(dplyr::as_tibble(input), output_ref)
+  expect_identical(tibble::as_tibble(input), output_ref)
 })
 
 

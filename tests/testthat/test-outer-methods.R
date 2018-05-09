@@ -2,14 +2,14 @@ context("outer-methods")
 
 
 # Input data --------------------------------------------------------------
-input_longcr <- dplyr::tibble(
+input_longcr <- tibble::tibble(
   game = 1:10,
   player = 11:20,
   score = 101:110
 )
 input_longcr <- add_class(input_longcr, "longcr")
 
-input_widecr <- dplyr::tibble(
+input_widecr <- tibble::tibble(
   game = 1:10,
   player1 = 1:10,
   score1 = 11:20,
@@ -18,12 +18,12 @@ input_widecr <- dplyr::tibble(
 )
 input_widecr <- add_class(input_widecr, "widecr")
 
-input_join <- dplyr::tibble(
+input_join <- tibble::tibble(
   game = 10:6,
   value1 = -(1:5)
 )
 
-input_h2h_long <- dplyr::tibble(
+input_h2h_long <- tibble::tibble(
   player1 = c(1, 1, 2, 2),
   player2 = c(1, NA, 1, NA),
   value1 = 1:4,
@@ -175,7 +175,7 @@ test_that("[.longcr works", {
 # print.longcr ------------------------------------------------------------
 test_that("print.longcr works", {
   input <- input_longcr
-  class(input) <- class(dplyr::tibble())
+  class(input) <- class(tibble::tibble())
 
   tibble_output_ref <- capture_output(print(input))
 
@@ -321,7 +321,7 @@ test_that("[.widecr works", {
 # print.widecr ------------------------------------------------------------
 test_that("print.widecr works", {
   input <- input_widecr
-  class(input) <- class(dplyr::tibble())
+  class(input) <- class(tibble::tibble())
 
   tibble_output_ref <- capture_output(print(input))
 
@@ -467,7 +467,7 @@ test_that("[.h2h_long works", {
 # print.h2h_long ------------------------------------------------------------
 test_that("print.h2h_long works", {
   input <- input_h2h_long
-  class(input) <- class(dplyr::tibble())
+  class(input) <- class(tibble::tibble())
 
   tibble_output_ref <- capture_output(print(input))
 

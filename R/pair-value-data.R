@@ -127,7 +127,7 @@ mat_to_long <- function(mat, row_key, col_key, value, drop = FALSE) {
   cols <- rep(colnames(mat), times = nrow(mat))
   vals <- c(t(mat))
 
-  res <- tibble(row = rows, col = cols, val = vals)
+  res <- tibble::tibble(row = rows, col = cols, val = vals)
   colnames(res) <- c(row_key, col_key, value)
 
   if (isTRUE(drop)) {

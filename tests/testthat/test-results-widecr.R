@@ -27,7 +27,7 @@ input_good <- data.frame(
   score2 = 12:21
 )
 
-input_longcr <- dplyr::tibble(
+input_longcr <- tibble::tibble(
   game = rep(1:10, each = 2),
   player = rep(11:20, times = 2),
   score = rep(101:110, times = 2),
@@ -38,7 +38,7 @@ input_longcr <- add_class(input_longcr, "longcr")
 
 # is_widecr ---------------------------------------------------------------
 test_that("is_widecr works", {
-  output_ref_2 <- dplyr::as_tibble(input_2)
+  output_ref_2 <- tibble::as_tibble(input_2)
   output_ref_2 <- add_class(output_ref_2, "widecr")
   expect_true(is_widecr(output_ref_2))
 
@@ -49,7 +49,7 @@ test_that("is_widecr works", {
 })
 
 test_that("is_widecr returns FALSE on non-digit pair identifier", {
-  output_ref_2 <- dplyr::as_tibble(input_2)
+  output_ref_2 <- tibble::as_tibble(input_2)
   output_ref_2 <- add_class(output_ref_2, "widecr")
   colnames(output_ref_2)[c(1, 11)] <- c("playerA", "scoreA")
 
@@ -57,7 +57,7 @@ test_that("is_widecr returns FALSE on non-digit pair identifier", {
 })
 
 test_that("is_widecr handles data with no 'player' or 'score' columns", {
-  input_nocols <- dplyr::tibble(x = 1:10)
+  input_nocols <- tibble::tibble(x = 1:10)
   input_nocols <- add_class(input_nocols, "widecr")
   expect_false(is_widecr(input_nocols))
 })
@@ -67,12 +67,12 @@ test_that("is_widecr handles data with no 'player' or 'score' columns", {
 test_that("as_tibble.widecr removes `widecr` class", {
   input_1 <- input_good
   class(input_1) <- c("widecr", "data.frame")
-  output_ref <- dplyr::as_tibble(input_good)
+  output_ref <- tibble::as_tibble(input_good)
 
-  expect_identical(dplyr::as_tibble(input_1), output_ref)
+  expect_identical(tibble::as_tibble(input_1), output_ref)
 
-  input_2 <- dplyr::as_tibble(input_good)
-  class(input_2) <- c("widecr", class(dplyr::tibble()))
+  input_2 <- tibble::as_tibble(input_good)
+  class(input_2) <- c("widecr", class(tibble::tibble()))
 
   expect_identical(as_tibble(input_2), output_ref)
 })
@@ -80,7 +80,7 @@ test_that("as_tibble.widecr removes `widecr` class", {
 
 # as_widecr.default -------------------------------------------------------
 test_that("as_widecr.default handles simple repairing", {
-  output_ref_1 <- dplyr::tibble(
+  output_ref_1 <- tibble::tibble(
     player1 = 1:10,
     score1 = rep(NA_integer_, 10),
     player2 = 2:11,
@@ -93,7 +93,7 @@ test_that("as_widecr.default handles simple repairing", {
 
   expect_identical(as_widecr(input_1, repair = TRUE), output_ref_1)
 
-  output_ref_2 <- dplyr::tibble(
+  output_ref_2 <- tibble::tibble(
     player1 = 1:10,
     score1 = rep(NA_integer_, 10)
   )
@@ -119,7 +119,7 @@ test_that("as_widecr.default places column 'game' on first place", {
   input_game_col <- input_1
   input_game_col$game <- 1001:1010
 
-  output_ref_game_col <- dplyr::tibble(
+  output_ref_game_col <- tibble::tibble(
     game = 1001:1010,
     player1 = 1:10,
     score1 = rep(NA_integer_, 10),
@@ -147,7 +147,7 @@ test_that("as_widecr.default correctly renames many columns", {
 })
 
 test_that("as_widecr.default works properly on good inputs", {
-  output_ref_good <- dplyr::as_tibble(input_good)
+  output_ref_good <- tibble::as_tibble(input_good)
   output_ref_good <- add_class(output_ref_good, "widecr")
 
   expect_identical(as_widecr(input_good, repair = TRUE), output_ref_good)
@@ -157,7 +157,7 @@ test_that("as_widecr.default preserves column types", {
   input_types <- input_good
   input_types$game <- 1:10
   input_types$extraCol <- -(1:10)
-  output_ref_types <- dplyr::as_tibble(input_good)
+  output_ref_types <- tibble::as_tibble(input_good)
   output_ref_types$game <- 1:10
   output_ref_types$extraCol <- -(1:10)
   output_ref_types <- add_class(output_ref_types, "widecr")
@@ -219,7 +219,7 @@ test_that("as_widecr.default preserves column types", {
 })
 
 test_that("as_widecr.default works without repairing", {
-  output_ref_2 <- dplyr::as_tibble(input_2)
+  output_ref_2 <- tibble::as_tibble(input_2)
   output_ref_2 <- add_class(output_ref_2, "widecr")
 
   expect_identical(as_widecr(input_2, repair = FALSE), output_ref_2)
@@ -233,7 +233,7 @@ test_that("as_widecr.default handles extra arguments", {
 
 # as_widecr.longcr --------------------------------------------------------
 test_that("as_widecr.longcr does simple converting", {
-  output_ref_widecr_from_longcr <- dplyr::tibble(
+  output_ref_widecr_from_longcr <- tibble::tibble(
     game = 1:10,
     player1 = rep(seq(from = 11L, to = 19L, by = 2L), 2),
     score1 = rep(seq(from = 101L, to = 109L, by = 2L), 2),
@@ -276,7 +276,7 @@ test_that("as_widecr.longcr throws error on corrupted longcr object", {
 
 test_that("as_widecr.longcr preserves column types", {
   input_types <- input_longcr
-  output_ref_types <- dplyr::tibble(
+  output_ref_types <- tibble::tibble(
     game = 1:10,
     player1 = rep(seq(from = 11L, to = 19L, by = 2L), 2),
     score1 = rep(seq(from = 101L, to = 109L, by = 2L), 2),
@@ -350,7 +350,7 @@ test_that("as_widecr.widecr works", {
 # repair_widecr -----------------------------------------------------------
 test_that("repair_widecr works", {
   # Most essential tests are provided in as_widecr() methods
-  input <- dplyr::as_tibble(input_good)
+  input <- tibble::as_tibble(input_good)
   input <- add_class(input, "widecr")
 
   expect_identical(repair_widecr(input), input)

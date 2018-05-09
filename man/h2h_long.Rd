@@ -36,7 +36,8 @@ An object of class \code{h2h_long} which is a \link[tibble:tibble]{tibble}
 with columns \code{player1}, \code{player2} and those, produced by Head-to-Head
 functions (for \code{h2h_long()} maybe none).
 
-\code{as_tibble()} applied to \code{h2h_long} object drops \code{h2h_long} class.
+\link[tibble:as_tibble]{as_tibble()} applied to \code{h2h_long} object drops
+\code{h2h_long} class.
 }
 \description{
 Functions to compute Head-to-Head values in long pair-value format.

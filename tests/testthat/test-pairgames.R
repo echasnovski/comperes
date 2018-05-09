@@ -12,7 +12,7 @@ input <- data.frame(
 
 # to_pairgames ------------------------------------------------------------
 test_that("to_pairgames works", {
-  output_ref <- dplyr::tibble(
+  output_ref <- tibble::tibble(
     game = 1:16,
     player1 = c(1, 1, 2, 4, 4, 5, 2, 2, 3, 5,
                 5, 1, 3, 3, 4, 1),
@@ -34,7 +34,7 @@ test_that("to_pairgames handles NA and NaN", {
     player = c(1, NA, NaN),
     score = 1:3
   )
-  output_ref_na <- dplyr::tibble(
+  output_ref_na <- tibble::tibble(
     game = 1:3,
     player1 = c(1, 1, NA),
     score1 = c(1L, 1L, 2L),
@@ -55,7 +55,7 @@ test_that("to_pairgames doesn't change pairgames", {
 test_that("is_pairgames works", {
   expect_false(is_pairgames(input))
 
-  input_pairgames <- dplyr::tibble(
+  input_pairgames <- tibble::tibble(
     game = 1:16,
     player1 = c(1, 1, 2, 4, 4, 5, 2, 2, 3, 5,
                 5, 1, 3, 3, 4, 1),

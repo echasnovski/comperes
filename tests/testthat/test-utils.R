@@ -3,12 +3,12 @@ context("utils")
 
 # add_name_prefix ---------------------------------------------------------
 test_that("add_name_prefix works", {
-  input <- dplyr::tibble(x = 1:2, y = 3:4)
+  input <- tibble::tibble(x = 1:2, y = 3:4)
 
   expect_identical(add_name_prefix(input, ""), input)
 
   output <- add_name_prefix(input, "a_")
-  output_ref <- dplyr::tibble(a_x = input$x, a_y = input$y)
+  output_ref <- tibble::tibble(a_x = input$x, a_y = input$y)
 
   expect_identical(output, output_ref)
 })
@@ -132,18 +132,18 @@ test_that("renamecreate_columns works", {
 # reduce_full_join --------------------------------------------------------
 test_that("reduce_full_join works", {
   input <- list(
-    dplyr::tibble(
+    tibble::tibble(
       game = 1:10,
       player1 = 11:20,
       score1 = 101:110
     ),
-    dplyr::tibble(
+    tibble::tibble(
       game = 1:5,
       player2 = 12:16,
       score2 = 102:106
     )
   )
-  output <- dplyr::tibble(
+  output <- tibble::tibble(
     game = 1:10,
     player1 = 11:20,
     score1 = 101:110,
@@ -166,7 +166,7 @@ test_that("get_matchups works", {
   )
 
   output <- get_matchups(cr_data)
-  output_ref <- dplyr::tibble(
+  output_ref <- tibble::tibble(
     game = rep(1:2, each = 4),
     player1 = rep(rep(1:2, each = 2), times = 2),
     score1 = rep(31:34, each = 2),

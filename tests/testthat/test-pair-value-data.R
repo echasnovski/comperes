@@ -2,7 +2,7 @@ context("pair-value-data")
 
 
 # Input data --------------------------------------------------------------
-long_tbl <- dplyr::tibble(
+long_tbl <- tibble::tibble(
   key_1 = c(1, 1, 2, NA),
   key_2 = c(2, 1, NA, NA),
   val = 1:4
@@ -127,7 +127,7 @@ test_that("long_to_mat handles factors", {
 })
 
 test_that("long_to_mat correctly orders row and column names", {
-  input <- dplyr::tibble(
+  input <- tibble::tibble(
     key_1 = c(10, 1, 12, 2),
     key_2 = c(1, 10, 10, 1),
     val = 1:4
@@ -147,7 +147,7 @@ test_that("long_to_mat correctly orders row and column names", {
 })
 
 test_that("long_to_mat takes first pair among duplicated", {
-  input <- dplyr::tibble(
+  input <- tibble::tibble(
     key_1 = c(1, 1, 1, 1),
     key_2 = c(1, 2, 1, 2),
     val = 1:4
@@ -182,7 +182,7 @@ test_that("long_to_mat throws errors", {
 # mat_to_long -------------------------------------------------------------
 test_that("mat_to_long works", {
   output <- mat_to_long(mat_data, "key_1", "key_2", "val")
-  output_ref <- dplyr::tibble(
+  output_ref <- tibble::tibble(
     key_1 = rep(c("1", "2", NA), each = 3),
     key_2 = rep(c("1", "2", NA), times = 3),
     val = c(2L, 1L, NA, NA, NA, 3L, NA, NA, 4L)
@@ -193,7 +193,7 @@ test_that("mat_to_long works", {
 
 test_that("mat_to_long drops by only value column", {
   output <- mat_to_long(mat_data, "key_1", "key_2", "val", drop = TRUE)
-  output_ref <- dplyr::tibble(
+  output_ref <- tibble::tibble(
     key_1 = c("1", "1", "2", NA),
     key_2 = c("1", "2", NA, NA),
     val = c(2L, 1L, 3L, 4L)

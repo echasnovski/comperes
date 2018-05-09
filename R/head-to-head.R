@@ -54,7 +54,8 @@
 #' with columns `player1`, `player2` and those, produced by Head-to-Head
 #' functions (for `h2h_long()` maybe none).
 #'
-#' `as_tibble()` applied to `h2h_long` object drops `h2h_long` class.
+#' [as_tibble()][tibble::as_tibble()] applied to `h2h_long` object drops
+#' `h2h_long` class.
 #'
 #' @examples
 #' ncaa2005 %>%
@@ -109,7 +110,7 @@ to_h2h_long <- function(mat, value = "h2h_value", drop = FALSE) {
 #' @rdname h2h_long
 #' @export
 as_tibble.h2h_long <- function(x, ...) {
-  as_tibble(remove_class_cond(x, "h2h_long"), ...)
+  tibble::as_tibble(remove_class_cond(x, "h2h_long"), ...)
 }
 
 

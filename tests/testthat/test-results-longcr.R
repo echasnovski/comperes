@@ -15,7 +15,7 @@ input_good <- data.frame(
   score = 101:110
 )
 
-input_widecr <- dplyr::tibble(
+input_widecr <- tibble::tibble(
   player1 = 11:20,
   score1 = 101:110,
   player2 = 12:21,
@@ -36,20 +36,20 @@ test_that("is_longcr works", {
 test_that("as_tibble.longcr removes `longcr` class", {
   input_1 <- input_good
   class(input_1) <- c("longcr", "data.frame")
-  output_ref <- dplyr::as_tibble(input_good)
+  output_ref <- tibble::as_tibble(input_good)
 
-  expect_identical(dplyr::as_tibble(input_1), output_ref)
+  expect_identical(tibble::as_tibble(input_1), output_ref)
 
-  input_2 <- dplyr::as_tibble(input_good)
-  class(input_2) <- c("longcr", class(dplyr::tibble()))
+  input_2 <- tibble::as_tibble(input_good)
+  class(input_2) <- c("longcr", class(tibble::tibble()))
 
-  expect_identical(as_tibble(input_2), output_ref)
+  expect_identical(tibble::as_tibble(input_2), output_ref)
 })
 
 
 # as_longcr.default -------------------------------------------------------
 test_that("as_longcr.default handles simple repairing", {
-  output_ref_1 <- dplyr::tibble(
+  output_ref_1 <- tibble::tibble(
     game = input$gameId,
     player = input$playerscoregame_ID,
     score = input$scoreS,
@@ -68,17 +68,17 @@ test_that("as_longcr.default makes exact matching first during repairing", {
     stringsAsFactors = FALSE
   )
   output <- as_longcr(input, repair = TRUE)
-  output_ref <- dplyr::tibble(
+  output_ref <- tibble::tibble(
     game = "b", player = 1, score = 10,
     PlayerRS = "a", extra = -1
   )
-  class(output_ref) <- c("longcr", class(dplyr::tibble()))
+  class(output_ref) <- c("longcr", class(tibble::tibble()))
 
   expect_identical(output, output_ref)
 })
 
 test_that("as_longcr.default handles missing columns correctly", {
-  output_ref_2 <- dplyr::tibble(
+  output_ref_2 <- tibble::tibble(
     game = input$gameId,
     player = rep(NA_integer_, nrow(input)),
     score = input$scoreS,
@@ -92,7 +92,7 @@ test_that("as_longcr.default handles missing columns correctly", {
 })
 
 test_that("as_longcr.default works properly on good inputs", {
-  output_ref_good <- dplyr::as_tibble(input_good)
+  output_ref_good <- tibble::as_tibble(input_good)
   output_ref_good <- add_class(output_ref_good, "longcr")
 
   expect_identical(as_longcr(input_good, repair = TRUE), output_ref_good)
@@ -108,7 +108,7 @@ test_that("as_longcr.default removes duplicated 'game'-'player' pairs", {
 
 test_that("as_longcr.default preserves column types", {
   input_types <- input
-  output_ref_types <- dplyr::tibble(
+  output_ref_types <- tibble::tibble(
     game = input$gameId,
     player = input$playerscoregame_ID,
     score = input$scoreS,
@@ -165,7 +165,7 @@ test_that("as_longcr.default preserves column types", {
 })
 
 test_that("as_longcr.default works without repairing", {
-  output_ref_3 <- dplyr::as_tibble(input)
+  output_ref_3 <- tibble::as_tibble(input)
   output_ref_3 <- add_class(output_ref_3, "longcr")
 
   expect_identical(as_longcr(input, repair = FALSE), output_ref_3)
@@ -179,7 +179,7 @@ test_that("as_longcr.default handles extra arguments", {
 
 # as_longcr.widecr --------------------------------------------------------
 test_that("as_longcr.widecr does simple converting", {
-  output_ref <- dplyr::tibble(
+  output_ref <- tibble::tibble(
     game = rep(2:11, each = 2),
     player = c(11L, rep(12:20, each = 2), 21L),
     score = c(101L, rep(102:110, each = 2), 111L),
@@ -193,7 +193,7 @@ test_that("as_longcr.widecr does simple converting", {
 })
 
 test_that("as_longcr.widecr orders by game and pair id during repair", {
-  input_widecr_1 <- dplyr::tibble(
+  input_widecr_1 <- tibble::tibble(
     player1 = 12:13, score1 = 101:102,
     player2 = 11:12, score2 = 102:103,
     game = 2:3,
@@ -201,7 +201,7 @@ test_that("as_longcr.widecr orders by game and pair id during repair", {
   )
   input_widecr_1 <- add_class(input_widecr_1, "widecr")
 
-  output_ref <- dplyr::tibble(
+  output_ref <- tibble::tibble(
     game = rep(2:3, each = 2),
     player = c(12L, 11L, 13L, 12L),
     score = c(101L, 102L, 102L, 103L),
@@ -216,7 +216,7 @@ test_that("as_longcr.widecr orders by game and pair id during repair", {
 
 test_that("as_longcr.widecr preserves column types", {
   input_types <- input_widecr
-  output_ref_types <- dplyr::tibble(
+  output_ref_types <- tibble::tibble(
     game = rep(2:11, each = 2),
     player = c(11L, rep(12:20, each = 2), 21L),
     score = c(101L, rep(102:110, each = 2), 111L),
@@ -285,7 +285,7 @@ test_that("as_longcr.widecr removes duplicated 'game'-'player'
   input_dupl <- input_widecr
   input_dupl$player2[1] <- 11L
 
-  output_ref_dupl <- dplyr::tibble(
+  output_ref_dupl <- tibble::tibble(
     game = rep(2:11, each = 2),
     player = c(11L, rep(12:20, each = 2), 21L),
     score = c(101L, rep(102:110, each = 2), 111L),
@@ -298,7 +298,7 @@ test_that("as_longcr.widecr removes duplicated 'game'-'player'
 })
 
 test_that("as_longcr.widecr works without column 'game'", {
-  output_ref_longcr_from_widecr <- dplyr::tibble(
+  output_ref_longcr_from_widecr <- tibble::tibble(
     game = rep(2:11, each = 2),
     player = c(11L, rep(12:20, each = 2), 21L),
     score = c(101L, rep(102:110, each = 2), 111L),
@@ -338,7 +338,7 @@ test_that("as_longcr.longcr works", {
 # repair_longcr -----------------------------------------------------------
 test_that("repair_longcr works", {
   # Most essential tests are provided in as_longcr() methods
-  input <- dplyr::as_tibble(input_good)
+  input <- tibble::as_tibble(input_good)
   input <- add_class(input, "longcr")
 
   expect_identical(repair_longcr(input), input)

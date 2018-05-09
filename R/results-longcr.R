@@ -69,7 +69,8 @@
 #'
 #' `as_longcr()` returns an object of class `longcr`.
 #'
-#' `as_tibble()` applied to `longcr` object drops `longcr` class.
+#' [as_tibble()][tibble::as_tibble()] applied to `longcr` object drops `longcr`
+#' class.
 #'
 #' @examples # Repairing example
 #' cr_data <- data.frame(
@@ -105,12 +106,12 @@ as_longcr <- function(cr_data, repair = TRUE, ...) {
 #' @rdname longcr
 #' @export
 as_tibble.longcr <- function(x, ...) {
-  as_tibble(remove_class_cond(x, "longcr"), ...)
+  tibble::as_tibble(remove_class_cond(x, "longcr"), ...)
 }
 
 #' @export
 as_longcr.default <- function(cr_data, repair = TRUE, ...) {
-  res <- dplyr::as_tibble(cr_data)
+  res <- tibble::as_tibble(cr_data)
   if (repair) {
     res <- repair_longcr(res, ...)
   }
@@ -129,7 +130,7 @@ as_longcr.widecr <- function(cr_data, repair = TRUE, ...) {
     cr_data$game <- seq_len(nrow(cr_data))
   }
 
-  column_info <- tibble(name = colnames(cr_data)) %>%
+  column_info <- tibble::tibble(name = colnames(cr_data)) %>%
     tidyr::extract(
       col = .data$name, into = c("group", "pair"),
       regex = "(player|score)([0-9]+)", remove = FALSE
@@ -159,7 +160,7 @@ as_longcr.widecr <- function(cr_data, repair = TRUE, ...) {
   if (repair) {
     res <- repair_longcr(cr_data = res)
   }
-  class(res) <- c("longcr", class(dplyr::tibble()))
+  class(res) <- c("longcr", class(tibble::tibble()))
 
   res
 }

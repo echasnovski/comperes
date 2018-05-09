@@ -48,7 +48,7 @@ summarise_item <- function(tbl, item, ..., .prefix = "") {
     group_by(!!! syms(item)) %>%
     summarise(...) %>%
     ungroup() %>%
-    as_tibble() %>%
+    tibble::as_tibble() %>%
     add_name_prefix(prefix = .prefix, except = item)
 }
 

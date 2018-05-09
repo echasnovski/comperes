@@ -30,7 +30,8 @@ among column names.
 
 \code{as_longcr()} returns an object of class \code{longcr}.
 
-\code{as_tibble()} applied to \code{longcr} object drops \code{longcr} class.
+\link[tibble:as_tibble]{as_tibble()} applied to \code{longcr} object drops \code{longcr}
+class.
 }
 \description{
 Functions for dealing with competition results in long format.

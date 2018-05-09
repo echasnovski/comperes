@@ -71,7 +71,8 @@
 #'
 #' `as_widecr()` returns an object of class `widecr`.
 #'
-#' `as_tibble()` applied to `widecr` object drops `widecr` class.
+#' [as_tibble()[tibble::as_tibble()] applied to `widecr` object drops `widecr`
+#' class.
 #'
 #' @examples
 #' cr_data <- data.frame(
@@ -98,7 +99,9 @@ is_widecr <- function(cr_data) {
     return(FALSE)
   }
   names_cr <- tolower(colnames(cr_data))
-  names_df <- tibble(name = names_cr[grepl("player|score", x = names_cr)])
+  names_df <- tibble::tibble(
+    name = names_cr[grepl("player|score", x = names_cr)]
+  )
 
   if (nrow(names_df) == 0) {
     return(FALSE)
@@ -133,12 +136,12 @@ as_widecr <- function(cr_data, repair = TRUE, ...) {
 #' @rdname widecr
 #' @export
 as_tibble.widecr <- function(x, ...) {
-  as_tibble(remove_class_cond(x, "widecr"), ...)
+  tibble::as_tibble(remove_class_cond(x, "widecr"), ...)
 }
 
 #' @export
 as_widecr.default <- function(cr_data, repair = TRUE, ...) {
-  res <- dplyr::as_tibble(cr_data)
+  res <- tibble::as_tibble(cr_data)
   if (repair) {
     res <- repair_widecr(res, ...)
   }
@@ -185,7 +188,7 @@ as_widecr.longcr <- function(cr_data, repair = TRUE, ...) {
   if (repair) {
     res <- repair_widecr(res)
   }
-  class(res) <- c("widecr", class(dplyr::tibble()))
+  class(res) <- c("widecr", class(tibble::tibble()))
 
   res
 }
@@ -204,7 +207,7 @@ repair_widecr <- function(cr_data, ...) {
     return(cr_data)
   }
 
-  repair_info <- tibble(original_lower = tolower(colnames(cr_data))) %>%
+  repair_info <- tibble::tibble(original_lower = tolower(colnames(cr_data))) %>%
     tidyr::extract(
       col = .data$original_lower, into = c("group", "pair"),
       regex = ".*(player|score)(.*)", remove = TRUE
