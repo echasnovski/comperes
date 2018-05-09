@@ -1,9 +1,8 @@
 #' Tidy eval helpers
 #'
 #' These functions provide tidy eval-compatible ways to capture symbols
-#' (`sym()`, `syms()`), expressions (`expr()`, `enexpr()`), and quosures (`quo()`,
-#' `enquo()`). To learn more about tidy eval and how to use these tools, read
-#' <http://rlang.tidyverse.org/articles/tidy-evaluation.html>
+#' (`sym()`, `syms()`), expressions (`expr()`, `enexpr()`), and quosures
+#' (`quo()`, `enquo()`).
 #'
 #' @name tidyeval
 #' @keywords internal
