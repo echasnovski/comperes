@@ -20,7 +20,7 @@ Overview
 -   **Summarise**:
     -   Compute *item summaries* with functions using `dplyr`'s grammar. Functions: `summarise_item()`, `summarise_game()`, `summarise_player()`.
     -   Compute and *join* item summaries to data for easy transformation. Functions: `join_item_summary()`, `join_game_summary()`, `join_player_summary()`.
-    -   Use *common item summary functions* with [rlang](http://rlang.tidyverse.org/)'s \[unquoting\]\[rlang::quasiquotation\] mechanism. Example: `. %>% summarise_player(!!! summary_funs["mean_score"])`.
+    -   Use *common item summary functions* with [rlang](http://rlang.tidyverse.org/)'s [unquoting](http://rlang.r-lib.org/reference/quasiquotation.html) mechanism. Example: `. %>% summarise_player(!!! summary_funs["mean_score"])`.
 -   **Compute Head-to-Head values** (a summary statistic of direct confrontation between two players) with functions also using `dplyr`'s grammar:
     -   Store output in *long format* as a `tibble` with one row per pair of players. Function: `h2h_long()`.
     -   Store output in *matrix format* as a matrix with rows and columns describing players and entries - Head-to-Head values. Function: `h2h_mat()`.
@@ -59,7 +59,7 @@ ncaa2005
 #> # ... with 14 more rows
 ```
 
-This is an object of class `longcr` which describes results in long form. Because in this competition a game always consists from two players, more natural way to look at `ncaa2005` is in wide format:
+This is an object of class `longcr` which describes results in long form (*each row represents the score of particular player in particular game*). Because in this competition a game always consists from two players, more natural way to look at `ncaa2005` is in wide format:
 
 ``` r
 as_widecr(ncaa2005)
@@ -76,7 +76,7 @@ as_widecr(ncaa2005)
 #> # ... with 4 more rows
 ```
 
-This converted `ncaa2005` into an object of `widecr` class which describes results in wide format. All `comperes` functions expect either a data frame with results structured in long format or one of supported classes: `longcr`, `widecr`.
+This converted `ncaa2005` into an object of `widecr` class which describes results in wide format (*each row represents scores of all players in particular game*). All `comperes` functions expect either a data frame with results structured in long format or one of supported classes: `longcr`, `widecr`.
 
 ### Summarise
 
@@ -113,6 +113,31 @@ ncaa2005 %>%
 Supplied list of common summary functions has 8 entries, which are quoted expressions to be used in `dplyr` grammar:
 
 ``` r
+summary_funs
+#> $min_score
+#> min(score)
+#> 
+#> $max_score
+#> max(score)
+#> 
+#> $mean_score
+#> mean(score)
+#> 
+#> $median_score
+#> median(score)
+#> 
+#> $sd_score
+#> sd(score)
+#> 
+#> $sum_score
+#> sum(score)
+#> 
+#> $num_games
+#> length(unique(game))
+#> 
+#> $num_players
+#> length(unique(player))
+
 ncaa2005 %>% summarise_player(!!! summary_funs)
 #> # A tibble: 5 x 9
 #>   player min_score max_score mean_score median_score sd_score sum_score
@@ -214,6 +239,34 @@ ncaa2005 %>% h2h_mat(mean(score1 - score2))
 Supplied list of common Head-to-Head functions has 9 entries, which are also quoted expressions:
 
 ``` r
+h2h_funs
+#> $mean_score_diff
+#> mean(score1 - score2)
+#> 
+#> $mean_score_diff_pos
+#> max(mean(score1 - score2), 0)
+#> 
+#> $mean_score
+#> mean(score1)
+#> 
+#> $sum_score_diff
+#> sum(score1 - score2)
+#> 
+#> $sum_score_diff_pos
+#> max(sum(score1 - score2), 0)
+#> 
+#> $sum_score
+#> sum(score1)
+#> 
+#> $num_wins
+#> num_wins(score1, score2, half_for_draw = FALSE)
+#> 
+#> $num_wins2
+#> num_wins(score1, score2, half_for_draw = TRUE)
+#> 
+#> $num
+#> n()
+
 ncaa2005 %>% h2h_long(!!! h2h_funs)
 #> # A long format of Head-to-Head values:
 #> # A tibble: 25 x 11
