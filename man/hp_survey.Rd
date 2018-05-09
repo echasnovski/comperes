@@ -4,12 +4,12 @@
 \name{hp_survey}
 \alias{hp_survey}
 \title{Results of Harry Potter Books Survey}
-\format{A \link[tibble:tibble]{tibble} with answers from 181 respondents and the
+\format{A \link[tibble:tibble]{tibble} with answers from 182 respondents and the
 following columns:
 \itemize{
 \item \strong{person} <int>: Identifier of a person.
 \item \strong{book} <chr>: Identifier of a Harry Potter book. Its values are of the
-form "HP_*" where "*" represents book's number in the series (from 1 to 7).
+form "HP_x" where "x" represents book's number in the series (from 1 to 7).
 \item \strong{score} <chr>: Book's score. Can be one of "1 - Poor", "2 - Fair", "3 -
 Good", "4 - Very Good", "5 - Excellent".
 }

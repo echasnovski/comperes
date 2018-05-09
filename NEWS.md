@@ -5,6 +5,7 @@
 - Rename `get_cr_matchups()` to `get_matchups()`.
 - Completely update API for computation of Head-to-Head values.
 - Remove `skip_action()` function.
+- Add `hp_survey` data.
 
 
 # comperes 0.1.0.9000 (2017-06-18)

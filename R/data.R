@@ -49,11 +49,11 @@
 #'     “3 - Good”, “4 - Very Good”, “5 - Excellent”. Respondent is asked and
 #'     allowed to choose only one answer per book (every book should be rated).
 #'
-#' @format A [tibble][tibble::tibble] with answers from 181 respondents and the
+#' @format A [tibble][tibble::tibble] with answers from 182 respondents and the
 #'   following columns:
 #' - __person__ <int>: Identifier of a person.
 #' - __book__ <chr>: Identifier of a Harry Potter book. Its values are of the
-#' form "HP_\*" where "\*" represents book's number in the series (from 1 to 7).
+#' form "HP_x" where "x" represents book's number in the series (from 1 to 7).
 #' - __score__ <chr>: Book's score. Can be one of "1 - Poor", "2 - Fair", "3 -
 #' Good", "4 - Very Good", "5 - Excellent".
 #'
