@@ -1,6 +1,6 @@
 Package: comperes
 Title: Manage Competition Results
-Version: 0.1.0.9001
+Version: 0.2.0
 Authors@R: person("Evgeni", "Chasnovski", email = "evgeni.chasnovski@gmail.com",
     role = c("aut", "cre"))
 Description: Tools for storing and managing competition results. Competition is
@@ -10,22 +10,24 @@ Description: Tools for storing and managing competition results. Competition is
     package provides functions for creation and conversion between them. Also
     there are functions for computing their summary and Head-to-Head values for
     players. They leverage grammar of data manipulation from 'dplyr'.
-Depends: R (>= 3.4.0)
 License: MIT + file LICENSE
-Encoding: UTF-8
-LazyData: true
 URL: https://github.com/echasnovski/comperes
 BugReports: https://github.com/echasnovski/comperes/issues
-RoxygenNote: 6.0.1
-Roxygen: list(markdown = TRUE)
+Depends: 
+    R (>= 3.4.0)
 Imports: 
     dplyr (>= 0.7.0),
-    tidyr (>= 0.7.0),
-    rlang (>= 0.1.2),
     magrittr,
-    tibble
-Suggests: testthat,
+    rlang (>= 0.1.2),
+    tibble,
+    tidyr (>= 0.7.0)
+Suggests: 
     covr,
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat
 VignetteBuilder: knitr
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.0.1
