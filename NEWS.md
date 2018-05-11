@@ -1,3 +1,8 @@
+# comperes 0.2.0.9000
+
+* Tweak `levels2()` for better performance.
+
+
 # comperes 0.2.0 (2017-05-09)
 
 Initial CRAN release

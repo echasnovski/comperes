@@ -63,11 +63,12 @@ miss_value <- function(type = NULL, fill = NULL) {
 #' @export
 levels2 <- function(x, na.last = TRUE) {
   if (identical(levels(x), NULL)) {
-    as.character(unique(sort(x, na.last = na.last)))
+    as.character(sort(unique(x), na.last = na.last))
   } else {
     as.character(levels(x))
   }
 }
+
 
 # Operations with class ---------------------------------------------------
 add_class <- function(x, class_chr) {
