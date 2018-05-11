@@ -1,0 +1,29 @@
+title: comperes
+template:
+  params:
+    bootswatch: united
+
+reference:
+  - title: Package description
+    contents:
+    - comperes-package
+  - title: Competition results
+    contents:
+    - longcr
+    - widecr
+    - pairgames
+    - get_matchups
+    - h2h_long
+    - h2h_mat
+    - h2h_funs
+  - title: General functionality
+    contents:
+    - levels2
+    - convert-pair-value
+    - item-summary
+    - item-summary-join
+    - summary_funs
+  - title: Data
+    contents:
+    - ncaa2005
+    - hp_survey
