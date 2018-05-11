@@ -71,7 +71,7 @@
 #'
 #' `as_widecr()` returns an object of class `widecr`.
 #'
-#' [as_tibble()[tibble::as_tibble()] applied to `widecr` object drops `widecr`
+#' [as_tibble()][tibble::as_tibble()] applied to `widecr` object drops `widecr`
 #' class.
 #'
 #' @examples

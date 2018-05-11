@@ -31,10 +31,8 @@ words, to be \link[tibble:tibble]{tibble}) and have complete pairs of
 
 \code{as_widecr()} returns an object of class \code{widecr}.
 
-[as_tibble()[tibble::as_tibble()] applied to \code{widecr} object drops \code{widecr}
+\link[tibble:as_tibble]{as_tibble()} applied to \code{widecr} object drops \code{widecr}
 class.
-
-[as_tibble()[tibble::as_tibble()]: R:as_tibble()[tibble::as_tibble()
 }
 \description{
 Functions for dealing with competition results in wide format.
