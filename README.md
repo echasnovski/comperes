@@ -29,7 +29,13 @@ Overview
 Installation
 ------------
 
-You can install comperes from GitHub with:
+You can install `comperes` from CRAN with:
+
+``` r
+install.packages("comperes")
+```
+
+To install the most recent development version from GitHub use:
 
 ``` r
 # install.packages("devtools")

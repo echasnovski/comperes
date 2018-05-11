@@ -41,7 +41,13 @@ This package leverages [dplyr](http://dplyr.tidyverse.org)'s grammar of data man
 
 ## Installation
 
-You can install comperes from GitHub with:
+You can install `comperes` from CRAN with:
+
+```{r cran-installation, eval = FALSE}
+install.packages("comperes")
+```
+
+To install the most recent development version from GitHub use:
 
 ```{r gh-installation, eval = FALSE}
 # install.packages("devtools")
