@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-comperes
-========
+comperes: Manage Competition Results
+====================================
 
 [![Build Status](https://travis-ci.org/echasnovski/comperes.svg?branch=master)](https://travis-ci.org/echasnovski/comperes) [![codecov](https://codecov.io/gh/echasnovski/comperes/branch/master/graph/badge.svg)](https://codecov.io/gh/echasnovski/comperes)
 
