@@ -1,5 +1,11 @@
 # comperes 0.2.0.9000
 
+## Bug fixes
+
+* `is_widecr()` now returns `TRUE` on data frames with columns containing "score" or "player" in their names but which are note followed by digits (#2).
+
+## Other
+
 * Tweak `levels2()` for better performance.
 
 

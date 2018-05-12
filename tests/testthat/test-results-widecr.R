@@ -48,12 +48,31 @@ test_that("is_widecr works", {
   expect_false(is_widecr(output_ref_2))
 })
 
-test_that("is_widecr returns FALSE on non-digit pair identifier", {
+test_that("is_widecr isn't affected by extra columns", {
   output_ref_2 <- tibble::as_tibble(input_2)
   output_ref_2 <- add_class(output_ref_2, "widecr")
   colnames(output_ref_2)[c(1, 11)] <- c("playerA", "scoreA")
 
-  expect_false(is_widecr(output_ref_2))
+  expect_true(is_widecr(output_ref_2))
+
+  output_ref_3 <- output_ref_2
+  output_ref_3$game <- seq_len(nrow(output_ref_3))
+
+  expect_true(is_widecr(output_ref_3))
+})
+
+test_that("is_widecr gives TRUE when extra names have 'score'/'player' (#2)", {
+  input_1 <- tibble::as_tibble(input_good)
+  input_1 <- add_class(input_1, "widecr")
+  input_1$maxScore <- 1000 + 1:nrow(input_1)
+
+  expect_true(is_widecr(input_1))
+
+  input_2 <- tibble::as_tibble(input_good)
+  input_2 <- add_class(input_2, "widecr")
+  input_2$playerMax <- 100 + 1:nrow(input_2)
+
+  expect_true(is_widecr(input_2))
 })
 
 test_that("is_widecr handles data with no 'player' or 'score' columns", {

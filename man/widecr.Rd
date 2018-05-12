@@ -27,7 +27,9 @@ as_widecr(cr_data, repair = TRUE, ...)
 of class \code{widecr}: it should inherit classes \code{widecr}, \code{tbl_df} (in other
 words, to be \link[tibble:tibble]{tibble}) and have complete pairs of
 "player"-"score" columns where pair is detected by \strong{digits} after strings
-"player" and "score" respectively.
+"player" and "score" respectively. Columns of "player" and "score" types
+shouldn't have any extra symbols except type name and digits after it. All
+other columns are considered as "extra columns".
 
 \code{as_widecr()} returns an object of class \code{widecr}.
 
