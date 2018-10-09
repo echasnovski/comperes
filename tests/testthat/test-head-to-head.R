@@ -211,8 +211,6 @@ test_that("to_h2h_mat handles not NULL `fill`", {
 
 # h2h_funs ----------------------------------------------------------------
 test_that("h2h_funs can be used with !!!", {
-  library(rlang)
-
   expect_silent(
     output <- h2h_long(cr_data, !!! h2h_funs[c("num_wins", "num_wins2")])
   )
