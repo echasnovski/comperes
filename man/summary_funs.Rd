@@ -15,8 +15,7 @@ List of commonly used functions for summarising competition results.
 \code{summary_funs} is a named list of \link[rlang:expr]{expressions}
 representing commonly used expressions of summary functions for summarising
 competition results with \code{\link[=summarise_item]{summarise_item()}}. Names of the elements will be
-used as summary names. It is designed primarily to be used with \link[=longcr]{long
-format} of competition results. To use them inside \code{summarise_item()}
+used as summary names. It is designed primarily to be used with \link[=longcr]{long format} of competition results. To use them inside \code{summarise_item()}
 use \link[rlang:quasiquotation]{unquoting} mechanism from rlang package.
 
 Currently present functions:
@@ -40,7 +39,6 @@ ncaa2005 \%>\% summarise_game(!!! summary_funs, .prefix = "game_")
 
 }
 \seealso{
-\link[=item-summary]{Compute item summary}, \link[=item-summary-join]{Join item
-summary}
+\link[=item-summary]{Compute item summary}, \link[=item-summary-join]{Join item summary}
 }
 \keyword{datasets}

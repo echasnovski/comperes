@@ -2,7 +2,6 @@
 % Please edit documentation in R/head-to-head.R
 \name{h2h_mat}
 \alias{h2h_mat}
-\alias{h2h_mat}
 \alias{to_h2h_mat}
 \title{Compute matrix format of Head-to-Head values}
 \usage{

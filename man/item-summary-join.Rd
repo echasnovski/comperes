@@ -27,8 +27,7 @@ Result of \code{left_join()} to the input data frame.
 }
 \description{
 Functions for joining summary data to data frame. They perform respective
-variant of \link[=item-summary]{summarise item functions} and then \link[dplyr:left_join]{left
-join} to the input its result (by \code{item} columns).
+variant of \link[=item-summary]{summarise item functions} and then \link[dplyr:left_join]{left join} to the input its result (by \code{item} columns).
 }
 \details{
 \code{join_game_summary()} and \code{join_player_summary()} are wrappers for

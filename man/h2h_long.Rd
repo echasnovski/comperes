@@ -2,7 +2,6 @@
 % Please edit documentation in R/head-to-head.R
 \name{h2h_long}
 \alias{h2h_long}
-\alias{h2h_long}
 \alias{to_h2h_long}
 \alias{as_tibble.h2h_long}
 \title{Compute long format of Head-to-Head values}
