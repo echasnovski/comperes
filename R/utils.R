@@ -13,7 +13,7 @@ add_name_prefix <- function(tbl, prefix = "", except = NULL) {
     names(rename_list) <- paste0(prefix, rename_cols)
 
     tbl <- tbl %>%
-      rename(!!! rename_list)
+      rename(!!!rename_list)
   }
 
   tbl

@@ -45,7 +45,7 @@ summarise_item <- function(tbl, item, ..., .prefix = "") {
   }
 
   tbl %>%
-    group_by(!!! syms(item)) %>%
+    group_by(!!!syms(item)) %>%
     summarise(...) %>%
     ungroup() %>%
     tibble::as_tibble() %>%
@@ -104,7 +104,7 @@ summarize_player <- summarise_player
 #' versions.
 #'
 #' @examples
-#' ncaa2005 %>% summarise_game(!!! summary_funs, .prefix = "game_")
+#' ncaa2005 %>% summarise_game(!!!summary_funs, .prefix = "game_")
 #'
 #' @seealso [Compute item summary][item-summary], [Join item
 #'   summary][item-summary-join]

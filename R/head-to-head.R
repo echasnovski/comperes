@@ -89,7 +89,7 @@ h2h_long <- function(cr_data, ..., fill = list()) {
     summarise_item(c("player1", "player2"), ...) %>%
     # This seems more consistent than `player1 = .data$player1` etc.
     tidyr::complete(
-      !!! syms(c("player1", "player2")),
+      !!!syms(c("player1", "player2")),
       fill = fill
     ) %>%
     filter(
@@ -173,7 +173,7 @@ h2h_mat <- function(cr_data, ..., fill = NULL) {
     was_trunc <- FALSE
   }
 
-  res_long <- cr_data %>% h2h_long(!!! dots)
+  res_long <- cr_data %>% h2h_long(!!!dots)
 
   value_col <- setdiff(colnames(res_long), c("player1", "player2"))
   if (was_trunc) {
@@ -240,9 +240,9 @@ to_h2h_mat <- function(tbl, value = NULL, fill = NULL) {
 #' versions.
 #'
 #' @examples
-#' ncaa2005 %>% h2h_long(!!! h2h_funs)
+#' ncaa2005 %>% h2h_long(!!!h2h_funs)
 #'
-#' ncaa2005 %>% h2h_mat(!!! h2h_funs["num_wins2"])
+#' ncaa2005 %>% h2h_mat(!!!h2h_funs["num_wins2"])
 #'
 #' @seealso [Long format][h2h_long] of Head-to-Head values.
 #'

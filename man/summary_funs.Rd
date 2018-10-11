@@ -35,7 +35,7 @@ rather than indices because the order of elements might change in future
 versions.
 }
 \examples{
-ncaa2005 \%>\% summarise_game(!!! summary_funs, .prefix = "game_")
+ncaa2005 \%>\% summarise_game(!!!summary_funs, .prefix = "game_")
 
 }
 \seealso{

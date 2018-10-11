@@ -44,9 +44,9 @@ rather than indices because the order of elements might change in future
 versions.
 }
 \examples{
-ncaa2005 \%>\% h2h_long(!!! h2h_funs)
+ncaa2005 \%>\% h2h_long(!!!h2h_funs)
 
-ncaa2005 \%>\% h2h_mat(!!! h2h_funs["num_wins2"])
+ncaa2005 \%>\% h2h_mat(!!!h2h_funs["num_wins2"])
 
 }
 \seealso{

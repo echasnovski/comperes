@@ -69,8 +69,8 @@ For common summary functions `comperes` has a list `summary_funs` with `r length
 ```{r summary_funs}
 # Use .prefix to add prefix to summary columns
 cr_long %>%
-  join_player_summary(!!! summary_funs[1:2], .prefix = "player_") %>%
-  join_item_summary("season", !!! summary_funs[1:2], .prefix = "season_")
+  join_player_summary(!!!summary_funs[1:2], .prefix = "player_") %>%
+  join_item_summary("season", !!!summary_funs[1:2], .prefix = "season_")
 ```
 
 ## Head-to-Head values
@@ -104,7 +104,7 @@ cr_long %>% h2h_mat(sum_score = sum(score1 + score2))
 `comperes` also offers a list `h2h_funs` of `r length(h2h_funs)` common Head-to-Head functions as quoted expressions to be used with `rlang`'s unquoting mechanism:
 
 ```{r h2h_funs}
-cr_long %>% h2h_long(!!! h2h_funs)
+cr_long %>% h2h_long(!!!h2h_funs)
 ```
 
 To compute Head-to-Head for only subset of players or include values for players that are not in the results, use factor `player` column. __Note__ different use of `fill` argument.

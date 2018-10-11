@@ -33,11 +33,11 @@ This package leverages [dplyr](http://dplyr.tidyverse.org)'s grammar of data man
 - __Summarise__:
     - Compute _item summaries_ with functions using `dplyr`'s grammar. Functions: `summarise_item()`, `summarise_game()`, `summarise_player()`.
     - Compute and _join_ item summaries to data for easy transformation. Functions: `join_item_summary()`, `join_game_summary()`, `join_player_summary()`.
-    - Use _common item summary functions_ with [rlang](http://rlang.tidyverse.org/)'s [unquoting](http://rlang.r-lib.org/reference/quasiquotation.html) mechanism. Example: `. %>% summarise_player(!!! summary_funs["mean_score"])`.
+    - Use _common item summary functions_ with [rlang](http://rlang.tidyverse.org/)'s [unquoting](http://rlang.r-lib.org/reference/quasiquotation.html) mechanism. Example: `. %>% summarise_player(!!!summary_funs["mean_score"])`.
 - __Compute Head-to-Head values__ (a summary statistic of direct confrontation between two players) with functions also using `dplyr`'s grammar:
     - Store output in _long format_ as a `tibble` with one row per pair of players. Function: `h2h_long()`.
     - Store output in _matrix format_ as a matrix with rows and columns describing players and entries - Head-to-Head values. Function: `h2h_mat()`.
-    - Use _common Head-to-Head functions_ with rlang's unquoting mechanism. Example: `. %>% h2h_mat(!!! h2h_funs["num_wins"])`.
+    - Use _common Head-to-Head functions_ with rlang's unquoting mechanism. Example: `. %>% h2h_mat(!!!h2h_funs["num_wins"])`.
 
 ## Installation
 
@@ -77,27 +77,27 @@ This converted `ncaa2005` into an object of `widecr` class which describes resul
 
 With `compere` the following summaries are possible:
 
-```{r item-summary}
+```{r item-summary, message = FALSE, warning = FALSE}
 ncaa2005 %>%
   summarise_player(min_score = min(score), mean_score = mean(score))
 
 # Using list of common summary functions
 library(rlang)
 ncaa2005 %>%
-  summarise_game(!!! summary_funs[c("sum_score", "num_players")])
+  summarise_game(!!!summary_funs[c("sum_score", "num_players")])
 ```
 
 Supplied list of common summary functions has `r length(summary_funs)` entries, which are quoted expressions to be used in `dplyr` grammar:
 
-```{r summary_funs}
+```{r summary_funs, message = FALSE, warning = FALSE}
 summary_funs
 
-ncaa2005 %>% summarise_player(!!! summary_funs)
+ncaa2005 %>% summarise_player(!!!summary_funs)
 ```
 
 To modify scores based on the rest of results one can use `join_*_summary()` functions:
 
-```{r join-item-summary, warning = FALSE}
+```{r join-item-summary, message = FALSE, warning = FALSE}
 suppressPackageStartupMessages(library(dplyr))
 ncaa2005_mod <- ncaa2005 %>%
   join_player_summary(player_mean_score = mean(score)) %>%
@@ -117,13 +117,13 @@ Computation of Head-to-Head performance is done with `h2h_long()` (output is a t
 
 Head-to-Head functions should be supplied in `dplyr` grammar but for players' matchups: direct confrontation between __ordered__ pairs of players (including playing with themselves) stored in wide format:
 
-```{r matchups}
+```{r matchups, message = FALSE, warning = FALSE}
 ncaa2005 %>% get_matchups()
 ```
 
 Typical Head-to-Head computation is done like this:
 
-```{r h2h}
+```{r h2h, message = FALSE, warning = FALSE}
 ncaa2005 %>%
   h2h_long(
     mean_score_diff = mean(score1 - score2),
@@ -135,17 +135,17 @@ ncaa2005 %>% h2h_mat(mean(score1 - score2))
 
 Supplied list of common Head-to-Head functions has `r length(h2h_funs)` entries, which are also quoted expressions:
 
-```{r h2h_funs}
+```{r h2h_funs, message = FALSE, warning = FALSE}
 h2h_funs
 
-ncaa2005 %>% h2h_long(!!! h2h_funs)
+ncaa2005 %>% h2h_long(!!!h2h_funs)
 ```
 
 To compute Head-to-Head for only subset of players or include values for players that are not in the results, use factor `player` column:
 
-```{r h2h-factor}
+```{r h2h-factor, message = FALSE, warning = FALSE}
 ncaa2005 %>%
   mutate(player = factor(player, levels = c("Duke", "Miami", "Extra"))) %>%
-  h2h_mat(!!! h2h_funs["num_wins"], fill = 0)
+  h2h_mat(!!!h2h_funs["num_wins"], fill = 0)
 ```
 

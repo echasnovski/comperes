@@ -121,7 +121,7 @@ test_that("summarize_player works", {
 
 # summary_funs ------------------------------------------------------------
 test_that("summary_funs can be used in summarise_item", {
-  output <- summarise_game(input, !!! summary_funs["min_score"])
+  output <- summarise_game(input, !!!summary_funs["min_score"])
   output_ref <- summarise_game(input, min_score = min(score))
 
   expect_identical(output, output_ref)

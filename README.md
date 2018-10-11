@@ -20,11 +20,11 @@ Overview
 -   **Summarise**:
     -   Compute *item summaries* with functions using `dplyr`'s grammar. Functions: `summarise_item()`, `summarise_game()`, `summarise_player()`.
     -   Compute and *join* item summaries to data for easy transformation. Functions: `join_item_summary()`, `join_game_summary()`, `join_player_summary()`.
-    -   Use *common item summary functions* with [rlang](http://rlang.tidyverse.org/)'s [unquoting](http://rlang.r-lib.org/reference/quasiquotation.html) mechanism. Example: `. %>% summarise_player(!!! summary_funs["mean_score"])`.
+    -   Use *common item summary functions* with [rlang](http://rlang.tidyverse.org/)'s [unquoting](http://rlang.r-lib.org/reference/quasiquotation.html) mechanism. Example: `. %>% summarise_player(!!!summary_funs["mean_score"])`.
 -   **Compute Head-to-Head values** (a summary statistic of direct confrontation between two players) with functions also using `dplyr`'s grammar:
     -   Store output in *long format* as a `tibble` with one row per pair of players. Function: `h2h_long()`.
     -   Store output in *matrix format* as a matrix with rows and columns describing players and entries - Head-to-Head values. Function: `h2h_mat()`.
-    -   Use *common Head-to-Head functions* with rlang's unquoting mechanism. Example: `. %>% h2h_mat(!!! h2h_funs["num_wins"])`.
+    -   Use *common Head-to-Head functions* with rlang's unquoting mechanism. Example: `. %>% h2h_mat(!!!h2h_funs["num_wins"])`.
 
 Installation
 ------------
@@ -94,16 +94,16 @@ ncaa2005 %>%
 #> # A tibble: 5 x 3
 #>   player min_score mean_score
 #>   <chr>      <dbl>      <dbl>
-#> 1 Duke          0.       8.75
-#> 2 Miami        25.      34.5 
-#> 3 UNC           3.      12.5 
-#> 4 UVA           5.      18.5 
-#> 5 VT            7.      33.5
+#> 1 Duke           0       8.75
+#> 2 Miami         25      34.5 
+#> 3 UNC            3      12.5 
+#> 4 UVA            5      18.5 
+#> 5 VT             7      33.5
 
 # Using list of common summary functions
 library(rlang)
 ncaa2005 %>%
-  summarise_game(!!! summary_funs[c("sum_score", "num_players")])
+  summarise_game(!!!summary_funs[c("sum_score", "num_players")])
 #> # A tibble: 10 x 3
 #>    game sum_score num_players
 #>   <int>     <int>       <int>
@@ -144,15 +144,15 @@ summary_funs
 #> $num_players
 #> length(unique(player))
 
-ncaa2005 %>% summarise_player(!!! summary_funs)
+ncaa2005 %>% summarise_player(!!!summary_funs)
 #> # A tibble: 5 x 9
 #>   player min_score max_score mean_score median_score sd_score sum_score
 #>   <chr>      <dbl>     <dbl>      <dbl>        <dbl>    <dbl>     <int>
-#> 1 Duke          0.       21.       8.75         7.00     8.81        35
-#> 2 Miami        25.       52.      34.5         30.5     12.3        138
-#> 3 UNC           3.       24.      12.5         11.5      9.40        50
-#> 4 UVA           5.       38.      18.5         15.5     14.0         74
-#> 5 VT            7.       52.      33.5         37.5     19.9        134
+#> 1 Duke           0        21       8.75          7       8.81        35
+#> 2 Miami         25        52      34.5          30.5    12.3        138
+#> 3 UNC            3        24      12.5          11.5     9.40        50
+#> 4 UVA            5        38      18.5          15.5    14.0         74
+#> 5 VT             7        52      33.5          37.5    19.9        134
 #> # ... with 2 more variables: num_games <int>, num_players <int>
 ```
 
@@ -168,14 +168,14 @@ ncaa2005_mod <- ncaa2005 %>%
 ncaa2005_mod
 #> # A longcr object:
 #> # A tibble: 20 x 5
-#>    game player  score player_mean_score game_mean_score
-#>   <int> <chr>   <dbl>             <dbl>           <dbl>
-#> 1     1 Duke   -20.8               8.75            29.5
-#> 2     1 Miami    5.00             34.5             29.5
-#> 3     2 Duke   -13.8               8.75            22.5
-#> 4     2 UNC    -10.0              12.5             22.5
-#> 5     3 Duke   -13.8               8.75            22.5
-#> 6     3 UVA     -4.00             18.5             22.5
+#>    game player score player_mean_score game_mean_score
+#>   <int> <chr>  <dbl>             <dbl>           <dbl>
+#> 1     1 Duke   -20.8              8.75            29.5
+#> 2     1 Miami    5               34.5             29.5
+#> 3     2 Duke   -13.8              8.75            22.5
+#> 4     2 UNC    -10               12.5             22.5
+#> 5     3 Duke   -13.8              8.75            22.5
+#> 6     3 UVA     -4               18.5             22.5
 #> # ... with 14 more rows
 
 ncaa2005_mod %>% summarise_player(mean_score = mean(score))
@@ -184,7 +184,7 @@ ncaa2005_mod %>% summarise_player(mean_score = mean(score))
 #>   <chr>       <dbl>
 #> 1 Duke       -15.5 
 #> 2 Miami       11.4 
-#> 3 UNC         -5.00
+#> 3 UNC         -5   
 #> 4 UVA         -2.12
 #> 5 VT          11.2
 ```
@@ -224,12 +224,12 @@ ncaa2005 %>%
 #> # A tibble: 25 x 4
 #>   player1 player2 mean_score_diff num_wins
 #>   <chr>   <chr>             <dbl>    <int>
-#> 1 Duke    Duke                 0.        0
-#> 2 Duke    Miami              -45.        0
-#> 3 Duke    UNC                 -3.        0
-#> 4 Duke    UVA                -31.        0
-#> 5 Duke    VT                 -45.        0
-#> 6 Miami   Duke                45.        1
+#> 1 Duke    Duke                  0        0
+#> 2 Duke    Miami               -45        0
+#> 3 Duke    UNC                  -3        0
+#> 4 Duke    UVA                 -31        0
+#> 5 Duke    VT                  -45        0
+#> 6 Miami   Duke                 45        1
 #> # ... with 19 more rows
 
 ncaa2005 %>% h2h_mat(mean(score1 - score2))
@@ -273,17 +273,17 @@ h2h_funs
 #> $num
 #> n()
 
-ncaa2005 %>% h2h_long(!!! h2h_funs)
+ncaa2005 %>% h2h_long(!!!h2h_funs)
 #> # A long format of Head-to-Head values:
 #> # A tibble: 25 x 11
-#>   player1 player2 mean_score_diff mean_score_diff_pos mean_score
-#>   <chr>   <chr>             <dbl>               <dbl>      <dbl>
-#> 1 Duke    Duke                 0.                  0.       8.75
-#> 2 Duke    Miami              -45.                  0.       7.00
-#> 3 Duke    UNC                 -3.                  0.      21.0 
-#> 4 Duke    UVA                -31.                  0.       7.00
-#> 5 Duke    VT                 -45.                  0.       0.  
-#> 6 Miami   Duke                45.                 45.      52.0 
+#>   player1 player2 mean_score_diff mean_score_diff… mean_score
+#>   <chr>   <chr>             <dbl>            <dbl>      <dbl>
+#> 1 Duke    Duke                  0                0       8.75
+#> 2 Duke    Miami               -45                0       7   
+#> 3 Duke    UNC                  -3                0      21   
+#> 4 Duke    UVA                 -31                0       7   
+#> 5 Duke    VT                  -45                0       0   
+#> 6 Miami   Duke                 45               45      52   
 #> # ... with 19 more rows, and 6 more variables: sum_score_diff <int>,
 #> #   sum_score_diff_pos <dbl>, sum_score <int>, num_wins <dbl>,
 #> #   num_wins2 <dbl>, num <int>
@@ -294,7 +294,7 @@ To compute Head-to-Head for only subset of players or include values for players
 ``` r
 ncaa2005 %>%
   mutate(player = factor(player, levels = c("Duke", "Miami", "Extra"))) %>%
-  h2h_mat(!!! h2h_funs["num_wins"], fill = 0)
+  h2h_mat(!!!h2h_funs["num_wins"], fill = 0)
 #> # A matrix format of Head-to-Head values:
 #>       Duke Miami Extra
 #> Duke     0     0     0
