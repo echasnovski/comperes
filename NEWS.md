@@ -1,4 +1,4 @@
-# comperes 0.2.0.9000
+# comperes 0.2.1
 
 ## Bug fixes
 
@@ -7,6 +7,7 @@
 ## Other
 
 * Tweak `levels2()` for better performance.
+* React to `rlang` version 0.3.0.
 
 
 # comperes 0.2.0 (2017-05-09)
