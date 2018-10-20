@@ -258,7 +258,7 @@ h2h_funs <- list(
   sum_score = expr(sum(score1)),
   num_wins = expr(num_wins(score1, score2, half_for_draw = FALSE)),
   num_wins2 = expr(num_wins(score1, score2, half_for_draw = TRUE)),
-  num = expr(n())
+  num = expr(dplyr::n())
 )
 
 #' Compute number of wins
