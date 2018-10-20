@@ -84,11 +84,27 @@ h2h_long <- function(cr_data, ..., fill = list()) {
     as_longcr(repair = TRUE)
   player_levs <- levels2(cr$player)
 
-  cr %>%
-    get_matchups() %>%
-    summarise_item(c("player1", "player2"), ...) %>%
-    # This seems more consistent than `player1 = .data$player1` etc.
+  if (is.factor(cr[["player"]])) {
+    # Simulation of "computing Head-to-Head values of actually present matchups"
+    # This is needed because of updates in {dplyr} (>= 0.8.0) regarding
+    # manipulation with grouped data.
+    cr_summary <- cr %>%
+      mutate(player = as.character(.data$player)) %>%
+      get_matchups() %>%
+      summarise_item(c("player1", "player2"), ...) %>%
+      mutate(
+        player1 = factor(.data$player1, levels = player_levs),
+        player2 = factor(.data$player2, levels = player_levs)
+      )
+  } else {
+    cr_summary <- cr %>%
+      get_matchups() %>%
+      summarise_item(c("player1", "player2"), ...)
+  }
+
+  cr_summary %>%
     tidyr::complete(
+      # This seems more consistent than `player1 = .data$player1` etc.
       !!!syms(c("player1", "player2")),
       fill = fill
     ) %>%

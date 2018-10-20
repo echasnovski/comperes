@@ -109,7 +109,11 @@ cr_long %>% h2h_mat(sum_score = sum(score1 + score2))
 cr_long %>% h2h_long(!!!h2h_funs)
 ```
 
-To compute Head-to-Head for only subset of players or include values for players that are not in the results, use factor `player` column. __Note__ different use of `fill` argument.
+To compute Head-to-Head for only subset of players or include values for players that are not in the results, use factor `player` column. __Notes__:
+ 
+- You can use `fill` argument to replace `NA`s in certain columns after computing Head-to-Head values.
+- As Head-to-Head functions use `summarise_item()`, there will be a warning in case of implicit `NA`s in factor columns.
+
 ```{r h2h-factors}
 cr_long_fac <- cr_long %>%
   mutate(player = factor(player, levels = c(1, 2, 3)))
