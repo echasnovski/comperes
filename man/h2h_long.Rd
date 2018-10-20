@@ -48,27 +48,19 @@ Head-to-Head values at the same time by supplying multiple summary functions
 in \code{...}. If no function is supplied in \code{...}, it returns all appropriate
 combinations of \link[=get_matchups]{matchups} (see next paragraph).
 
-Head-to-Head values are computed by the following algorithm:
+After computing Head-to-Head values of actually present matchups, they are
+aligned with "levels" (see \code{\link[=levels2]{levels2()}}) of \code{player} vector (after applying
+\code{as_longcr()}). This is a way to target function on fixed set of players by
+using factor columns. The procedure is:
 \itemize{
-\item All matchups are computed with \code{get_matchups()}.
-\item Implicit missing matchups are turned into explicit by adding corresponding
-rows, one row per "virtual" matchup which takes place in a "virtual" game.
-Columns \code{game}, \code{score1}, and \code{score2} are equal to \code{NA} there. Missing
-matchups are determined based on "levels" (see \code{\link[=levels2]{levels2()}}) of \code{player}
-vector (after applying \code{as_longcr()}). This is a way to target function on
-fixed set of players by using factor columns.
-\item \code{summarise_item()} for columns \code{player1} and \code{player2} is applied with
-Head-to-Head functions defined in \code{...}. \strong{Note} that those
-functions/expressions should be able to deal with missing values in case
-there are implicit missing matchups.
-\item Function \link[tidyr:replace_na]{replace_na()} is applied with \code{fill} as
-\code{replace} argument (naming inconsistency is due to historical implementation
-details) to replace \code{NA}s in desired columns.
+\item Implicit missing matchups are turned into explicit (by adding corresponding
+rows with filling values in Head-to-Head columns) by using tidyr's
+\link[tidyr:complete]{complete()}.
 \item All matchups not containing players from "levels" are removed.
 }
 
-Use \code{fill} as \code{replace} in \code{replace_na()}to control filling values. To drop
-those rows use tidyr's \link[tidyr:drop_na]{drop_na()}.
+Use \code{fill} as in \code{complete()} to control filling values. To drop those rows
+use tidyr's \link[tidyr:drop_na]{drop_na()}.
 
 \code{to_h2h_long()} takes \strong{object of \link{h2h_mat} structure} and converts
 it into \code{h2h_long} object with value column named as stored in \code{value}. Use

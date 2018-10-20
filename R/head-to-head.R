@@ -33,25 +33,17 @@
 #' in `...`. If no function is supplied in `...`, it returns all appropriate
 #' combinations of [matchups][get_matchups()] (see next paragraph).
 #'
-#' Head-to-Head values are computed by the following algorithm:
-#' - All matchups are computed with `get_matchups()`.
-#' - Implicit missing matchups are turned into explicit by adding corresponding
-#' rows, one row per "virtual" matchup which takes place in a "virtual" game.
-#' Columns `game`, `score1`, and `score2` are equal to `NA` there. Missing
-#' matchups are determined based on "levels" (see [levels2()]) of `player`
-#' vector (after applying `as_longcr()`). This is a way to target function on
-#' fixed set of players by using factor columns.
-#' - `summarise_item()` for columns `player1` and `player2` is applied with
-#' Head-to-Head functions defined in `...`. **Note** that those
-#' functions/expressions should be able to deal with missing values in case
-#' there are implicit missing matchups.
-#' - Function [replace_na()][tidyr::replace_na()] is applied with `fill` as
-#' `replace` argument (naming inconsistency is due to historical implementation
-#' details) to replace `NA`s in desired columns.
+#' After computing Head-to-Head values of actually present matchups, they are
+#' aligned with "levels" (see [levels2()]) of `player` vector (after applying
+#' `as_longcr()`). This is a way to target function on fixed set of players by
+#' using factor columns. The procedure is:
+#' - Implicit missing matchups are turned into explicit (by adding corresponding
+#' rows with filling values in Head-to-Head columns) by using tidyr's
+#' [complete()][tidyr::complete()].
 #' - All matchups not containing players from "levels" are removed.
 #'
-#' Use `fill` as `replace` in `replace_na()`to control filling values. To drop
-#' those rows use tidyr's [drop_na()][tidyr::drop_na()].
+#' Use `fill` as in `complete()` to control filling values. To drop those rows
+#' use tidyr's [drop_na()][tidyr::drop_na()].
 #'
 #' `to_h2h_long()` takes __object of [h2h_mat] structure__ and converts
 #' it into `h2h_long` object with value column named as stored in `value`. Use
@@ -94,10 +86,12 @@ h2h_long <- function(cr_data, ..., fill = list()) {
 
   cr %>%
     get_matchups() %>%
-    tidyr::complete(!!!syms(c("player1", "player2"))) %>%
     summarise_item(c("player1", "player2"), ...) %>%
     # This seems more consistent than `player1 = .data$player1` etc.
-    tidyr::replace_na(replace = fill) %>%
+    tidyr::complete(
+      !!!syms(c("player1", "player2")),
+      fill = fill
+    ) %>%
     filter(
       as.character(.data$player1) %in% player_levs,
       as.character(.data$player2) %in% player_levs
