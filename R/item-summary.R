@@ -10,7 +10,10 @@
 #' @param .prefix A string to be added to all summary functions' names.
 #'
 #' @details Basically, `summarise_item()` performs the following steps:
-#' - Group `tbl` by columns stored in `item`.
+#' - Group `tbl` by columns stored in `item`. **Note** that starting from 0.8.0
+#' version of `dplyr` this might give a warning in case of implicit `NA`s in
+#' factor columns (`NA` present in column values but not in its levels)
+#' suggesting to add `NA` to levels.
 #' - Apply dplyr's `summarise()`.
 #' - Ungroup result.
 #' - Convert to [tibble][tibble::tibble].

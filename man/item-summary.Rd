@@ -41,7 +41,10 @@ arbitrary nature) of item (one or more columns) present in data frame.
 \details{
 Basically, \code{summarise_item()} performs the following steps:
 \itemize{
-\item Group \code{tbl} by columns stored in \code{item}.
+\item Group \code{tbl} by columns stored in \code{item}. \strong{Note} that starting from 0.8.0
+version of \code{dplyr} this might give a warning in case of implicit \code{NA}s in
+factor columns (\code{NA} present in column values but not in its levels)
+suggesting to add \code{NA} to levels.
 \item Apply dplyr's \code{summarise()}.
 \item Ungroup result.
 \item Convert to \link[tibble:tibble]{tibble}.

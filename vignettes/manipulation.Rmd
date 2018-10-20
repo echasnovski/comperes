@@ -46,7 +46,9 @@ Functions discussed in these topics leverage `dplyr`'s grammar of data manipulat
 
 ## Item summaries
 
-Item summary is understand as some summary measurements (of arbitrary nature) of item (one or more columns) present in data. To compute them, `comperes` offers `summarise_*()` family of functions in which summary functions should be provided as in `dplyr::summarise()`. Basically, they are wrappers for grouped summarise with forced ungrouping, conversion to `tibble` and possible adding prefix to summaries. Couple of examples:
+Item summary is understand as some summary measurements (of arbitrary nature) of item (one or more columns) present in data. To compute them, `comperes` offers `summarise_*()` family of functions in which summary functions should be provided as in `dplyr::summarise()`. Basically, they are wrappers for grouped summarise with forced ungrouping, conversion to `tibble` and possible adding prefix to summaries. **Note** that if one of columns in item is a factor with implicit `NA`s (present in vector but not in levels), there will be a warning suggesting to add `NA` to levels. This is due to `group_by()` functionality in `dplyr` after 0.8.0 version.
+
+Couple of examples:
 
 ```{r item-summary}
 cr_long %>% summarise_player(mean_score = mean(score))
