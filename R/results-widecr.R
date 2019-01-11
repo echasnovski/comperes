@@ -161,7 +161,7 @@ as_widecr.longcr <- function(cr_data, repair = TRUE, ...) {
   res <- cr_data %>%
     select(.data$game, .data$player, .data$score) %>%
     group_by(.data$game) %>%
-    mutate(in_game_id = seq_len(n())) %>%
+    mutate(in_game_id = seq_len(dplyr::n())) %>%
     ungroup() %>%
     mutate(
       in_game_id = formatC(

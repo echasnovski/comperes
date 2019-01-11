@@ -85,7 +85,7 @@ to_pairgames <- function(cr_data) {
   # Compute new game identifiers
   pairgames_ids <- raw_pairgames %>%
     distinct(.data$game, .data[["..subGame"]]) %>%
-    mutate(..pairgameId = 1:n())
+    mutate(..pairgameId = 1:(dplyr::n()))
 
   raw_pairgames %>%
     left_join(y = pairgames_ids, by = c("game", "..subGame")) %>%

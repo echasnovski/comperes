@@ -60,7 +60,7 @@ test_that("mutate.longcr works", {
 
 # summarise.longcr --------------------------------------------------------
 test_that("summarise.longcr works", {
-  output <- dplyr::summarise(input_longcr, n = n())
+  output <- dplyr::summarise(input_longcr, n = dplyr::n())
 
   expect_false(class(output)[1] == "longcr")
 })
@@ -206,7 +206,7 @@ test_that("mutate.widecr works", {
 
 # summarise.widecr --------------------------------------------------------
 test_that("summarise.widecr works", {
-  output <- dplyr::summarise(input_widecr, n = n())
+  output <- dplyr::summarise(input_widecr, n = dplyr::n())
 
   expect_false(class(output)[1] == "widecr")
 })
@@ -352,7 +352,7 @@ test_that("mutate.h2h_long works", {
 
 # summarise.h2h_long --------------------------------------------------------
 test_that("summarise.h2h_long works", {
-  output <- dplyr::summarise(input_h2h_long, n = n())
+  output <- dplyr::summarise(input_h2h_long, n = dplyr::n())
 
   expect_false(class(output)[1] == "h2h_long")
 })
