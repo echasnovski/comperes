@@ -12,10 +12,6 @@ input <- data.frame(
 
 # summarise_item ----------------------------------------------------------
 test_that("summarise_item works with item of length zero", {
-  expect_equal(
-    summarise_item(input, character(0)), tibble::tibble(x = 1)[, -1]
-  )
-
   output <- summarise_item(input, character(0), mean_score = mean(score))
   output_ref <- tibble::tibble(mean_score = 50.5)
 
@@ -75,11 +71,6 @@ test_that("summarise_item works with argument `.prefix`", {
   expect_equal(output, output_ref)
 
   # Check that it works with zero-length item
-  expect_equal(
-    summarise_item(input, character(0), .prefix = "a_"),
-    tibble::tibble(x = 1)[, -1]
-  )
-
   output <- summarise_item(input, character(0), mean_score = mean(score),
                            .prefix = "a_")
   output_ref <- tibble::tibble(a_mean_score = 50.5)
