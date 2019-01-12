@@ -1,4 +1,6 @@
-# comperes 0.2.1.9000
+# comperes 0.2.2
+
+* React to `dplyr` version 0.8.0.
 
 
 # comperes 0.2.1
