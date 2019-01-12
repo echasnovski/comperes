@@ -20,7 +20,7 @@ Overview
 -   **Summarise**:
     -   Compute *item summaries* with functions using `dplyr`'s grammar. Functions: `summarise_item()`, `summarise_game()`, `summarise_player()`.
     -   Compute and *join* item summaries to data for easy transformation. Functions: `join_item_summary()`, `join_game_summary()`, `join_player_summary()`.
-    -   Use *common item summary functions* with [rlang](http://rlang.tidyverse.org/)'s [unquoting](http://rlang.r-lib.org/reference/quasiquotation.html) mechanism. Example: `. %>% summarise_player(!!!summary_funs["mean_score"])`.
+    -   Use *common item summary functions* with [rlang](https://rlang.r-lib.org/)'s [unquoting](http://rlang.r-lib.org/reference/quasiquotation.html) mechanism. Example: `. %>% summarise_player(!!!summary_funs["mean_score"])`.
 -   **Compute Head-to-Head values** (a summary statistic of direct confrontation between two players) with functions also using `dplyr`'s grammar:
     -   Store output in *long format* as a `tibble` with one row per pair of players. Function: `h2h_long()`.
     -   Store output in *matrix format* as a matrix with rows and columns describing players and entries - Head-to-Head values. Function: `h2h_mat()`.
@@ -62,7 +62,7 @@ ncaa2005
 #> 4     2 UNC       24
 #> 5     3 Duke       7
 #> 6     3 UVA       38
-#> # ... with 14 more rows
+#> # … with 14 more rows
 ```
 
 This is an object of class `longcr` which describes results in long form (*each row represents the score of particular player in particular game*). Because in this competition a game always consists from two players, more natural way to look at `ncaa2005` is in wide format:
@@ -79,7 +79,7 @@ as_widecr(ncaa2005)
 #> 4     4 Duke         0 VT          45
 #> 5     5 Miami       34 UNC         16
 #> 6     6 Miami       25 UVA         17
-#> # ... with 4 more rows
+#> # … with 4 more rows
 ```
 
 This converted `ncaa2005` into an object of `widecr` class which describes results in wide format (*each row represents scores of all players in particular game*). All `comperes` functions expect either a data frame with results structured in long format or one of supported classes: `longcr`, `widecr`.
@@ -113,7 +113,7 @@ ncaa2005 %>%
 #> 4     4        45           2
 #> 5     5        50           2
 #> 6     6        42           2
-#> # ... with 4 more rows
+#> # … with 4 more rows
 ```
 
 Supplied list of common summary functions has 8 entries, which are quoted expressions to be used in `dplyr` grammar:
@@ -153,7 +153,7 @@ ncaa2005 %>% summarise_player(!!!summary_funs)
 #> 3 UNC            3        24      12.5          11.5     9.40        50
 #> 4 UVA            5        38      18.5          15.5    14.0         74
 #> 5 VT             7        52      33.5          37.5    19.9        134
-#> # ... with 2 more variables: num_games <int>, num_players <int>
+#> # … with 2 more variables: num_games <int>, num_players <int>
 ```
 
 To modify scores based on the rest of results one can use `join_*_summary()` functions:
@@ -176,7 +176,7 @@ ncaa2005_mod
 #> 4     2 UNC    -10               12.5             22.5
 #> 5     3 Duke   -13.8              8.75            22.5
 #> 6     3 UVA     -4               18.5             22.5
-#> # ... with 14 more rows
+#> # … with 14 more rows
 
 ncaa2005_mod %>% summarise_player(mean_score = mean(score))
 #> # A tibble: 5 x 2
@@ -209,7 +209,7 @@ ncaa2005 %>% get_matchups()
 #> 4     1 Miami       52 Miami       52
 #> 5     2 Duke        21 Duke        21
 #> 6     2 Duke        21 UNC         24
-#> # ... with 34 more rows
+#> # … with 34 more rows
 ```
 
 Typical Head-to-Head computation is done like this:
@@ -230,7 +230,7 @@ ncaa2005 %>%
 #> 4 Duke    UVA                 -31        0
 #> 5 Duke    VT                  -45        0
 #> 6 Miami   Duke                 45        1
-#> # ... with 19 more rows
+#> # … with 19 more rows
 
 ncaa2005 %>% h2h_mat(mean(score1 - score2))
 #> # A matrix format of Head-to-Head values:
@@ -271,7 +271,7 @@ h2h_funs
 #> num_wins(score1, score2, half_for_draw = TRUE)
 #> 
 #> $num
-#> n()
+#> dplyr::n()
 
 ncaa2005 %>% h2h_long(!!!h2h_funs)
 #> # A long format of Head-to-Head values:
@@ -284,7 +284,7 @@ ncaa2005 %>% h2h_long(!!!h2h_funs)
 #> 4 Duke    UVA                 -31                0       7   
 #> 5 Duke    VT                  -45                0       0   
 #> 6 Miami   Duke                 45               45      52   
-#> # ... with 19 more rows, and 6 more variables: sum_score_diff <int>,
+#> # … with 19 more rows, and 6 more variables: sum_score_diff <int>,
 #> #   sum_score_diff_pos <dbl>, sum_score <int>, num_wins <dbl>,
 #> #   num_wins2 <dbl>, num <int>
 ```
