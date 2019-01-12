@@ -1,6 +1,6 @@
 Package: comperes
 Title: Manage Competition Results
-Version: 0.2.2
+Version: 0.2.2.9000
 Authors@R: person("Evgeni", "Chasnovski", email = "evgeni.chasnovski@gmail.com",
     role = c("aut", "cre"))
 Description: Tools for storing and managing competition results. Competition is
