@@ -7,10 +7,10 @@
 \format{A \link[tibble:tibble]{tibble} with answers from 182 respondents and the
 following columns:
 \itemize{
-\item \strong{person} <int>: Identifier of a person.
-\item \strong{book} <chr>: Identifier of a Harry Potter book. Its values are of the
+\item \strong{person} \verb{<int>}: Identifier of a person.
+\item \strong{book} \verb{<chr>}: Identifier of a Harry Potter book. Its values are of the
 form "HP_x" where "x" represents book's number in the series (from 1 to 7).
-\item \strong{score} <chr>: Book's score. Can be one of "1 - Poor", "2 - Fair", "3 -
+\item \strong{score} \verb{<chr>}: Book's score. Can be one of "1 - Poor", "2 - Fair", "3 -
 Good", "4 - Very Good", "5 - Excellent".
 }
 
