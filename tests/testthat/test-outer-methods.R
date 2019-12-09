@@ -31,13 +31,15 @@ input_h2h_long <- tibble::tibble(
 )
 input_h2h_long <- add_class(input_h2h_long, "h2h_long")
 
-input_h2h_mat <- matrix(
+input_h2h_mat_raw <- matrix(
   c(1, NA,
     0, 2),
   nrow = 2, dimnames = list(c("1", "2"), c("1", "2")),
   byrow = TRUE
 )
-class(input_h2h_mat) <- c("h2h_mat", "matrix")
+matrix_class <- class(input_h2h_mat_raw)
+input_h2h_mat <- input_h2h_mat_raw
+class(input_h2h_mat) <- c("h2h_mat", matrix_class)
 
 
 # select.longcr -----------------------------------------------------------
@@ -496,10 +498,7 @@ test_that("[.h2h_mat works with only one argument", {
 
 # print.h2h_mat ------------------------------------------------------------
 test_that("print.h2h_mat works", {
-  input <- input_h2h_mat
-  class(input) <- "matrix"
-
-  matrix_output_ref <- capture_output(print(input))
+  matrix_output_ref <- capture_output(print(input_h2h_mat_raw))
 
   expect_false(grepl("h2h_mat", matrix_output_ref))
   expect_output(

@@ -25,6 +25,8 @@ output_mat <- matrix(
   byrow = TRUE
 )
 
+matrix_class <- class(matrix(1:2, nrow = 1))
+
 
 # h2h_long ----------------------------------------------------------------
 test_that("h2h_long works", {
@@ -124,7 +126,7 @@ test_that("h2h_mat works", {
 
   output_1 <- cr_data %>% h2h_mat(mean_score1 = mean(score1))
   output_ref_1 <- output_mat
-  class(output_ref_1) <- c("h2h_mat", "matrix")
+  class(output_ref_1) <- c("h2h_mat", matrix_class)
 
   expect_equal(output_1, output_ref_1)
 
@@ -134,7 +136,7 @@ test_that("h2h_mat works", {
     dimnames = list(c("1", "2", NA), c("1", "2", NA)),
     byrow = TRUE
   )
-  class(output_ref_2) <- c("h2h_mat", "matrix")
+  class(output_ref_2) <- c("h2h_mat", matrix_class)
 
   expect_is(output_2, "h2h_mat")
   expect_equal(output_2, output_ref_2)
@@ -152,7 +154,7 @@ test_that("h2h_mat handles `player` as factor", {
     nrow = 3, dimnames = list(c("1", "2", "3"), c("1", "2", "3")),
     byrow = TRUE
   )
-  class(output_ref) <- c("h2h_mat", "matrix")
+  class(output_ref) <- c("h2h_mat", matrix_class)
 
   expect_equal(output, output_ref)
 })
@@ -178,7 +180,7 @@ test_that("h2h_mat handles not NULL `fill`", {
   output <- cr_data %>% h2h_mat(mean_score1 = mean(score1), fill = 0)
   output_ref <- output_mat
   output_ref[cbind(c(3, 2), c(2, 3))] <- 0
-  class(output_ref) <- c("h2h_mat", "matrix")
+  class(output_ref) <- c("h2h_mat", matrix_class)
 
   expect_equal(output, output_ref)
 })
@@ -188,7 +190,7 @@ test_that("h2h_mat handles not NULL `fill`", {
 test_that("to_h2h_mat works", {
   output <- to_h2h_mat(output_long, value = "mean_score1")
   output_ref <- output_mat
-  class(output_ref) <- c("h2h_mat", "matrix")
+  class(output_ref) <- c("h2h_mat", matrix_class)
 
   expect_is(output, "h2h_mat")
   expect_equal(output, output_ref)
@@ -203,7 +205,7 @@ test_that("to_h2h_mat handles not NULL `fill`", {
   output <- output_long[-1, ] %>% to_h2h_mat(fill = 0)
   output_ref <- output_mat
   output_ref[1, 1] <- 0
-  class(output_ref) <- c("h2h_mat", "matrix")
+  class(output_ref) <- c("h2h_mat", matrix_class)
 
   expect_equal(output, output_ref)
 })
