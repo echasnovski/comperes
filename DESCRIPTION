@@ -1,15 +1,19 @@
 Package: comperes
 Title: Manage Competition Results
 Version: 0.2.2.9000
-Authors@R: person("Evgeni", "Chasnovski", email = "evgeni.chasnovski@gmail.com",
-    role = c("aut", "cre"))
-Description: Tools for storing and managing competition results. Competition is
-    understood as a set of games in which players gain some abstract scores.
-    There are two ways for storing results: in long (one row per game-player)
-    and wide (one row per game with fixed amount of players) formats. This
-    package provides functions for creation and conversion between them. Also
-    there are functions for computing their summary and Head-to-Head values for
-    players. They leverage grammar of data manipulation from 'dplyr'.
+Authors@R: 
+    person(given = "Evgeni",
+           family = "Chasnovski",
+           role = c("aut", "cre"),
+           email = "evgeni.chasnovski@gmail.com")
+Description: Tools for storing and managing competition results.
+    Competition is understood as a set of games in which players gain some
+    abstract scores.  There are two ways for storing results: in long (one
+    row per game-player) and wide (one row per game with fixed amount of
+    players) formats. This package provides functions for creation and
+    conversion between them. Also there are functions for computing their
+    summary and Head-to-Head values for players. They leverage grammar of
+    data manipulation from 'dplyr'.
 License: MIT + file LICENSE
 URL: https://github.com/echasnovski/comperes
 BugReports: https://github.com/echasnovski/comperes/issues
@@ -26,7 +30,8 @@ Suggests:
     knitr,
     rmarkdown,
     testthat
-VignetteBuilder: knitr
+VignetteBuilder: 
+    knitr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, old_usage = TRUE)
