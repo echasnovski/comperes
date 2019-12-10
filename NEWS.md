@@ -1,4 +1,6 @@
-# comperes 0.2.2.9000
+# comperes 0.2.3
+
+* Maintenance release in reaction to R 4.0.0.
 
 
 # comperes 0.2.2
