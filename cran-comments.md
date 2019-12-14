@@ -1,14 +1,14 @@
 ## Submission details
 
 This is a maintenance update:
-- A minor bug fix.
-- Reaction to 'rlang' package update to version 0.3.0.
+- Reaction to an upcoming update in R 4.0.0 regarding change of matrix's class.
 
 ## Test environments
-* Ubuntu 16.04 LTS (local install), R 3.5.2
-* Windows Server 2008 R2 SP1 (32/64 bit) (on R-hub), R 3.5.2
-* Debian Linux (on R-hub), R-devel (2019-01-05 r75949), GCC
-* win-builder, R Under development (unstable) (2019-01-09 r75961)
+
+* Local Ubuntu 18.04 install, R 3.6.1
+* Debian on R-hub, development version (2019-12-07 r77541)
+* macOS 10.11 on R-hub, R 3.6.0
+* win-builder, release and development version (2019-12-09 r77545)
 
 ## R CMD check results
 
