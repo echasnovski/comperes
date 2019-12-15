@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manipulate Competition Results • comperes</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <script src="../extra.js"></script><meta property="og:title" content="Manipulate Competition Results">
 <meta property="og:description" content="">
@@ -31,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">comperes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
       </span>
     </div>
 
@@ -39,7 +40,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -68,7 +69,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/echasnovski/comperes">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -81,13 +82,14 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Manipulate Competition Results</h1>
                         <h4 class="author">Evgeni Chasnovski</h4>
             
-            <h4 class="date">2019-01-12</h4>
+            <h4 class="date">2019-12-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/echasnovski/comperes/blob/master/vignettes/manipulation.Rmd"><code>vignettes/manipulation.Rmd</code></a></small>
       <div class="hidden name"><code>manipulation.Rmd</code></div>
@@ -103,285 +105,281 @@
 <li>Creating pairgaimes.</li>
 </ul>
 <p>We will need the following packages:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(comperes)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Присоединяю пакет: 'comperes'</span>
-<span class="co">#&gt; Следующий объект скрыт от 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     filter</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Присоединяю пакет: 'dplyr'</span>
-<span class="co">#&gt; Следующие объекты скрыты от 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     filter, lag</span>
-<span class="co">#&gt; Следующие объекты скрыты от 'package:base':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(rlang)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(comperes)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; Присоединяю пакет: 'dplyr'</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; Следующие объекты скрыты от 'package:stats':</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt;     filter, lag</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; Следующие объекты скрыты от 'package:base':</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt;     intersect, setdiff, setequal, union</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rlang)</a></code></pre></div>
 <p>Example results in long format:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cr_long &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">tibble</a></span>(
-  <span class="dt">game   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"a1"</span>, <span class="st">"a1"</span>, <span class="st">"a1"</span>, <span class="st">"a2"</span>, <span class="st">"a2"</span>, <span class="st">"b1"</span>, <span class="st">"b1"</span>, <span class="st">"b2"</span>),
-  <span class="dt">player =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="ot">NA</span>, <span class="ot">NA</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>),
-  <span class="dt">score  =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">8</span>,
-  <span class="dt">season =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="st">"A"</span>, <span class="dv">5</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="st">"B"</span>, <span class="dv">3</span>))
-) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/longcr.html">as_longcr</a></span>()</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">cr_long &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">tibble</a></span>(</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">  <span class="dt">game   =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"a1"</span>, <span class="st">"a1"</span>, <span class="st">"a1"</span>, <span class="st">"a2"</span>, <span class="st">"a2"</span>, <span class="st">"b1"</span>, <span class="st">"b1"</span>, <span class="st">"b2"</span>),</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">  <span class="dt">player =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="ot">NA</span>, <span class="ot">NA</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">  <span class="dt">score  =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">8</span>,</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">  <span class="dt">season =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"A"</span>, <span class="dv">5</span>), <span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"B"</span>, <span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/longcr.html">as_longcr</a></span>()</a></code></pre></div>
 <p>Functions discussed in these topics leverage <code>dplyr</code>’s grammar of data manipulation. Only basic knowledge is enough to use them. Also a knowledge of <code>rlang</code>’s quotation mechanism is preferred.</p>
 <div id="item-summaries" class="section level2">
 <h2 class="hasAnchor">
 <a href="#item-summaries" class="anchor"></a>Item summaries</h2>
 <p>Item summary is understand as some summary measurements (of arbitrary nature) of item (one or more columns) present in data. To compute them, <code>comperes</code> offers <code>summarise_*()</code> family of functions in which summary functions should be provided as in <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">dplyr::summarise()</a></code>. Basically, they are wrappers for grouped summarise with forced ungrouping, conversion to <code>tibble</code> and possible adding prefix to summaries. <strong>Note</strong> that if one of columns in item is a factor with implicit <code>NA</code>s (present in vector but not in levels), there will be a warning suggesting to add <code>NA</code> to levels. This is due to <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code> functionality in <code>dplyr</code> after 0.8.0 version.</p>
 <p>Couple of examples:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cr_long <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/item-summary.html">summarise_player</a></span>(<span class="dt">mean_score =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(score))
-<span class="co">#&gt; # A tibble: 3 x 2</span>
-<span class="co">#&gt;   player mean_score</span>
-<span class="co">#&gt;    &lt;dbl&gt;      &lt;dbl&gt;</span>
-<span class="co">#&gt; 1      1       4   </span>
-<span class="co">#&gt; 2      2       6.33</span>
-<span class="co">#&gt; 3     NA       2.5</span>
-
-cr_long <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/item-summary.html">summarise_game</a></span>(<span class="dt">min_score =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">min</a></span>(score), <span class="dt">max_score =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(score))
-<span class="co">#&gt; # A tibble: 4 x 3</span>
-<span class="co">#&gt;   game  min_score max_score</span>
-<span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 a1            1         3</span>
-<span class="co">#&gt; 2 a2            4         5</span>
-<span class="co">#&gt; 3 b1            6         7</span>
-<span class="co">#&gt; 4 b2            8         8</span>
-
-cr_long <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/item-summary.html">summarise_item</a></span>(<span class="st">"season"</span>, <span class="dt">sd_score =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/sd">sd</a></span>(score))
-<span class="co">#&gt; # A tibble: 2 x 2</span>
-<span class="co">#&gt;   season sd_score</span>
-<span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 A          1.58</span>
-<span class="co">#&gt; 2 B          1</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">cr_long <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/item-summary.html">summarise_player</a></span>(<span class="dt">mean_score =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(score))</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; # A tibble: 3 x 2</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt;   player mean_score</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;    &lt;dbl&gt;      &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; 1      1       4   </span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; 2      2       6.33</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; 3     NA       2.5</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">cr_long <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/item-summary.html">summarise_game</a></span>(<span class="dt">min_score =</span> <span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span>(score), <span class="dt">max_score =</span> <span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(score))</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; # A tibble: 4 x 3</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt;   game  min_score max_score</span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt;   &lt;chr&gt;     &lt;int&gt;     &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt; 1 a1            1         3</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; 2 a2            4         5</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; 3 b1            6         7</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; 4 b2            8         8</span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18">cr_long <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/item-summary.html">summarise_item</a></span>(<span class="st">"season"</span>, <span class="dt">sd_score =</span> <span class="kw"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span>(score))</a>
+<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
+<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="co">#&gt;   season sd_score</span></a>
+<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb3-22" data-line-number="22"><span class="co">#&gt; 1 A          1.58</span></a>
+<a class="sourceLine" id="cb3-23" data-line-number="23"><span class="co">#&gt; 2 B          1</span></a></code></pre></div>
 <p>For convenient transformation of results there are <code>join_*_summary()</code> family of functions, which compute respective summaries and join them to original data:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cr_long <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/item-summary-join.html">join_item_summary</a></span>(<span class="st">"season"</span>, <span class="dt">season_mean_score =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(score)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">score =</span> score <span class="op">-</span><span class="st"> </span>season_mean_score)
-<span class="co">#&gt; # A longcr object:</span>
-<span class="co">#&gt; # A tibble: 8 x 5</span>
-<span class="co">#&gt;   game  player score season season_mean_score</span>
-<span class="co">#&gt;   &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;              &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 a1         1    -2 A                      3</span>
-<span class="co">#&gt; 2 a1        NA    -1 A                      3</span>
-<span class="co">#&gt; 3 a1        NA     0 A                      3</span>
-<span class="co">#&gt; 4 a2         1     1 A                      3</span>
-<span class="co">#&gt; 5 a2         2     2 A                      3</span>
-<span class="co">#&gt; 6 b1         2    -1 B                      7</span>
-<span class="co">#&gt; 7 b1         1     0 B                      7</span>
-<span class="co">#&gt; 8 b2         2     1 B                      7</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">cr_long <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/item-summary-join.html">join_item_summary</a></span>(<span class="st">"season"</span>, <span class="dt">season_mean_score =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(score)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">score =</span> score <span class="op">-</span><span class="st"> </span>season_mean_score)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; # A longcr object:</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; # A tibble: 8 x 5</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt;   game  player score season season_mean_score</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;   &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;              &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; 1 a1         1    -2 A                      3</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; 2 a1        NA    -1 A                      3</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; 3 a1        NA     0 A                      3</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; 4 a2         1     1 A                      3</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; 5 a2         2     2 A                      3</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; 6 b1         2    -1 B                      7</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; 7 b1         1     0 B                      7</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; 8 b2         2     1 B                      7</span></a></code></pre></div>
 <p>For common summary functions <code>comperes</code> has a list <code>summary_funs</code> with 8 quoted expressions to be used with <code>rlang</code>’s unquoting mechanism:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Use .prefix to add prefix to summary columns</span>
-cr_long <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/item-summary-join.html">join_player_summary</a></span>(<span class="op">!!!</span>summary_funs[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">.prefix =</span> <span class="st">"player_"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/item-summary-join.html">join_item_summary</a></span>(<span class="st">"season"</span>, <span class="op">!!!</span>summary_funs[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">.prefix =</span> <span class="st">"season_"</span>)
-<span class="co">#&gt; # A longcr object:</span>
-<span class="co">#&gt; # A tibble: 8 x 8</span>
-<span class="co">#&gt;   game  player score season player_min_score player_max_score</span>
-<span class="co">#&gt;   &lt;chr&gt;  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;             &lt;dbl&gt;            &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 a1         1     1 A                     1                7</span>
-<span class="co">#&gt; 2 a1        NA     2 A                     2                3</span>
-<span class="co">#&gt; 3 a1        NA     3 A                     2                3</span>
-<span class="co">#&gt; 4 a2         1     4 A                     1                7</span>
-<span class="co">#&gt; 5 a2         2     5 A                     5                8</span>
-<span class="co">#&gt; 6 b1         2     6 B                     5                8</span>
-<span class="co">#&gt; 7 b1         1     7 B                     1                7</span>
-<span class="co">#&gt; 8 b2         2     8 B                     5                8</span>
-<span class="co">#&gt; # … with 2 more variables: season_min_score &lt;dbl&gt;, season_max_score &lt;dbl&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Use .prefix to add prefix to summary columns</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">cr_long <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/item-summary-join.html">join_player_summary</a></span>(<span class="op">!!!</span>summary_funs[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">.prefix =</span> <span class="st">"player_"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/item-summary-join.html">join_item_summary</a></span>(<span class="st">"season"</span>, <span class="op">!!!</span>summary_funs[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">.prefix =</span> <span class="st">"season_"</span>)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; # A longcr object:</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; # A tibble: 8 x 8</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt;   game  player score season player_min_score player_max_score season_min_score</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt;   &lt;chr&gt;  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;             &lt;int&gt;            &lt;int&gt;            &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; 1 a1         1     1 A                     1                7                1</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt; 2 a1        NA     2 A                     2                3                1</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt; 3 a1        NA     3 A                     2                3                1</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; 4 a2         1     4 A                     1                7                1</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt; 5 a2         2     5 A                     5                8                1</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt; 6 b1         2     6 B                     5                8                6</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt; 7 b1         1     7 B                     1                7                6</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt; 8 b2         2     8 B                     5                8                6</span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt; # … with 1 more variable: season_max_score &lt;int&gt;</span></a></code></pre></div>
 </div>
 <div id="head-to-head-values" class="section level2">
 <h2 class="hasAnchor">
 <a href="#head-to-head-values" class="anchor"></a>Head-to-Head values</h2>
 <p>Head-to-Head value is a summary statistic of direct confrontation between two players. It is assumed that this value can be computed based only on the players’ <strong>matchups</strong>, data of actual participation for ordered pair of players in one game.</p>
 <p>To compute matchups, <code>comperes</code> has <code><a href="../reference/get_matchups.html">get_matchups()</a></code>, which returns a <code>widecr</code> object with all matchups actually present in results (including matchups of players with themselves). <strong>Note</strong> that missing values in <code>player</code> column are treated as separate players. It allows operating with games where multiple players’ identifiers are not known. However, when computing Head-to-Head values they treated as single player. Example:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/get_matchups.html">get_matchups</a></span>(cr_long)
-<span class="co">#&gt; # A widecr object:</span>
-<span class="co">#&gt; # A tibble: 18 x 5</span>
-<span class="co">#&gt;    game  player1 score1 player2 score2</span>
-<span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;  &lt;int&gt;   &lt;dbl&gt;  &lt;int&gt;</span>
-<span class="co">#&gt;  1 a1          1      1       1      1</span>
-<span class="co">#&gt;  2 a1          1      1      NA      2</span>
-<span class="co">#&gt;  3 a1          1      1      NA      3</span>
-<span class="co">#&gt;  4 a1         NA      2       1      1</span>
-<span class="co">#&gt;  5 a1         NA      2      NA      2</span>
-<span class="co">#&gt;  6 a1         NA      2      NA      3</span>
-<span class="co">#&gt;  7 a1         NA      3       1      1</span>
-<span class="co">#&gt;  8 a1         NA      3      NA      2</span>
-<span class="co">#&gt;  9 a1         NA      3      NA      3</span>
-<span class="co">#&gt; 10 a2          1      4       1      4</span>
-<span class="co">#&gt; 11 a2          1      4       2      5</span>
-<span class="co">#&gt; 12 a2          2      5       1      4</span>
-<span class="co">#&gt; 13 a2          2      5       2      5</span>
-<span class="co">#&gt; 14 b1          2      6       2      6</span>
-<span class="co">#&gt; 15 b1          2      6       1      7</span>
-<span class="co">#&gt; 16 b1          1      7       2      6</span>
-<span class="co">#&gt; 17 b1          1      7       1      7</span>
-<span class="co">#&gt; 18 b2          2      8       2      8</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/get_matchups.html">get_matchups</a></span>(cr_long)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; # A widecr object:</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; # A tibble: 18 x 5</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt;    game  player1 score1 player2 score2</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;  &lt;int&gt;   &lt;dbl&gt;  &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt;  1 a1          1      1       1      1</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt;  2 a1          1      1      NA      2</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt;  3 a1          1      1      NA      3</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt;  4 a1         NA      2       1      1</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt;  5 a1         NA      2      NA      2</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt;  6 a1         NA      2      NA      3</span></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt;  7 a1         NA      3       1      1</span></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt;  8 a1         NA      3      NA      2</span></a>
+<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt;  9 a1         NA      3      NA      3</span></a>
+<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt; 10 a2          1      4       1      4</span></a>
+<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt; 11 a2          1      4       2      5</span></a>
+<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt; 12 a2          2      5       1      4</span></a>
+<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt; 13 a2          2      5       2      5</span></a>
+<a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt; 14 b1          2      6       2      6</span></a>
+<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt; 15 b1          2      6       1      7</span></a>
+<a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co">#&gt; 16 b1          1      7       2      6</span></a>
+<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">#&gt; 17 b1          1      7       1      7</span></a>
+<a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co">#&gt; 18 b2          2      8       2      8</span></a></code></pre></div>
 <p>Head-to-Head values can be stored in two ways:</p>
 <ul>
 <li>
 <strong>Long</strong>, a <code>tibble</code> with columns <code>player1</code> and <code>player2</code> which identify ordered pair of players, and columns corresponding to Head-to-Head values. Computation is done with <code><a href="../reference/h2h_long.html">h2h_long()</a></code> which returns an object of class <code>h2h_long</code>. Head-to-Head functions are specified as in <code>dplyr</code>’s grammar <strong>for results matchups</strong>:</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cr_long <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/h2h_long.html">h2h_long</a></span>(
-    <span class="dt">abs_diff =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(score1 <span class="op">-</span><span class="st"> </span>score2)),
-    <span class="dt">num_wins =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(score1 <span class="op">&gt;</span><span class="st"> </span>score2)
-  )
-<span class="co">#&gt; # A long format of Head-to-Head values:</span>
-<span class="co">#&gt; # A tibble: 9 x 4</span>
-<span class="co">#&gt;   player1 player2 abs_diff num_wins</span>
-<span class="co">#&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;int&gt;</span>
-<span class="co">#&gt; 1       1       1      0          0</span>
-<span class="co">#&gt; 2       1       2      1          1</span>
-<span class="co">#&gt; 3       1      NA      1.5        0</span>
-<span class="co">#&gt; 4       2       1      1          1</span>
-<span class="co">#&gt; 5       2       2      0          0</span>
-<span class="co">#&gt; 6       2      NA     NA         NA</span>
-<span class="co">#&gt; 7      NA       1      1.5        2</span>
-<span class="co">#&gt; 8      NA       2     NA         NA</span>
-<span class="co">#&gt; 9      NA      NA      0.5        1</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">cr_long <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/h2h_long.html">h2h_long</a></span>(</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">    <span class="dt">abs_diff =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(score1 <span class="op">-</span><span class="st"> </span>score2)),</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">    <span class="dt">num_wins =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(score1 <span class="op">&gt;</span><span class="st"> </span>score2)</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">  )</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; # A long format of Head-to-Head values:</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; # A tibble: 9 x 4</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;   player1 player2 abs_diff num_wins</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt; 1       1       1      0          0</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt; 2       1       2      1          1</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt; 3       1      NA      1.5        0</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt; 4       2       1      1          1</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt; 5       2       2      0          0</span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; 6       2      NA     NA         NA</span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; 7      NA       1      1.5        2</span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; 8      NA       2     NA         NA</span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; 9      NA      NA      0.5        1</span></a></code></pre></div>
 <ul>
 <li>
 <strong>Matrix</strong>, a matrix where rows and columns describe ordered pair of players and entries - Head-to-Head values. This allows convenient storage of only one Head-to-Head value. Computation is done with <code><a href="../reference/h2h_mat.html">h2h_mat()</a></code> which returns an object of class <code>h2h_mat</code>. Head-to-Head functions are specified as in <code><a href="../reference/h2h_long.html">h2h_long()</a></code>:</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cr_long <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/h2h_mat.html">h2h_mat</a></span>(<span class="dt">sum_score =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(score1 <span class="op">+</span><span class="st"> </span>score2))
-<span class="co">#&gt; # A matrix format of Head-to-Head values:</span>
-<span class="co">#&gt;       1  2 &lt;NA&gt;</span>
-<span class="co">#&gt; 1    24 22    7</span>
-<span class="co">#&gt; 2    22 38   NA</span>
-<span class="co">#&gt; &lt;NA&gt;  7 NA   20</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">cr_long <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/h2h_mat.html">h2h_mat</a></span>(<span class="dt">sum_score =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(score1 <span class="op">+</span><span class="st"> </span>score2))</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; # A matrix format of Head-to-Head values:</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt;       1  2 &lt;NA&gt;</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; 1    24 22    7</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; 2    22 38   NA</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; &lt;NA&gt;  7 NA   20</span></a></code></pre></div>
 <p><code>comperes</code> also offers a list <code>h2h_funs</code> of 9 common Head-to-Head functions as quoted expressions to be used with <code>rlang</code>’s unquoting mechanism:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cr_long <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/h2h_long.html">h2h_long</a></span>(<span class="op">!!!</span>h2h_funs)
-<span class="co">#&gt; # A long format of Head-to-Head values:</span>
-<span class="co">#&gt; # A tibble: 9 x 11</span>
-<span class="co">#&gt;   player1 player2 mean_score_diff mean_score_diff… mean_score</span>
-<span class="co">#&gt;     &lt;dbl&gt;   &lt;dbl&gt;           &lt;dbl&gt;            &lt;dbl&gt;      &lt;dbl&gt;</span>
-<span class="co">#&gt; 1       1       1             0                0         4   </span>
-<span class="co">#&gt; 2       1       2             0                0         5.5 </span>
-<span class="co">#&gt; 3       1      NA            -1.5              0         1   </span>
-<span class="co">#&gt; 4       2       1             0                0         5.5 </span>
-<span class="co">#&gt; 5       2       2             0                0         6.33</span>
-<span class="co">#&gt; 6       2      NA            NA               NA        NA   </span>
-<span class="co">#&gt; 7      NA       1             1.5              1.5       2.5 </span>
-<span class="co">#&gt; 8      NA       2            NA               NA        NA   </span>
-<span class="co">#&gt; 9      NA      NA             0                0         2.5 </span>
-<span class="co">#&gt; # … with 6 more variables: sum_score_diff &lt;int&gt;, sum_score_diff_pos &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   sum_score &lt;int&gt;, num_wins &lt;dbl&gt;, num_wins2 &lt;dbl&gt;, num &lt;int&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">cr_long <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/h2h_long.html">h2h_long</a></span>(<span class="op">!!!</span>h2h_funs)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; # A long format of Head-to-Head values:</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; # A tibble: 9 x 11</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt;   player1 player2 mean_score_diff mean_score_diff… mean_score sum_score_diff</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt;     &lt;dbl&gt;   &lt;dbl&gt;           &lt;dbl&gt;            &lt;dbl&gt;      &lt;dbl&gt;          &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; 1       1       1             0                0         4                 0</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; 2       1       2             0                0         5.5               0</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; 3       1      NA            -1.5              0         1                -3</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; 4       2       1             0                0         5.5               0</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; 5       2       2             0                0         6.33              0</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; 6       2      NA            NA               NA        NA                NA</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt; 7      NA       1             1.5              1.5       2.5               3</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt; 8      NA       2            NA               NA        NA                NA</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; 9      NA      NA             0                0         2.5               0</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt; # … with 5 more variables: sum_score_diff_pos &lt;dbl&gt;, sum_score &lt;int&gt;,</span></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt; #   num_wins &lt;dbl&gt;, num_wins2 &lt;dbl&gt;, num &lt;int&gt;</span></a></code></pre></div>
 <p>To compute Head-to-Head for only subset of players or include values for players that are not in the results, use factor <code>player</code> column. <strong>Notes</strong>:</p>
 <ul>
 <li>You can use <code>fill</code> argument to replace <code>NA</code>s in certain columns after computing Head-to-Head values.</li>
 <li>As Head-to-Head functions use <code><a href="../reference/item-summary.html">summarise_item()</a></code>, there will be a warning in case of implicit <code>NA</code>s in factor columns.</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cr_long_fac &lt;-<span class="st"> </span>cr_long <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">player =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">factor</a></span>(player, <span class="dt">levels =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)))
-
-cr_long_fac <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/h2h_long.html">h2h_long</a></span>(<span class="dt">abs_diff =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(score1 <span class="op">-</span><span class="st"> </span>score2)),
-           <span class="dt">fill =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">abs_diff =</span> <span class="op">-</span><span class="dv">100</span>))
-<span class="co">#&gt; # A long format of Head-to-Head values:</span>
-<span class="co">#&gt; # A tibble: 9 x 3</span>
-<span class="co">#&gt;   player1 player2 abs_diff</span>
-<span class="co">#&gt;   &lt;fct&gt;   &lt;fct&gt;      &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 1       1              0</span>
-<span class="co">#&gt; 2 1       2              1</span>
-<span class="co">#&gt; 3 1       3           -100</span>
-<span class="co">#&gt; 4 2       1              1</span>
-<span class="co">#&gt; 5 2       2              0</span>
-<span class="co">#&gt; 6 2       3           -100</span>
-<span class="co">#&gt; 7 3       1           -100</span>
-<span class="co">#&gt; 8 3       2           -100</span>
-<span class="co">#&gt; 9 3       3           -100</span>
-
-cr_long_fac <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/h2h_mat.html">h2h_mat</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(score1 <span class="op">-</span><span class="st"> </span>score2)),
-          <span class="dt">fill =</span> <span class="op">-</span><span class="dv">100</span>)
-<span class="co">#&gt; # A matrix format of Head-to-Head values:</span>
-<span class="co">#&gt;      1    2    3</span>
-<span class="co">#&gt; 1    0    1 -100</span>
-<span class="co">#&gt; 2    1    0 -100</span>
-<span class="co">#&gt; 3 -100 -100 -100</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">cr_long_fac &lt;-<span class="st"> </span>cr_long <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">player =</span> <span class="kw"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(player, <span class="dt">levels =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)))</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">cr_long_fac <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/h2h_long.html">h2h_long</a></span>(<span class="dt">abs_diff =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(score1 <span class="op">-</span><span class="st"> </span>score2)),</a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">           <span class="dt">fill =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">abs_diff =</span> <span class="dv">-100</span>))</a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt; # A long format of Head-to-Head values:</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt; # A tibble: 9 x 3</span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;   player1 player2 abs_diff</span></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt;   &lt;fct&gt;   &lt;fct&gt;      &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt; 1 1       1              0</span></a>
+<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt; 2 1       2              1</span></a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt; 3 1       3           -100</span></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt; 4 2       1              1</span></a>
+<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; 5 2       2              0</span></a>
+<a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co">#&gt; 6 2       3           -100</span></a>
+<a class="sourceLine" id="cb10-17" data-line-number="17"><span class="co">#&gt; 7 3       1           -100</span></a>
+<a class="sourceLine" id="cb10-18" data-line-number="18"><span class="co">#&gt; 8 3       2           -100</span></a>
+<a class="sourceLine" id="cb10-19" data-line-number="19"><span class="co">#&gt; 9 3       3           -100</span></a>
+<a class="sourceLine" id="cb10-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb10-21" data-line-number="21">cr_long_fac <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-22" data-line-number="22"><span class="st">  </span><span class="kw"><a href="../reference/h2h_mat.html">h2h_mat</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(score1 <span class="op">-</span><span class="st"> </span>score2)),</a>
+<a class="sourceLine" id="cb10-23" data-line-number="23">          <span class="dt">fill =</span> <span class="dv">-100</span>)</a>
+<a class="sourceLine" id="cb10-24" data-line-number="24"><span class="co">#&gt; # A matrix format of Head-to-Head values:</span></a>
+<a class="sourceLine" id="cb10-25" data-line-number="25"><span class="co">#&gt;      1    2    3</span></a>
+<a class="sourceLine" id="cb10-26" data-line-number="26"><span class="co">#&gt; 1    0    1 -100</span></a>
+<a class="sourceLine" id="cb10-27" data-line-number="27"><span class="co">#&gt; 2    1    0 -100</span></a>
+<a class="sourceLine" id="cb10-28" data-line-number="28"><span class="co">#&gt; 3 -100 -100 -100</span></a></code></pre></div>
 <div id="conversion" class="section level3">
 <h3 class="hasAnchor">
 <a href="#conversion" class="anchor"></a>Conversion</h3>
 <p>To convert between long and matrix formats of Head-to-Head values, <code>comperes</code> has <code><a href="../reference/h2h_long.html">to_h2h_long()</a></code> and <code><a href="../reference/h2h_mat.html">to_h2h_mat()</a></code> which convert from matrix to long and from long to matrix respectively. <strong>Note</strong> that output of <code><a href="../reference/h2h_long.html">to_h2h_long()</a></code> has <code>player1</code> and <code>player2</code> columns as characters. Examples:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cr_long <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/h2h_mat.html">h2h_mat</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(score1)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/h2h_long.html">to_h2h_long</a></span>()
-<span class="co">#&gt; # A long format of Head-to-Head values:</span>
-<span class="co">#&gt; # A tibble: 9 x 3</span>
-<span class="co">#&gt;   player1 player2 h2h_value</span>
-<span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 1       1            4   </span>
-<span class="co">#&gt; 2 1       2            5.5 </span>
-<span class="co">#&gt; 3 1       &lt;NA&gt;         1   </span>
-<span class="co">#&gt; 4 2       1            5.5 </span>
-<span class="co">#&gt; 5 2       2            6.33</span>
-<span class="co">#&gt; 6 2       &lt;NA&gt;        NA   </span>
-<span class="co">#&gt; 7 &lt;NA&gt;    1            2.5 </span>
-<span class="co">#&gt; 8 &lt;NA&gt;    2           NA   </span>
-<span class="co">#&gt; 9 &lt;NA&gt;    &lt;NA&gt;         2.5</span>
-
-cr_long <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/h2h_long.html">h2h_long</a></span>(<span class="dt">mean_score1 =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(score1), <span class="dt">mean_score2 =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(score2)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/h2h_mat.html">to_h2h_mat</a></span>()
-<span class="co">#&gt; Using mean_score1 as value.</span>
-<span class="co">#&gt; # A matrix format of Head-to-Head values:</span>
-<span class="co">#&gt;        1        2 &lt;NA&gt;</span>
-<span class="co">#&gt; 1    4.0 5.500000  1.0</span>
-<span class="co">#&gt; 2    5.5 6.333333   NA</span>
-<span class="co">#&gt; &lt;NA&gt; 2.5       NA  2.5</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">cr_long <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/h2h_mat.html">h2h_mat</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(score1)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/h2h_long.html">to_h2h_long</a></span>()</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; # A long format of Head-to-Head values:</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt; # A tibble: 9 x 3</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt;   player1 player2 h2h_value</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt; 1 1       1            4   </span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; 2 1       2            5.5 </span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt; 3 1       &lt;NA&gt;         1   </span></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt; 4 2       1            5.5 </span></a>
+<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co">#&gt; 5 2       2            6.33</span></a>
+<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="co">#&gt; 6 2       &lt;NA&gt;        NA   </span></a>
+<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt; 7 &lt;NA&gt;    1            2.5 </span></a>
+<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt; 8 &lt;NA&gt;    2           NA   </span></a>
+<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="co">#&gt; 9 &lt;NA&gt;    &lt;NA&gt;         2.5</span></a>
+<a class="sourceLine" id="cb11-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb11-16" data-line-number="16">cr_long <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-17" data-line-number="17"><span class="st">  </span><span class="kw"><a href="../reference/h2h_long.html">h2h_long</a></span>(<span class="dt">mean_score1 =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(score1), <span class="dt">mean_score2 =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(score2)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-18" data-line-number="18"><span class="st">  </span><span class="kw"><a href="../reference/h2h_mat.html">to_h2h_mat</a></span>()</a>
+<a class="sourceLine" id="cb11-19" data-line-number="19"><span class="co">#&gt; Using mean_score1 as value.</span></a>
+<a class="sourceLine" id="cb11-20" data-line-number="20"><span class="co">#&gt; # A matrix format of Head-to-Head values:</span></a>
+<a class="sourceLine" id="cb11-21" data-line-number="21"><span class="co">#&gt;        1        2 &lt;NA&gt;</span></a>
+<a class="sourceLine" id="cb11-22" data-line-number="22"><span class="co">#&gt; 1    4.0 5.500000  1.0</span></a>
+<a class="sourceLine" id="cb11-23" data-line-number="23"><span class="co">#&gt; 2    5.5 6.333333   NA</span></a>
+<a class="sourceLine" id="cb11-24" data-line-number="24"><span class="co">#&gt; &lt;NA&gt; 2.5       NA  2.5</span></a></code></pre></div>
 <p>All this functionality is powered by useful outside of <code>comperes</code> functions <code><a href="../reference/convert-pair-value.html">long_to_mat()</a></code> and <code><a href="../reference/convert-pair-value.html">mat_to_long()</a></code>. They convert general pair-value data between long and matrix format:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pair_value_long &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">tibble</a></span>(
-  <span class="dt">key_1 =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>),
-  <span class="dt">key_2 =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>),
-  <span class="dt">val =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>
-)
-
-pair_value_mat &lt;-<span class="st"> </span>pair_value_long <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/convert-pair-value.html">long_to_mat</a></span>(<span class="dt">row_key =</span> <span class="st">"key_1"</span>, <span class="dt">col_key =</span> <span class="st">"key_2"</span>, <span class="dt">value =</span> <span class="st">"val"</span>)
-pair_value_mat
-<span class="co">#&gt;    2 3</span>
-<span class="co">#&gt; 1  1 2</span>
-<span class="co">#&gt; 2 NA 3</span>
-
-pair_value_mat <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/convert-pair-value.html">mat_to_long</a></span>(
-    <span class="dt">row_key =</span> <span class="st">"key_1"</span>, <span class="dt">col_key =</span> <span class="st">"key_2"</span>, <span class="dt">value =</span> <span class="st">"val"</span>,
-    <span class="dt">drop =</span> <span class="ot">TRUE</span>
-  )
-<span class="co">#&gt; # A tibble: 3 x 3</span>
-<span class="co">#&gt;   key_1 key_2   val</span>
-<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt; &lt;int&gt;</span>
-<span class="co">#&gt; 1 1     2         1</span>
-<span class="co">#&gt; 2 1     3         2</span>
-<span class="co">#&gt; 3 2     3         3</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">pair_value_long &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">tibble</a></span>(</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">  <span class="dt">key_1 =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">  <span class="dt">key_2 =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>),</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4">  <span class="dt">val =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5">)</a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">pair_value_mat &lt;-<span class="st"> </span>pair_value_long <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="../reference/convert-pair-value.html">long_to_mat</a></span>(<span class="dt">row_key =</span> <span class="st">"key_1"</span>, <span class="dt">col_key =</span> <span class="st">"key_2"</span>, <span class="dt">value =</span> <span class="st">"val"</span>)</a>
+<a class="sourceLine" id="cb12-9" data-line-number="9">pair_value_mat</a>
+<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">#&gt;    2 3</span></a>
+<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#&gt; 1  1 2</span></a>
+<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt; 2 NA 3</span></a>
+<a class="sourceLine" id="cb12-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb12-14" data-line-number="14">pair_value_mat <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="st">  </span><span class="kw"><a href="../reference/convert-pair-value.html">mat_to_long</a></span>(</a>
+<a class="sourceLine" id="cb12-16" data-line-number="16">    <span class="dt">row_key =</span> <span class="st">"key_1"</span>, <span class="dt">col_key =</span> <span class="st">"key_2"</span>, <span class="dt">value =</span> <span class="st">"val"</span>,</a>
+<a class="sourceLine" id="cb12-17" data-line-number="17">    <span class="dt">drop =</span> <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="cb12-18" data-line-number="18">  )</a>
+<a class="sourceLine" id="cb12-19" data-line-number="19"><span class="co">#&gt; # A tibble: 3 x 3</span></a>
+<a class="sourceLine" id="cb12-20" data-line-number="20"><span class="co">#&gt;   key_1 key_2   val</span></a>
+<a class="sourceLine" id="cb12-21" data-line-number="21"><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt; &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb12-22" data-line-number="22"><span class="co">#&gt; 1 1     2         1</span></a>
+<a class="sourceLine" id="cb12-23" data-line-number="23"><span class="co">#&gt; 2 1     3         2</span></a>
+<a class="sourceLine" id="cb12-24" data-line-number="24"><span class="co">#&gt; 3 2     3         3</span></a></code></pre></div>
 </div>
 </div>
 <div id="pairgames" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pairgames" class="anchor"></a>Pairgames</h2>
 <p>For some ranking algorithms it crucial that games should only be between two players. <code>comperes</code> has function <code><a href="../reference/pairgames.html">to_pairgames()</a></code> for this. It removes games with one player. Games with three and more players <code><a href="../reference/pairgames.html">to_pairgames()</a></code> splits into <strong>separate games</strong> between unordered pairs of different players without specific order. <strong>Note</strong> that game identifiers are changed to integers but order of initial games is preserved. Example:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/pairgames.html">to_pairgames</a></span>(cr_long)
-<span class="co">#&gt; # A widecr object:</span>
-<span class="co">#&gt; # A tibble: 5 x 5</span>
-<span class="co">#&gt;    game player1 score1 player2 score2</span>
-<span class="co">#&gt;   &lt;int&gt;   &lt;dbl&gt;  &lt;int&gt;   &lt;dbl&gt;  &lt;int&gt;</span>
-<span class="co">#&gt; 1     1       1      1      NA      2</span>
-<span class="co">#&gt; 2     2       1      1      NA      3</span>
-<span class="co">#&gt; 3     3      NA      2      NA      3</span>
-<span class="co">#&gt; 4     4       1      4       2      5</span>
-<span class="co">#&gt; 5     5       2      6       1      7</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="../reference/pairgames.html">to_pairgames</a></span>(cr_long)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">#&gt; # A widecr object:</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#&gt; # A tibble: 5 x 5</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt;    game player1 score1 player2 score2</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt;   &lt;int&gt;   &lt;dbl&gt;  &lt;int&gt;   &lt;dbl&gt;  &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; 1     1       1      1      NA      2</span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; 2     2       1      1      NA      3</span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt; 3     3      NA      2      NA      3</span></a>
+<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co">#&gt; 4     4       1      4       2      5</span></a>
+<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="co">#&gt; 5     5       2      6       1      7</span></a></code></pre></div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#item-summaries">Item summaries</a></li>
-      <li><a href="#head-to-head-values">Head-to-Head values</a></li>
-      <li><a href="#pairgames">Pairgames</a></li>
+<li class="toc-lev1"><a href="#item-summaries">Item summaries</a></li>
+      <li class="toc-lev1"><a href="#head-to-head-values">Head-to-Head values</a></li>
+      <li class="toc-lev1"><a href="#pairgames">Pairgames</a></li>
       </ul>
 </div>
       </div>
@@ -389,17 +387,20 @@ pair_value_mat <span class="op">%&gt;%</span>
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Evgeni Chasnovski.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>
