@@ -1,12 +1,12 @@
+# comperes (development version)
+
 # comperes 0.2.3
 
 * Maintenance release in reaction to R 4.0.0.
 
-
 # comperes 0.2.2
 
 * React to `dplyr` version 0.8.0.
-
 
 # comperes 0.2.1
 
@@ -19,11 +19,9 @@
 * Tweak `levels2()` for better performance.
 * React to `rlang` version 0.3.0.
 
-
 # comperes 0.2.0 (2018-05-09)
 
 Initial CRAN release
-
 
 # comperes 0.1.0.9001
 
@@ -34,7 +32,6 @@ Initial CRAN release
 * Remove `skip_action()` function.
 * Add `hp_survey` data.
 
-
 # comperes 0.1.0.9000 (2017-06-18)
 
 ## Features
@@ -44,7 +41,6 @@ Initial CRAN release
 ## Bug fixes
 
 * Replace usage of '1:ncol' to 'seq_len(ncol)';
-
 
 # comperes 0.1.0 (2017-06-13)
 
