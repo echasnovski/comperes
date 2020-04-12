@@ -4,8 +4,10 @@
 \name{ncaa2005}
 \alias{ncaa2005}
 \title{Example competition results from 2005 NCAA football season}
-\format{An object of class \link{longcr} containing information
-about 10 games.}
+\format{
+An object of class \link{longcr} containing information
+about 10 games.
+}
 \usage{
 ncaa2005
 }

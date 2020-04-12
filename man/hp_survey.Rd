@@ -4,7 +4,8 @@
 \name{hp_survey}
 \alias{hp_survey}
 \title{Results of Harry Potter Books Survey}
-\format{A \link[tibble:tibble]{tibble} with answers from 182 respondents and the
+\format{
+A \link[tibble:tibble]{tibble} with answers from 182 respondents and the
 following columns:
 \itemize{
 \item \strong{person} \verb{<int>}: Identifier of a person.
@@ -14,7 +15,8 @@ form "HP_x" where "x" represents book's number in the series (from 1 to 7).
 Good", "4 - Very Good", "5 - Excellent".
 }
 
-Rows are ordered by person and then by book identifier.}
+Rows are ordered by person and then by book identifier.
+}
 \usage{
 hp_survey
 }

@@ -4,7 +4,9 @@
 \name{summary_funs}
 \alias{summary_funs}
 \title{Common item summary functions}
-\format{An object of class \code{list} of length 8.}
+\format{
+An object of class \code{list} of length 8.
+}
 \usage{
 summary_funs
 }

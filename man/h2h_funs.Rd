@@ -4,7 +4,9 @@
 \name{h2h_funs}
 \alias{h2h_funs}
 \title{Common Head-to-Head functions}
-\format{An object of class \code{list} of length 9.}
+\format{
+An object of class \code{list} of length 9.
+}
 \usage{
 h2h_funs
 }
