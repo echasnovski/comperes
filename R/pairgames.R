@@ -71,6 +71,9 @@ to_pairgames <- function(cr_data) {
 
   # In raw pairgames game identifier is formed from 'game' and '..subGame'
   raw_pairgames <- cr %>%
+    # Converting to raw tibble here is crucial to avoid possible confusion
+    # during 'tidyverse' operations about combination of subclassed tibbles.
+    as_tibble() %>%
     semi_join(y = multiple_players_games, by = "game") %>%
     tidyr::nest(data = -.data$game) %>%
     mutate(data = lapply(.data$data, function(game_res) {
