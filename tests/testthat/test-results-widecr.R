@@ -130,8 +130,10 @@ test_that("as_widecr.default throws an error if no column is matched", {
 
   expect_warning(as_widecr(input_bad_colnames, repair = TRUE),
                  "Neither 'player' nor 'score' columns are detected.")
-  expect_equal(suppressWarnings(as_widecr(input_bad_colnames, repair = TRUE)),
-               input_bad_colnames)
+  expect_equivalent(
+    suppressWarnings(as_widecr(input_bad_colnames, repair = TRUE)),
+    input_bad_colnames
+  )
 })
 
 test_that("as_widecr.default places column 'game' on first place", {

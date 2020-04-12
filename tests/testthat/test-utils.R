@@ -174,7 +174,7 @@ test_that("get_matchups works", {
     score2 = c(rep(31:32, times = 2), rep(33:34, times = 2))
   )
 
-  expect_equal(output, output_ref)
+  expect_equivalent(output, output_ref)
   expect_true(is_widecr(output))
 })
 
