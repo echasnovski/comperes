@@ -1,20 +1,18 @@
 ## Submission details
 
 This is a maintenance update:
-- Reaction to an upcoming update in R 4.0.0 regarding change of matrix's class.
+- Reaction to an upcoming updates in 'dplyr' 1.0.0.
 
 ## Test environments
 
-* Local Ubuntu 18.04 install, R 3.6.1
-* Debian on R-hub, development version (2019-12-07 r77541)
-* macOS 10.11 on R-hub, R 3.6.0
-* win-builder, release and development version (2019-12-09 r77545)
+* Local Ubuntu 18.04 install, R 3.6.3
+* Debian on R-hub, development version (2020-05-07 r78381)
+* macOS 10.13.6 on R-hub, R 4.0.0
+* win-builder, release and development version (2020-05-08 r78391)
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
-
-* Note is to CRAN maintainers.
+0 errors | 0 warnings | 0 notes
 
 ---
 
