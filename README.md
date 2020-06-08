@@ -3,10 +3,15 @@
 
 # comperes: Manage Competition Results
 
+<!-- badges: start -->
+
 [![Build
 Status](https://travis-ci.org/echasnovski/comperes.svg?branch=master)](https://travis-ci.org/echasnovski/comperes)
 [![codecov](https://codecov.io/gh/echasnovski/comperes/branch/master/graph/badge.svg)](https://codecov.io/gh/echasnovski/comperes)
 [![CRAN](https://www.r-pkg.org/badges/version/comperes?color=blue)](https://cran.r-project.org/package=comperes)
+[![Dependencies](https://tinyverse.netlify.com/badge/comperes)](https://CRAN.R-project.org/package=comperes)
+[![Downloads](http://cranlogs.r-pkg.org/badges/comperes)](https://cran.r-project.org/package=comperes)
+<!-- badges: end -->
 
 `comperes` offers a pipe (`%>%`) friendly set of tools for storing and
 managing competition results. Understanding of **competition** is quite
