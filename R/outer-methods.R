@@ -271,7 +271,7 @@ print.h2h_long <- function(x, ...) {
 print.h2h_mat <- function(x, ...) {
   cat("# A matrix format of Head-to-Head values:\n")
 
-  y <- remove_class_cond(x, "h2h_mat")
+  y <- remove_class_cond(remove_class_cond(x, "h2h_mat"), "matrix")
 
   print(y)
 }

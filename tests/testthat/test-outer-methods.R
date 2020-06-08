@@ -506,3 +506,9 @@ test_that("print.h2h_mat works", {
     paste0("# A matrix format of Head-to-Head values:\n.*", matrix_output_ref)
   )
 })
+
+test_that("print.h2h_mat doesn't print matrix attributes", {
+  out <- ncaa2005 %>% h2h_mat(mean(score1 - score2))
+  out_print <- capture_output(print(out))
+  expect_false(grepl('attr\\(,"class"\\)', out_print))
+})
