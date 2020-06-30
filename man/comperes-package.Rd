@@ -32,7 +32,7 @@ amount of players.
 transformation.
 \item Use \link[=summary_funs]{common item summary functions} with
 \href{https://CRAN.R-project.org/package=rlang}{rlang}'s
-\link[rlang:quasiquotation]{unquoting} mechanism.
+\link[rlang:nse-force]{unquoting} mechanism.
 }
 \item \strong{Compute Head-to-Head values} (a summary statistic of direct
 confrontation between two players) with functions also using dplyr's grammar:
