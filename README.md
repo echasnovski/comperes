@@ -7,6 +7,8 @@
 
 [![Build
 Status](https://travis-ci.org/echasnovski/comperes.svg?branch=master)](https://travis-ci.org/echasnovski/comperes)
+[![R build
+status](https://github.com/echasnovski/comperes/workflows/R-CMD-check/badge.svg)](https://github.com/echasnovski/comperes/actions)
 [![codecov](https://codecov.io/gh/echasnovski/comperes/branch/master/graph/badge.svg)](https://codecov.io/gh/echasnovski/comperes)
 [![CRAN](https://www.r-pkg.org/badges/version/comperes?color=blue)](https://cran.r-project.org/package=comperes)
 [![Dependencies](https://tinyverse.netlify.com/badge/comperes)](https://CRAN.R-project.org/package=comperes)
