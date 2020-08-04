@@ -1,11 +1,12 @@
 Package: comperes
 Title: Manage Competition Results
 Version: 0.2.4.9000
-Authors@R: 
+Authors@R:
     person(given = "Evgeni",
            family = "Chasnovski",
            role = c("aut", "cre"),
-           email = "evgeni.chasnovski@gmail.com")
+           email = "evgeni.chasnovski@gmail.com",
+           comment = c(ORCID = "0000-0002-1617-4019"))
 Description: Tools for storing and managing competition results.
     Competition is understood as a set of games in which players gain some
     abstract scores.  There are two ways for storing results: in long (one
@@ -17,20 +18,20 @@ Description: Tools for storing and managing competition results.
 License: MIT + file LICENSE
 URL: https://github.com/echasnovski/comperes
 BugReports: https://github.com/echasnovski/comperes/issues
-Depends: 
+Depends:
     R (>= 3.4.0)
-Imports: 
+Imports:
     dplyr (>= 0.7.0),
     magrittr,
     rlang (>= 0.1.2),
     tibble,
     tidyr (>= 0.7.0)
-Suggests: 
+Suggests:
     covr,
     knitr,
     rmarkdown,
     testthat
-VignetteBuilder: 
+VignetteBuilder:
     knitr
 Encoding: UTF-8
 LazyData: true
