@@ -65,7 +65,6 @@
 #'
 #' # Drops rows with valuus missing
 #' mat_data %>% mat_to_long("new_key_1", "new_key_2", "new_val", drop = TRUE)
-#'
 #' @name convert-pair-value
 NULL
 
@@ -98,7 +97,8 @@ long_to_mat <- function(tbl, row_key, col_key, value = NULL,
   row_names <- levels2(row, na.last = TRUE)
   col_names <- levels2(col, na.last = TRUE)
   res <- matrix(
-    mat_elem, nrow = length(row_names), ncol = length(col_names),
+    mat_elem,
+    nrow = length(row_names), ncol = length(col_names),
     dimnames = list(row_names, col_names)
   )
   # For repairing in case `val` is list

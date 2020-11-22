@@ -7,16 +7,20 @@ input_1 <- data.frame(
   playerB = 2:11,
   scoreC = 11:20,
   scoreB = 12:21,
-  otherColumn =  101:110
+  otherColumn = 101:110
 )
 
 player_vec <- 10:19
 score_vec <- 100:109
 input_2 <- as.data.frame(c(
-  setNames(lapply(1:10, `+`, e2 = player_vec),
-           paste0("player", 1:10)),
-  setNames(lapply(1:10, `+`, e2 = score_vec),
-           paste0("score", 1:10))
+  setNames(
+    lapply(1:10, `+`, e2 = player_vec),
+    paste0("player", 1:10)
+  ),
+  setNames(
+    lapply(1:10, `+`, e2 = score_vec),
+    paste0("score", 1:10)
+  )
 ))
 
 input_good <- data.frame(
@@ -128,8 +132,10 @@ test_that("as_widecr.default throws an error if no column is matched", {
   input_bad_colnames <- input_1
   colnames(input_bad_colnames) <- seq_len(ncol(input_bad_colnames))
 
-  expect_warning(as_widecr(input_bad_colnames, repair = TRUE),
-                 "Neither 'player' nor 'score' columns are detected.")
+  expect_warning(
+    as_widecr(input_bad_colnames, repair = TRUE),
+    "Neither 'player' nor 'score' columns are detected."
+  )
   expect_equivalent(
     suppressWarnings(as_widecr(input_bad_colnames, repair = TRUE)),
     input_bad_colnames
@@ -161,9 +167,13 @@ test_that("as_widecr.default places column 'game' on first place", {
 test_that("as_widecr.default correctly renames many columns", {
   expect_identical(
     colnames(as_widecr(input_2, repair = TRUE)),
-    paste0(rep(c("player", "score"), times = 2),
-           formatC(rep(1:10, each = 2), width = 2,
-                   format = "d", flag = "0"))
+    paste0(
+      rep(c("player", "score"), times = 2),
+      formatC(rep(1:10, each = 2),
+        width = 2,
+        format = "d", flag = "0"
+      )
+    )
   )
 })
 
@@ -187,15 +197,21 @@ test_that("as_widecr.default preserves column types", {
   output_ref_types1 <- output_ref_types
   input_types1$game <- factor(input_types1$game, levels = 1:10)
   output_ref_types1$game <- factor(output_ref_types1$game, levels = 1:10)
-  expect_identical(as_widecr(input_types1, repair = TRUE), output_ref_types1,
-                   info = "Factor 'game'")
+  expect_identical(
+    as_widecr(input_types1, repair = TRUE),
+    output_ref_types1,
+    info = "Factor 'game'"
+  )
 
   input_types2 <- input_types
   output_ref_types2 <- output_ref_types
   input_types2$game <- as.character(input_types2$game)
   output_ref_types2$game <- as.character(output_ref_types2$game)
-  expect_identical(as_widecr(input_types2, repair = TRUE), output_ref_types2,
-                   info = "Character 'game'")
+  expect_identical(
+    as_widecr(input_types2, repair = TRUE),
+    output_ref_types2,
+    info = "Character 'game'"
+  )
 
   input_types3 <- input_types
   output_ref_types3 <- output_ref_types
@@ -203,8 +219,11 @@ test_that("as_widecr.default preserves column types", {
   input_types3$player2 <- factor(input_types3$player2, levels = 1:11)
   output_ref_types3$player1 <- factor(output_ref_types3$player1, levels = 1:11)
   output_ref_types3$player2 <- factor(output_ref_types3$player2, levels = 1:11)
-  expect_identical(as_widecr(input_types3, repair = TRUE), output_ref_types3,
-                   info = "Factor 'player'")
+  expect_identical(
+    as_widecr(input_types3, repair = TRUE),
+    output_ref_types3,
+    info = "Factor 'player'"
+  )
 
   input_types4 <- input_types
   output_ref_types4 <- output_ref_types
@@ -212,8 +231,11 @@ test_that("as_widecr.default preserves column types", {
   input_types4$player2 <- as.character(input_types4$player2)
   output_ref_types4$player1 <- as.character(output_ref_types4$player1)
   output_ref_types4$player2 <- as.character(output_ref_types4$player2)
-  expect_identical(as_widecr(input_types4, repair = TRUE), output_ref_types4,
-                   info = "Character 'player'")
+  expect_identical(
+    as_widecr(input_types4, repair = TRUE),
+    output_ref_types4,
+    info = "Character 'player'"
+  )
 
   input_types5 <- input_types
   output_ref_types5 <- output_ref_types
@@ -221,8 +243,11 @@ test_that("as_widecr.default preserves column types", {
   input_types5$score2 <- as.character(input_types5$score2)
   output_ref_types5$score1 <- as.character(output_ref_types5$score1)
   output_ref_types5$score2 <- as.character(output_ref_types5$score2)
-  expect_identical(as_widecr(input_types5, repair = TRUE), output_ref_types5,
-                   info = "Character 'score'")
+  expect_identical(
+    as_widecr(input_types5, repair = TRUE),
+    output_ref_types5,
+    info = "Character 'score'"
+  )
 
   input_types6 <- input_types
   output_ref_types6 <- output_ref_types
@@ -235,8 +260,11 @@ test_that("as_widecr.default preserves column types", {
   class(input_types6$score2) <- NULL
   output_ref_types6$score1 <- list_scores
   output_ref_types6$score2 <- list_scores
-  expect_identical(as_widecr(input_types6, repair = TRUE), output_ref_types6,
-                   info = "List-column 'score'")
+  expect_identical(
+    as_widecr(input_types6, repair = TRUE),
+    output_ref_types6,
+    info = "List-column 'score'"
+  )
 })
 
 test_that("as_widecr.default works without repairing", {
@@ -261,8 +289,10 @@ test_that("as_widecr.longcr does simple converting", {
     player2 = rep(seq(from = 12L, to = 20L, by = 2L), 2),
     score2 = rep(seq(from = 102L, to = 110L, by = 2L), 2)
   )
-  output_ref_widecr_from_longcr <- add_class(output_ref_widecr_from_longcr,
-                                         "widecr")
+  output_ref_widecr_from_longcr <- add_class(
+    output_ref_widecr_from_longcr,
+    "widecr"
+  )
 
   output <- as_widecr(input_longcr)
   expect_identical(output, output_ref_widecr_from_longcr)
@@ -278,8 +308,10 @@ test_that("as_widecr.longcr correctly renames many columns", {
   output_ref_colnames <-
     c(
       "game",
-      paste0(rep(c("player", "score"), times = 12),
-             formatC(rep(1:12, each = 2), width = 2, format = "d", flag = "0"))
+      paste0(
+        rep(c("player", "score"), times = 12),
+        formatC(rep(1:12, each = 2), width = 2, format = "d", flag = "0")
+      )
     )
 
   expect_identical(
@@ -291,8 +323,7 @@ test_that("as_widecr.longcr correctly renames many columns", {
 test_that("as_widecr.longcr throws error on corrupted longcr object", {
   longcr_corrupt <- input_longcr[, -1]
   class(longcr_corrupt) <- "longcr"
-  expect_error(as_widecr(longcr_corrupt),
-               "not.*longcr")
+  expect_error(as_widecr(longcr_corrupt), "not.*longcr")
 })
 
 test_that("as_widecr.longcr preserves column types", {
@@ -310,40 +341,55 @@ test_that("as_widecr.longcr preserves column types", {
   output_ref_types1 <- output_ref_types
   input_types1$game <- factor(input_types1$game, levels = 1:10)
   output_ref_types1$game <- factor(output_ref_types1$game, levels = 1:10)
-  expect_identical(as_widecr(input_types1, repair = TRUE), output_ref_types1,
-                   info = "Factor 'game'")
+  expect_identical(
+    as_widecr(input_types1, repair = TRUE),
+    output_ref_types1,
+    info = "Factor 'game'"
+  )
 
   input_types2 <- input_types
   output_ref_types2 <- output_ref_types
   input_types2$game <- as.character(input_types2$game)
   output_ref_types2$game <- as.character(output_ref_types2$game)
   output_ref_types2[, ] <- output_ref_types2[order(output_ref_types2$game), ]
-  expect_identical(as_widecr(input_types2, repair = TRUE), output_ref_types2,
-                   info = "Character 'game'")
+  expect_identical(
+    as_widecr(input_types2, repair = TRUE),
+    output_ref_types2,
+    info = "Character 'game'"
+  )
 
   input_types3 <- input_types
   output_ref_types3 <- output_ref_types
   input_types3$player <- factor(input_types3$player, levels = 11:20)
   output_ref_types3$player1 <- factor(output_ref_types3$player1, levels = 11:20)
   output_ref_types3$player2 <- factor(output_ref_types3$player2, levels = 11:20)
-  expect_identical(as_widecr(input_types3, repair = TRUE), output_ref_types3,
-                   info = "Factor 'player'")
+  expect_identical(
+    as_widecr(input_types3, repair = TRUE),
+    output_ref_types3,
+    info = "Factor 'player'"
+  )
 
   input_types4 <- input_types
   output_ref_types4 <- output_ref_types
   input_types4$player <- as.character(input_types4$player)
   output_ref_types4$player1 <- as.character(output_ref_types4$player1)
   output_ref_types4$player2 <- as.character(output_ref_types4$player2)
-  expect_identical(as_widecr(input_types4, repair = TRUE), output_ref_types4,
-                   info = "Character 'player'")
+  expect_identical(
+    as_widecr(input_types4, repair = TRUE),
+    output_ref_types4,
+    info = "Character 'player'"
+  )
 
   input_types5 <- input_types
   output_ref_types5 <- output_ref_types
   input_types5$score <- as.character(input_types5$score)
   output_ref_types5$score1 <- as.character(output_ref_types5$score1)
   output_ref_types5$score2 <- as.character(output_ref_types5$score2)
-  expect_identical(as_widecr(input_types5, repair = TRUE), output_ref_types5,
-                   info = "Character 'score'")
+  expect_identical(
+    as_widecr(input_types5, repair = TRUE),
+    output_ref_types5,
+    info = "Character 'score'"
+  )
 
   input_types6 <- input_types
   output_ref_types6 <- output_ref_types
@@ -353,8 +399,11 @@ test_that("as_widecr.longcr preserves column types", {
   input_types6$score <- rep(list_scores, each = 2)
   output_ref_types6$score1 <- list_scores
   output_ref_types6$score2 <- list_scores
-  expect_identical(as_widecr(input_types6, repair = TRUE), output_ref_types6,
-                   info = "List-column 'score'")
+  expect_identical(
+    as_widecr(input_types6, repair = TRUE),
+    output_ref_types6,
+    info = "List-column 'score'"
+  )
 })
 
 

@@ -18,7 +18,7 @@ compute_batch_num <- function(n) {
 
   # This is how books are generated in the original survey form
   batches <- list(1)
-  for (i in seq_len(n-1) + 1) {
+  for (i in seq_len(n - 1) + 1) {
     batches <- c(batches, list(i), append_ind(batches, i))
   }
 
@@ -52,7 +52,8 @@ hp_survey <- read.csv(
   mutate_all(as.character) %>%
   mutate(
     Time = as.POSIXct(
-      Time, format = "%Y/%m/%d %I:%M:%S %p", tz = "Europe/Kiev"
+      Time,
+      format = "%Y/%m/%d %I:%M:%S %p", tz = "Europe/Kiev"
     ),
     Time = lubridate::with_tz(Time, "UTC")
   ) %>%

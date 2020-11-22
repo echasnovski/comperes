@@ -94,7 +94,6 @@ ncaa2005[-(1:2), ] \%>\%
     mean_score = mean(score1),
     fill = list(mean_score = 0)
   )
-
 }
 \seealso{
 \link[=h2h_mat]{Matrix format} of Head-to-Head values.

@@ -87,5 +87,4 @@ mat_data \%>\% mat_to_long("new_key_1", "new_key_2", "new_val")
 
 # Drops rows with valuus missing
 mat_data \%>\% mat_to_long("new_key_1", "new_key_2", "new_val", drop = TRUE)
-
 }

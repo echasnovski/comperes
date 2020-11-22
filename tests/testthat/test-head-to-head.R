@@ -3,7 +3,7 @@ context("head-to-head")
 
 # Input data --------------------------------------------------------------
 cr_data <- data.frame(
-  game =   c(1,  1,  1, 2, 2, 3, 3, 4),
+  game = c(1, 1, 1, 2, 2, 3, 3, 4),
   player = c(1, NA, NA, 1, 2, 2, 1, 2),
   score = as.numeric(1:8),
   scoreSP = -(1:8)
@@ -12,11 +12,12 @@ cr_data <- data.frame(
 output_long <- tibble::tibble(
   player1 = rep(c(1, 2, NA), each = 3),
   player2 = rep(c(1, 2, NA), times = 3),
-  mean_score1 = c(4, 5.5, 1, 5.5, 19/3, NA, 2.5, NA, 2.5),
+  mean_score1 = c(4, 5.5, 1, 5.5, 19 / 3, NA, 2.5, NA, 2.5),
   sum_score = c(24, 22, 7, 22, 38, NA, 7, NA, 20)
 )
 class(output_long) <- c("h2h_long", class(tibble::tibble()))
 
+# styler: off
 output_mat <- matrix(
   c(  4,  5.5,   1,
     5.5, 19/3,  NA,
@@ -24,6 +25,7 @@ output_mat <- matrix(
   nrow = 3, dimnames = list(c("1", "2", NA), c("1", "2", NA)),
   byrow = TRUE
 )
+# styler: on
 
 matrix_class <- class(matrix(1:2, nrow = 1))
 
@@ -132,7 +134,8 @@ test_that("h2h_mat works", {
 
   output_2 <- cr_data %>% h2h_mat()
   output_ref_2 <- matrix(
-    rep(NA, 9), nrow = 3,
+    rep(NA, 9),
+    nrow = 3,
     dimnames = list(c("1", "2", NA), c("1", "2", NA)),
     byrow = TRUE
   )
@@ -147,6 +150,7 @@ test_that("h2h_mat handles `player` as factor", {
   input$player <- factor(input$player, levels = c(1, 2, 3))
 
   output <- h2h_mat(input, sum(score1 + score2))
+  # styler: off
   output_ref <- matrix(
     c(24, 22, NA,
       22, 38, NA,
@@ -154,6 +158,7 @@ test_that("h2h_mat handles `player` as factor", {
     nrow = 3, dimnames = list(c("1", "2", "3"), c("1", "2", "3")),
     byrow = TRUE
   )
+  # styler: on
   class(output_ref) <- c("h2h_mat", matrix_class)
 
   expect_equal(output, output_ref)
@@ -163,15 +168,17 @@ test_that("h2h_mat allows multiple Head-to-Head functions", {
   expect_silent(h2h_mat(cr_data))
 
   expect_message(
-    h2h_mat(cr_data, mean_score1 = mean(score1),
-            sum_score = sum(score1 + score2)),
+    h2h_mat(
+      cr_data,
+      mean_score1 = mean(score1),
+      sum_score = sum(score1 + score2)
+    ),
     "mean_score1"
   )
 
   # Ensure that only first function is evaluated
   capt_output <- capture_error(
-    h2h_mat(cr_data, mean_score1 = mean(score1),
-            error = stop())
+    h2h_mat(cr_data, mean_score1 = mean(score1), error = stop())
   )
   expect_identical(capt_output, NULL)
 })

@@ -59,7 +59,6 @@ miss_value <- function(type = NULL, fill = NULL) {
 #' levels2(fac_vec)
 #'
 #' levels2(c(10, 1, 2, NA, 11))
-#'
 #' @export
 levels2 <- function(x, na.last = TRUE) {
   if (identical(levels(x), NULL)) {
@@ -106,11 +105,11 @@ get_formatC_width <- function(vec) {
 }
 
 renamecreate_columns <- function(df, info, fill = NA_integer_) {
-# info is a data.frame that should consist from two columns:
+  # info is a data.frame that should consist from two columns:
   # target - names of target columns (which will be repaired into);
   # original - names of original columns (which will be repaired from).
-    # If original is NA then new column with corresponded target name is
-    #created with values from 'fill'.
+  # If original is NA then new column with corresponded target name is
+  # created with values from 'fill'.
   res <- df
   absent_original <- is.na(info$original)
   if (any(absent_original)) {
@@ -162,7 +161,6 @@ reduce_full_join <- function(x, by) {
 #'
 #' @examples
 #' get_matchups(ncaa2005)
-#'
 #' @seealso [Long format][h2h_long] of Head-to-Head values.
 #'
 #' [Matrix format][h2h_mat] of Head-to-Head values.

@@ -82,14 +82,13 @@
 #'   playerB = 2:11,
 #'   scoreC = 11:20,
 #'   scoreB = 12:21,
-#'   otherColumn =  101:110
+#'   otherColumn = 101:110
 #' )
 #' cr_data_wide <- as_widecr(cr_data, repair = TRUE)
 #'
 #' is_widecr(cr_data_wide)
 #'
 #' as_tibble(cr_data_wide)
-#'
 #' @name widecr
 #' @seealso [Long format][longcr]
 NULL
@@ -165,7 +164,8 @@ as_widecr.longcr <- function(cr_data, repair = TRUE, ...) {
     ungroup() %>%
     mutate(
       in_game_id = formatC(
-        .data$in_game_id, width = get_formatC_width(.data$in_game_id),
+        .data$in_game_id,
+        width = get_formatC_width(.data$in_game_id),
         format = "d", flag = "0"
       )
     )
@@ -230,8 +230,10 @@ repair_widecr <- function(cr_data, ...) {
     tidyr::complete(!!!rlang::syms(c("group", "pair"))) %>%
     mutate(
       group = as.character(.data$group),
-      pair = formatC(.data$pair, width = get_formatC_width(.data$pair),
-                     format = "d", flag = "0")
+      pair = formatC(.data$pair,
+        width = get_formatC_width(.data$pair),
+        format = "d", flag = "0"
+      )
     ) %>%
     arrange(.data$pair, .data$group) %>%
     tidyr::unite(col = "target", !!!rlang::syms(c("group", "pair")), sep = "")
@@ -242,13 +244,17 @@ repair_widecr <- function(cr_data, ...) {
 
   if ("game" %in% colnames(res)) {
     res <- res %>%
-      select(.data$game,
-             !!!rlang::syms(repair_info$target),
-             everything())
+      select(
+        .data$game,
+        !!!rlang::syms(repair_info$target),
+        everything()
+      )
   } else {
     res <- res %>%
-      select(!!!rlang::syms(repair_info$target),
-             everything())
+      select(
+        !!!rlang::syms(repair_info$target),
+        everything()
+      )
   }
 
   res

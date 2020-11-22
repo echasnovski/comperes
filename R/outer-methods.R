@@ -215,7 +215,7 @@ slice.h2h_long <- function(.data, ...) {
 }
 
 inner_join.h2h_long <- function(x, y, by = NULL, copy = FALSE,
-                              suffix = c(".x", ".y"), ...) {
+                                suffix = c(".x", ".y"), ...) {
   reconstruct(NextMethod(), x)
 }
 

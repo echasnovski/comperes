@@ -54,7 +54,6 @@
 #' # Checks
 #' is_pairgames(cr_data)
 #' is_pairgames(to_pairgames(cr_data))
-#'
 #' @name pairgames
 NULL
 

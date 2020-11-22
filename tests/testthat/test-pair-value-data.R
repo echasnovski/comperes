@@ -8,6 +8,7 @@ long_tbl <- tibble::tibble(
   val = 1:4
 )
 
+# styler: off
 mat_data <- matrix(
   c(2L, 1L, NA,
     NA, NA, 3L,
@@ -15,6 +16,7 @@ mat_data <- matrix(
   nrow = 3, dimnames = list(c("1", "2", NA), c("1", "2", NA)),
   byrow = TRUE
 )
+# styler: on
 
 
 # long_to_mat -------------------------------------------------------------
@@ -54,6 +56,7 @@ test_that("long_to_mat handles not NULL `fill`", {
   # Handling not NULL `fill`
   output <- long_to_mat(long_tbl, "key_1", "key_2", "val", fill = 0)
 
+  # styler: off
   output_ref <- matrix(
     c(2, 1, 0,
       0, 0, 3,
@@ -61,6 +64,7 @@ test_that("long_to_mat handles not NULL `fill`", {
     nrow = 3, dimnames = list(c("1", "2", NA), c("1", "2", NA)),
     byrow = TRUE
   )
+  # styler: on
 
   expect_identical(output, output_ref)
 })
@@ -70,6 +74,7 @@ test_that("long_to_mat works with list values", {
   input$val <- list(1, 2, 3, 4)
 
   output_1 <- long_to_mat(input, "key_1", "key_2", "val")
+  # styler: off
   output_ref_1 <- matrix(
     list(   2,    1, NULL,
             NULL, NULL,    3,
@@ -77,11 +82,13 @@ test_that("long_to_mat works with list values", {
     nrow = 3, dimnames = list(c("1", "2", NA), c("1", "2", NA)),
     byrow = TRUE
   )
+  # styler: on
 
   expect_identical(output_1, output_ref_1)
 
   # Not NULL `fill`
   output_2 <- long_to_mat(input, "key_1", "key_2", "val", fill = "a")
+  # styler: off
   output_ref_2 <- matrix(
     list(  2,   1, "a",
          "a", "a",   3,
@@ -89,6 +96,7 @@ test_that("long_to_mat works with list values", {
     nrow = 3, dimnames = list(c("1", "2", NA), c("1", "2", NA)),
     byrow = TRUE
   )
+  # styler: on
 
   expect_identical(output_2, output_ref_2)
 })
@@ -105,7 +113,8 @@ test_that("long_to_mat handles factors", {
 
   output_1 <- long_to_mat(input_fac_1, "key_1", "key_2", "val")
   output_ref_1 <- matrix(
-    c(rep(NA, 4), 2L, 1L), nrow = 3,
+    c(rep(NA, 4), 2L, 1L),
+    nrow = 3,
     dimnames = list(c("3", "2", "1"), c("1", "2")),
     byrow = TRUE
   )
@@ -118,7 +127,8 @@ test_that("long_to_mat handles factors", {
 
   output_2 <- long_to_mat(input_fac_2, "key_1", "key_2", "val")
   output_ref_2 <- matrix(
-    c(rep(NA, 6), 2L, 1L, NA), nrow = 3,
+    c(rep(NA, 6), 2L, 1L, NA),
+    nrow = 3,
     dimnames = list(c("3", "2", "1"), c("1", "2", "3")),
     byrow = TRUE
   )
@@ -134,6 +144,7 @@ test_that("long_to_mat correctly orders row and column names", {
   )
 
   output <- long_to_mat(input, "key_1", "key_2", "val")
+  # styler: off
   output_ref <- matrix(
     c(NA, 2L,
       4L, NA,
@@ -142,6 +153,7 @@ test_that("long_to_mat correctly orders row and column names", {
     nrow = 4, dimnames = list(c("1", "2", "10", "12"), c("1", "10")),
     byrow = TRUE
   )
+  # styler: on
 
   expect_identical(output, output_ref)
 })

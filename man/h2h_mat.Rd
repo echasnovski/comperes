@@ -67,7 +67,6 @@ ncaa2005 \%>\%
 
 ncaa2005[-(1:2), ] \%>\%
   h2h_mat(mean_score = mean(score1), fill = 0)
-
 }
 \seealso{
 \link[=h2h_long]{Long format} of Head-to-Head values.

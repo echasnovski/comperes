@@ -38,7 +38,6 @@ versions.
 }
 \examples{
 ncaa2005 \%>\% summarise_game(!!!summary_funs, .prefix = "game_")
-
 }
 \seealso{
 \link[=item-summary]{Compute item summary}, \link[=item-summary-join]{Join item summary}

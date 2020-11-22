@@ -70,5 +70,4 @@ to_pairgames(cr_data_na)
 # Checks
 is_pairgames(cr_data)
 is_pairgames(to_pairgames(cr_data))
-
 }

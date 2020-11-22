@@ -32,8 +32,10 @@ input_h2h_long <- tibble::tibble(
 input_h2h_long <- add_class(input_h2h_long, "h2h_long")
 
 input_h2h_mat_raw <- matrix(
+  # styler: off
   c(1, NA,
     0, 2),
+  # styler: on
   nrow = 2, dimnames = list(c("1", "2"), c("1", "2")),
   byrow = TRUE
 )

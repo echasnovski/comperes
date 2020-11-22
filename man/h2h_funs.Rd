@@ -49,7 +49,6 @@ versions.
 ncaa2005 \%>\% h2h_long(!!!h2h_funs)
 
 ncaa2005 \%>\% h2h_mat(!!!h2h_funs["num_wins2"])
-
 }
 \seealso{
 \link[=h2h_long]{Long format} of Head-to-Head values.

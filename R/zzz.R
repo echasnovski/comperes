@@ -1,4 +1,4 @@
-#nocov start
+# nocov start
 .onLoad <- function(libname, pkgname) {
   # Register external methods for 'dplyr' package. Not directly exporting
   # because it is not guaranteed that 'dplyr' is installed.
@@ -78,4 +78,4 @@ register_s3_method <- function(pkg, generic, class, fun) {
     }
   )
 }
-#nocov end
+# nocov end

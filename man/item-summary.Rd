@@ -61,7 +61,6 @@ ncaa2005 \%>\%
 
 ncaa2005 \%>\%
   summarise_game(mean_score = mean(score), min_score = min(score))
-
 }
 \seealso{
 Common item \link[=summary_funs]{summary functions} for competition

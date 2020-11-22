@@ -26,7 +26,7 @@ test_that("summarise_item works with item of length one", {
   output_ref <- tibble::tibble(
     game = 1:20,
     mean_score = seq(from = 31.5, to = 69.5, by = 2),
-    sum_score = 63L + (0:19)*4L
+    sum_score = 63L + (0:19) * 4L
   )
 
   expect_equal(output, output_ref)
@@ -41,7 +41,7 @@ test_that("summarise_item works with item length more than one", {
     season = rep(1:2, each = 10),
     player = rep(1:10, times = 2),
     mean_score = as.numeric(c(36:45, 56:65)),
-    sum_score = c(72L + (0:9)*2L, 112L + (0:9)*2L)
+    sum_score = c(72L + (0:9) * 2L, 112L + (0:9) * 2L)
   )
 
   expect_equal(output, output_ref)
@@ -64,22 +64,26 @@ test_that("summarise_item works with argument `.prefix`", {
   output_ref <- tibble::tibble(
     game = 1:20,
     game_mean_score = seq(from = 31.5, to = 69.5, by = 2),
-    game_sum_score = 63L + (0:19)*4L,
+    game_sum_score = 63L + (0:19) * 4L,
     game_NA = rep(NA, 20)
   )
 
   expect_equal(output, output_ref)
 
   # Check that it works with zero-length item
-  output <- summarise_item(input, character(0), mean_score = mean(score),
-                           .prefix = "a_")
+  output <- summarise_item(input, character(0),
+    mean_score = mean(score),
+    .prefix = "a_"
+  )
   output_ref <- tibble::tibble(a_mean_score = 50.5)
   expect_equal(output, output_ref)
 })
 
 test_that("summarise_item throws errors", {
-  expect_error(summarise_item(tbl = input, item = 1, mean_score = mean(score)),
-               "item.*char")
+  expect_error(
+    summarise_item(tbl = input, item = 1, mean_score = mean(score)),
+    "item.*char"
+  )
 })
 
 
@@ -140,8 +144,10 @@ test_that("join_item_summary works with no functions supplied", {
 test_that("join_game_summary works", {
   output <- join_game_summary(input, game_mean_score = mean(score))
   output_ref <- input
-  output_ref$game_mean_score <- rep(seq(from = 31.5, to = 69.5, by = 2),
-                                    each = 2)
+  output_ref$game_mean_score <- rep(
+    seq(from = 31.5, to = 69.5, by = 2),
+    each = 2
+  )
 
   expect_equal(output, output_ref)
 })

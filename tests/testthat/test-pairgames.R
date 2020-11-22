@@ -12,6 +12,7 @@ input <- data.frame(
 
 # to_pairgames ------------------------------------------------------------
 test_that("to_pairgames works", {
+  # styler: off
   output_ref <- tibble::tibble(
     game = 1:16,
     player1 = c(1, 1, 2, 4, 4, 5, 2, 2, 3, 5,
@@ -23,6 +24,7 @@ test_that("to_pairgames works", {
     score2 = c(102L, 103L, 103L, 105L, 106L, 106L, 108L, 109L, 109L, 111L,
                112L, 112L, 114L, 115L, 115L, 117L)
   )
+  # styler: on
   output_ref <- add_class(output_ref, "widecr")
 
   expect_identical(to_pairgames(input), output_ref)
@@ -55,6 +57,7 @@ test_that("to_pairgames doesn't change pairgames", {
 test_that("is_pairgames works", {
   expect_false(is_pairgames(input))
 
+  # styler: off
   input_pairgames <- tibble::tibble(
     game = 1:16,
     player1 = c(1, 1, 2, 4, 4, 5, 2, 2, 3, 5,
@@ -66,6 +69,7 @@ test_that("is_pairgames works", {
     score2 = c(102L, 103L, 103L, 105L, 106L, 106L, 108L, 109L, 109L, 111L,
                112L, 112L, 114L, 115L, 115L, 117L)
   )
+  # styler: on
   input_pairgames <- add_class(input_pairgames, "widecr")
 
   expect_true(is_pairgames(input_pairgames))

@@ -42,7 +42,6 @@ treated as single player.
 }
 \examples{
 get_matchups(ncaa2005)
-
 }
 \seealso{
 \link[=h2h_long]{Long format} of Head-to-Head values.

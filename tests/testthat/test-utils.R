@@ -56,10 +56,14 @@ test_that("levels2 works", {
   input_int <- c(10, 1, 2, NA, 11)
 
   expect_identical(levels2(input_int), c("1", "2", "10", "11", NA))
-  expect_identical(levels2(input_int, na.last = FALSE),
-                   c(NA, "1", "2", "10", "11"))
-  expect_identical(levels2(input_int, na.last = NA),
-                   c("1", "2", "10", "11"))
+  expect_identical(
+    levels2(input_int, na.last = FALSE),
+    c(NA, "1", "2", "10", "11")
+  )
+  expect_identical(
+    levels2(input_int, na.last = NA),
+    c("1", "2", "10", "11")
+  )
 })
 
 
@@ -119,13 +123,19 @@ test_that("get_formatC_width works", {
 # renamecreate_columns ----------------------------------------------------
 test_that("renamecreate_columns works", {
   input <- data.frame(x = 1:10, y = 2:11, z = 3:12)
-  info <- data.frame(target = c("a", "b", "c"), original = c("x", NA, "y"),
-                     stringsAsFactors = FALSE)
+  info <- data.frame(
+    target = c("a", "b", "c"), original = c("x", NA, "y"),
+    stringsAsFactors = FALSE
+  )
   output <- data.frame(a = 1:10, c = 2:11, z = 3:12, b = rep(NA_integer_, 10))
 
-  expect_identical(renamecreate_columns(df = input, info = info,
-                                        fill = NA_integer_),
-                   output)
+  expect_identical(
+    renamecreate_columns(
+      df = input, info = info,
+      fill = NA_integer_
+    ),
+    output
+  )
 })
 
 
@@ -211,9 +221,11 @@ test_that("assert_used_value_col works", {
 
 # assert_used_names -------------------------------------------------------
 test_that("assert_used_names works", {
-  info <- data.frame(original = c("gameId", "playerId", "scoreId"),
-                     target = c("game", "player", "score"),
-                     stringsAsFactors = FALSE)
+  info <- data.frame(
+    original = c("gameId", "playerId", "scoreId"),
+    target = c("game", "player", "score"),
+    stringsAsFactors = FALSE
+  )
   expect_message(
     assert_used_names(info, prefix = "prefix: "),
     "prefix: .*not.*matched.*gameId.*game.*playerId.*player.*scoreId.*score"

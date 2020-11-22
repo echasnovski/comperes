@@ -69,7 +69,6 @@
 #'     mean_score = mean(score1),
 #'     fill = list(mean_score = 0)
 #'   )
-#'
 #' @seealso [Matrix format][h2h_mat] of Head-to-Head values.
 #'
 #' [Common Head-to-Head functions][h2h_funs].
@@ -170,7 +169,6 @@ as_tibble.h2h_long <- function(x, ...) {
 #'
 #' ncaa2005[-(1:2), ] %>%
 #'   h2h_mat(mean_score = mean(score1), fill = 0)
-#'
 #' @seealso [Long format][h2h_long] of Head-to-Head values.
 #'
 #' [Common Head-to-Head functions][h2h_funs].
@@ -207,7 +205,7 @@ h2h_mat <- function(cr_data, ..., fill = NULL) {
       tidyr::drop_na(one_of(value_col))
   }
 
-   res_long %>%
+  res_long %>%
     to_h2h_mat(value = value_col, fill = fill)
 }
 
@@ -215,8 +213,13 @@ h2h_mat <- function(cr_data, ..., fill = NULL) {
 #' @export
 to_h2h_mat <- function(tbl, value = NULL, fill = NULL) {
   tbl %>%
-    long_to_mat("player1", "player2", value, fill = fill,
-                silent = !identical(value, NULL)) %>%
+    long_to_mat(
+      "player1",
+      "player2",
+      value,
+      fill = fill,
+      silent = !identical(value, NULL)
+    ) %>%
     add_class_cond("h2h_mat")
 }
 
@@ -259,7 +262,6 @@ to_h2h_mat <- function(tbl, value = NULL, fill = NULL) {
 #' ncaa2005 %>% h2h_long(!!!h2h_funs)
 #'
 #' ncaa2005 %>% h2h_mat(!!!h2h_funs["num_wins2"])
-#'
 #' @seealso [Long format][h2h_long] of Head-to-Head values.
 #'
 #' [Matrix format][h2h_mat] of Head-to-Head values.

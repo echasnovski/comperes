@@ -31,7 +31,6 @@
 #'
 #' ncaa2005 %>%
 #'   summarise_game(mean_score = mean(score), min_score = min(score))
-#'
 #' @seealso Common item [summary functions][summary_funs] for competition
 #' results.
 #'
@@ -108,7 +107,6 @@ summarize_player <- summarise_player
 #'
 #' @examples
 #' ncaa2005 %>% summarise_game(!!!summary_funs, .prefix = "game_")
-#'
 #' @seealso [Compute item summary][item-summary], [Join item
 #'   summary][item-summary-join]
 #'
@@ -142,7 +140,6 @@ summary_funs <- list(
 #'
 #' @examples
 #' ncaa2005 %>% join_player_summary(player_mean_score = mean(score))
-#'
 #' @seealso [Compute item summary][item-summary]
 #'
 #' Common item [summary functions][summary_funs] for competition results.

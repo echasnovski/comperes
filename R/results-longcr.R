@@ -72,7 +72,8 @@
 #' [as_tibble()][tibble::as_tibble()] applied to `longcr` object drops `longcr`
 #' class.
 #'
-#' @examples # Repairing example
+#' @examples
+#' # Repairing example
 #' cr_data <- data.frame(
 #'   playerscoregame_ID = rep(1:5, times = 2),
 #'   gameId = rep(1:5, each = 2),
@@ -84,7 +85,6 @@
 #' is_longcr(cr_data_long)
 #'
 #' as_tibble(cr_data_long)
-#'
 #' @name longcr
 #' @seealso [Wide format][widecr]
 NULL
@@ -183,8 +183,10 @@ repair_longcr <- function(cr_data, ...) {
 
   # Exact matching
   exact_pattern <- paste0("^", longcr_colnames, "$", collapse = "|")
-  exact_inds <- which(grepl(pattern = exact_pattern, x = colnames(cr_data),
-                            ignore.case = TRUE))
+  exact_inds <- which(grepl(
+    pattern = exact_pattern, x = colnames(cr_data),
+    ignore.case = TRUE
+  ))
   if (length(exact_inds) > 0) {
     res <- cr_data[, exact_inds]
     cr_data <- cr_data[, -exact_inds]
@@ -219,8 +221,10 @@ repair_longcr <- function(cr_data, ...) {
     bind_cols(
       renamecreate_columns(cr_data, repair_info, fill = NA_integer_)
     ) %>%
-    select(.data$game, .data$player, .data$score,
-           everything())
+    select(
+      .data$game, .data$player, .data$score,
+      everything()
+    )
 
   not_dupl_records <- (!duplicated(res[, c("game", "player")])) |
     is.na(res$game) | is.na(res$player)

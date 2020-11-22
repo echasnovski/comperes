@@ -115,7 +115,6 @@ cr_data_long <- as_longcr(cr_data, repair = TRUE)
 is_longcr(cr_data_long)
 
 as_tibble(cr_data_long)
-
 }
 \seealso{
 \link[=widecr]{Wide format}

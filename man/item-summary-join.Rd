@@ -36,7 +36,6 @@ respectively.
 }
 \examples{
 ncaa2005 \%>\% join_player_summary(player_mean_score = mean(score))
-
 }
 \seealso{
 \link[=item-summary]{Compute item summary}
