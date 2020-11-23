@@ -1,14 +1,12 @@
 ## Submission details
 
 This is a maintenance update:
-- Reaction to an upcoming updates in 'dplyr' 1.0.0.
+- Reaction to a planned update of 'tibble'.
 
 ## Test environments
 
-* Local Ubuntu 18.04 install, R 3.6.3
-* Debian on R-hub, development version (2020-05-07 r78381)
-* macOS 10.13.6 on R-hub, R 4.0.0
-* win-builder, release and development version (2020-05-08 r78391)
+* Local Ubuntu 18.04 install, R 4.0.3
+* win-builder, release and development version (2020-11-21 r79454)
 
 ## R CMD check results
 
