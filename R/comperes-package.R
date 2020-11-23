@@ -16,7 +16,7 @@
 #'     amount of players.
 #' - __Summarise__:
 #'     - Compute [item summaries][item-summary] with functions using
-#'     [dplyr](http://dplyr.tidyverse.org)'s grammar of data manipulation.
+#'     [dplyr](https://dplyr.tidyverse.org)'s grammar of data manipulation.
 #'     - Compute and [join][item-summary-join] item summaries to data for easy
 #'     transformation.
 #'     - Use [common item summary functions][summary_funs] with

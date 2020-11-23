@@ -27,7 +27,7 @@ amount of players.
 \item \strong{Summarise}:
 \itemize{
 \item Compute \link[=item-summary]{item summaries} with functions using
-\href{http://dplyr.tidyverse.org}{dplyr}'s grammar of data manipulation.
+\href{https://dplyr.tidyverse.org}{dplyr}'s grammar of data manipulation.
 \item Compute and \link[=item-summary-join]{join} item summaries to data for easy
 transformation.
 \item Use \link[=summary_funs]{common item summary functions} with

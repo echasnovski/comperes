@@ -24,40 +24,40 @@ example, product rating can be considered as a competition between
 products as “players”. Here a “game” is a customer that reviews a set of
 products by rating them with numerical “score” (stars, points, etc.).
 
-This package leverages [dplyr](http://dplyr.tidyverse.org)’s grammar of
+This package leverages [dplyr](https://dplyr.tidyverse.org)’s grammar of
 data manipulation. Only basic knowledge is enough to use `comperes`.
 
 ## Overview
 
 `comperes` provides the following functionality:
 
-  - **Store and convert** competition results:
-      - In *long format* as a [tibble](http://tibble.tidyverse.org) with
-        one row per game-player pair. Functions: `as_longcr()`,
+-   **Store and convert** competition results:
+    -   In *long format* as a [tibble](https://tibble.tidyverse.org)
+        with one row per game-player pair. Functions: `as_longcr()`,
         `is_longcr()`.
-      - In *wide format* as a `tibble` with one row per game with fixed
+    -   In *wide format* as a `tibble` with one row per game with fixed
         amount of players. Functions: `as_widecr()`, `is_widecr()`.
-  - **Summarise**:
-      - Compute *item summaries* with functions using `dplyr`’s grammar.
+-   **Summarise**:
+    -   Compute *item summaries* with functions using `dplyr`’s grammar.
         Functions: `summarise_item()`, `summarise_game()`,
         `summarise_player()`.
-      - Compute and *join* item summaries to data for easy
+    -   Compute and *join* item summaries to data for easy
         transformation. Functions: `join_item_summary()`,
         `join_game_summary()`, `join_player_summary()`.
-      - Use *common item summary functions* with
+    -   Use *common item summary functions* with
         [rlang](https://rlang.r-lib.org/)’s
-        [unquoting](http://rlang.r-lib.org/reference/quasiquotation.html)
-        mechanism. Example: `. %>%
-        summarise_player(!!!summary_funs["mean_score"])`.
-  - **Compute Head-to-Head values** (a summary statistic of direct
+        [unquoting](https://rlang.r-lib.org/reference/quasiquotation.html)
+        mechanism. Example:
+        `. %>% summarise_player(!!!summary_funs["mean_score"])`.
+-   **Compute Head-to-Head values** (a summary statistic of direct
     confrontation between two players) with functions also using
     `dplyr`’s grammar:
-      - Store output in *long format* as a `tibble` with one row per
+    -   Store output in *long format* as a `tibble` with one row per
         pair of players. Function: `h2h_long()`.
-      - Store output in *matrix format* as a matrix with rows and
+    -   Store output in *matrix format* as a matrix with rows and
         columns describing players and entries - Head-to-Head values.
         Function: `h2h_mat()`.
-      - Use *common Head-to-Head functions* with rlang’s unquoting
+    -   Use *common Head-to-Head functions* with rlang’s unquoting
         mechanism. Example: `. %>% h2h_mat(!!!h2h_funs["num_wins"])`.
 
 ## Installation
@@ -190,14 +190,13 @@ summary_funs
 
 ncaa2005 %>% summarise_player(!!!summary_funs)
 #> # A tibble: 5 x 9
-#>   player min_score max_score mean_score median_score sd_score sum_score
-#>   <chr>      <int>     <int>      <dbl>        <dbl>    <dbl>     <int>
-#> 1 Duke           0        21       8.75          7       8.81        35
-#> 2 Miami         25        52      34.5          30.5    12.3        138
-#> 3 UNC            3        24      12.5          11.5     9.40        50
-#> 4 UVA            5        38      18.5          15.5    14.0         74
-#> 5 VT             7        52      33.5          37.5    19.9        134
-#> # … with 2 more variables: num_games <int>, num_players <int>
+#>   player min_score max_score mean_score median_score sd_score sum_score num_games num_players
+#>   <chr>      <int>     <int>      <dbl>        <dbl>    <dbl>     <int>     <int>       <int>
+#> 1 Duke           0        21       8.75          7       8.81        35         4           1
+#> 2 Miami         25        52      34.5          30.5    12.3        138         4           1
+#> 3 UNC            3        24      12.5          11.5     9.40        50         4           1
+#> 4 UVA            5        38      18.5          15.5    14.0         74         4           1
+#> 5 VT             7        52      33.5          37.5    19.9        134         4           1
 ```
 
 To modify scores based on the rest of results one can use
@@ -328,16 +327,15 @@ h2h_funs
 ncaa2005 %>% h2h_long(!!!h2h_funs)
 #> # A long format of Head-to-Head values:
 #> # A tibble: 25 x 11
-#>   player1 player2 mean_score_diff mean_score_diff… mean_score sum_score_diff
-#>   <chr>   <chr>             <dbl>            <dbl>      <dbl>          <int>
-#> 1 Duke    Duke                  0                0       8.75              0
-#> 2 Duke    Miami               -45                0       7               -45
-#> 3 Duke    UNC                  -3                0      21                -3
-#> 4 Duke    UVA                 -31                0       7               -31
-#> 5 Duke    VT                  -45                0       0               -45
-#> 6 Miami   Duke                 45               45      52                45
-#> # … with 19 more rows, and 5 more variables: sum_score_diff_pos <dbl>,
-#> #   sum_score <int>, num_wins <dbl>, num_wins2 <dbl>, num <int>
+#>   player1 player2 mean_score_diff mean_score_diff… mean_score sum_score_diff sum_score_diff_… sum_score
+#>   <chr>   <chr>             <dbl>            <dbl>      <dbl>          <int>            <dbl>     <int>
+#> 1 Duke    Duke                  0                0       8.75              0                0        35
+#> 2 Duke    Miami               -45                0       7               -45                0         7
+#> 3 Duke    UNC                  -3                0      21                -3                0        21
+#> 4 Duke    UVA                 -31                0       7               -31                0         7
+#> 5 Duke    VT                  -45                0       0               -45                0         0
+#> 6 Miami   Duke                 45               45      52                45               45        52
+#> # … with 19 more rows, and 3 more variables: num_wins <dbl>, num_wins2 <dbl>, num <int>
 ```
 
 To compute Head-to-Head for only subset of players or include values for
