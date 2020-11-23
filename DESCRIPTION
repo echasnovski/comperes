@@ -1,6 +1,6 @@
 Package: comperes
 Title: Manage Competition Results
-Version: 0.2.4.9000
+Version: 0.2.5
 Authors@R:
     person(given = "Evgeni",
            family = "Chasnovski",
