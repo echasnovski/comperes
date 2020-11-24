@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">comperes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -137,9 +137,9 @@
     <p>Functions to compute Head-to-Head values in matrix pair-value format.</p>
     </div>
 
-    <pre class="usage"><code class = "r"><span class='fu'>h2h_mat</span>(<span class='no'>cr_data</span>, <span class='no'>...</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><code class = "r"><span class='fu'>h2h_mat</span><span class='op'>(</span><span class='va'>cr_data</span>, <span class='va'>...</span>, fill <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>to_h2h_mat</span>(<span class='no'>tbl</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</code></pre>
+<span class='fu'>to_h2h_mat</span><span class='op'>(</span><span class='va'>tbl</span>, value <span class='op'>=</span> <span class='cn'>NULL</span>, fill <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></code></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -205,26 +205,27 @@ for <code><a href='item-summary.html'>summarise_item()</a></code> applied to dat
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><code class = "r"><div class='input'><span class='co'># Only first function is used</span>
-<span class='no'>ncaa2005</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>h2h_mat</span>(
-    <span class='kw'>mean_score</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>score1</span>),
-    <span class='kw'>mean_abs_score</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span>(<span class='no'>score1</span> - <span class='no'>score2</span>))
-  )</div><div class='output co'>#&gt; <span class='message'>Using mean_score as value.</span></div><div class='output co'>#&gt; # A matrix format of Head-to-Head values:
+<span class='va'>ncaa2005</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>h2h_mat</span><span class='op'>(</span>
+    mean_score <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>score1</span><span class='op'>)</span>,
+    mean_abs_score <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>score1</span> <span class='op'>-</span> <span class='va'>score2</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Using mean_score as value.</span></div><div class='output co'>#&gt; # A matrix format of Head-to-Head values:
 #&gt;        Duke Miami  UNC  UVA   VT
 #&gt; Duke   8.75   7.0 21.0  7.0  0.0
 #&gt; Miami 52.00  34.5 34.0 25.0 27.0
 #&gt; UNC   24.00  16.0 12.5  7.0  3.0
 #&gt; UVA   38.00  17.0  5.0 18.5 14.0
 #&gt; VT    45.00   7.0 30.0 52.0 33.5</div><div class='input'>
-<span class='no'>ncaa2005</span>[-(<span class='fl'>1</span>:<span class='fl'>2</span>), ] <span class='kw'>%&gt;%</span>
-  <span class='fu'>h2h_mat</span>(<span class='kw'>mean_score</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>score1</span>), <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt; # A matrix format of Head-to-Head values:
+<span class='va'>ncaa2005</span><span class='op'>[</span><span class='op'>-</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span>, <span class='op'>]</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>h2h_mat</span><span class='op'>(</span>mean_score <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>score1</span><span class='op'>)</span>, fill <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; # A matrix format of Head-to-Head values:
 #&gt;            Duke    Miami  UNC  UVA   VT
 #&gt; Duke   9.333333  0.00000 21.0  7.0  0.0
 #&gt; Miami  0.000000 28.66667 34.0 25.0 27.0
 #&gt; UNC   24.000000 16.00000 12.5  7.0  3.0
 #&gt; UVA   38.000000 17.00000  5.0 18.5 14.0
-#&gt; VT    45.000000  7.00000 30.0 52.0 33.5</div><div class='input'>
-</div></code></pre>
+#&gt; VT    45.000000  7.00000 30.0 52.0 33.5</div></code></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -240,7 +241,7 @@ for <code><a href='item-summary.html'>summarise_item()</a></code> applied to dat
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

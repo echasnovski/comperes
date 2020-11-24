@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">comperes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -83,13 +83,14 @@
 
       
 
-      </header><div class="row">
+      </header><script src="manipulation_files/header-attrs-2.5/header-attrs.js"></script><link href="manipulation_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="manipulation_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Manipulate Competition Results</h1>
                         <h4 class="author">Evgeni Chasnovski</h4>
             
-            <h4 class="date">2020-05-10</h4>
+            <h4 class="date">2020-11-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/echasnovski/comperes/blob/master/vignettes/manipulation.Rmd"><code>vignettes/manipulation.Rmd</code></a></small>
       <div class="hidden name"><code>manipulation.Rmd</code></div>
@@ -105,8 +106,9 @@
 <li>Creating pairgaimes.</li>
 </ul>
 <p>We will need the following packages:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><code class = "r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">comperes</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/echasnovski/comperes">comperes</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Присоединяю пакет: 'dplyr'</span>
 <span class="co">#&gt; Следующие объекты скрыты от 'package:stats':</span>
@@ -115,22 +117,24 @@
 <span class="co">#&gt; Следующие объекты скрыты от 'package:base':</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rlang</span>)</code></pre></body></html></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rlang.r-lib.org">rlang</a></span><span class="op">)</span></code></code></pre></div>
 <p>Example results in long format:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><code class = "r"><span class="no">cr_long</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/reexports.html">tibble</a></span>(
-  <span class="kw">game</span>   <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"a1"</span>, <span class="st">"a1"</span>, <span class="st">"a1"</span>, <span class="st">"a2"</span>, <span class="st">"a2"</span>, <span class="st">"b1"</span>, <span class="st">"b1"</span>, <span class="st">"b2"</span>),
-  <span class="kw">player</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">NA</span>, <span class="fl">NA</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span>),
-  <span class="kw">score</span>  <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">8</span>,
-  <span class="kw">season</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"A"</span>, <span class="fl">5</span>), <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"B"</span>, <span class="fl">3</span>))
-) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/longcr.html">as_longcr</a></span>()</code></pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">cr_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
+  game   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a1"</span>, <span class="st">"a1"</span>, <span class="st">"a1"</span>, <span class="st">"a2"</span>, <span class="st">"a2"</span>, <span class="st">"b1"</span>, <span class="st">"b1"</span>, <span class="st">"b2"</span><span class="op">)</span>,
+  player <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,
+  score  <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span>,
+  season <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"B"</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>
+<span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/longcr.html">as_longcr</a></span><span class="op">(</span><span class="op">)</span></code></code></pre></div>
 <p>Functions discussed in these topics leverage <code>dplyr</code>’s grammar of data manipulation. Only basic knowledge is enough to use them. Also a knowledge of <code>rlang</code>’s quotation mechanism is preferred.</p>
 <div id="item-summaries" class="section level2">
 <h2 class="hasAnchor">
 <a href="#item-summaries" class="anchor"></a>Item summaries</h2>
 <p>Item summary is understand as some summary measurements (of arbitrary nature) of item (one or more columns) present in data. To compute them, <code>comperes</code> offers <code>summarise_*()</code> family of functions in which summary functions should be provided as in <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">dplyr::summarise()</a></code>. Basically, they are wrappers for grouped summarise with forced ungrouping, conversion to <code>tibble</code> and possible adding prefix to summaries. <strong>Note</strong> that if one of columns in item is a factor with implicit <code>NA</code>s (present in vector but not in levels), there will be a warning suggesting to add <code>NA</code> to levels. This is due to <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code> functionality in <code>dplyr</code> after 0.8.0 version.</p>
 <p>Couple of examples:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><code class = "r"><span class="no">cr_long</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/item-summary.html">summarise_player</a></span>(<span class="kw">mean_score</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">score</span>))
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">cr_long</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/item-summary.html">summarise_player</a></span><span class="op">(</span>mean_score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">score</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 3 x 2</span>
 <span class="co">#&gt;   player mean_score</span>
 <span class="co">#&gt;    &lt;dbl&gt;      &lt;dbl&gt;</span>
@@ -138,7 +142,7 @@
 <span class="co">#&gt; 2      2       6.33</span>
 <span class="co">#&gt; 3     NA       2.5</span>
 
-<span class="no">cr_long</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/item-summary.html">summarise_game</a></span>(<span class="kw">min_score</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span>(<span class="no">score</span>), <span class="kw">max_score</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="no">score</span>))
+<span class="va">cr_long</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/item-summary.html">summarise_game</a></span><span class="op">(</span>min_score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">score</span><span class="op">)</span>, max_score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">score</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 4 x 3</span>
 <span class="co">#&gt;   game  min_score max_score</span>
 <span class="co">#&gt;   &lt;chr&gt;     &lt;int&gt;     &lt;int&gt;</span>
@@ -147,16 +151,17 @@
 <span class="co">#&gt; 3 b1            6         7</span>
 <span class="co">#&gt; 4 b2            8         8</span>
 
-<span class="no">cr_long</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/item-summary.html">summarise_item</a></span>(<span class="st">"season"</span>, <span class="kw">sd_score</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span>(<span class="no">score</span>))
+<span class="va">cr_long</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/item-summary.html">summarise_item</a></span><span class="op">(</span><span class="st">"season"</span>, sd_score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">score</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 2 x 2</span>
 <span class="co">#&gt;   season sd_score</span>
 <span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;</span>
 <span class="co">#&gt; 1 A          1.58</span>
-<span class="co">#&gt; 2 B          1</span></code></pre></body></html></div>
+<span class="co">#&gt; 2 B          1</span></code></code></pre></div>
 <p>For convenient transformation of results there are <code>join_*_summary()</code> family of functions, which compute respective summaries and join them to original data:</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><code class = "r"><span class="no">cr_long</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/item-summary-join.html">join_item_summary</a></span>(<span class="st">"season"</span>, <span class="kw">season_mean_score</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">score</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">score</span> <span class="kw">=</span> <span class="no">score</span> - <span class="no">season_mean_score</span>)
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">cr_long</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/item-summary-join.html">join_item_summary</a></span><span class="op">(</span><span class="st">"season"</span>, season_mean_score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">score</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>score <span class="op">=</span> <span class="va">score</span> <span class="op">-</span> <span class="va">season_mean_score</span><span class="op">)</span>
 <span class="co">#&gt; # A longcr object:</span>
 <span class="co">#&gt; # A tibble: 8 x 5</span>
 <span class="co">#&gt;   game  player score season season_mean_score</span>
@@ -168,12 +173,13 @@
 <span class="co">#&gt; 5 a2         2     2 A                      3</span>
 <span class="co">#&gt; 6 b1         2    -1 B                      7</span>
 <span class="co">#&gt; 7 b1         1     0 B                      7</span>
-<span class="co">#&gt; 8 b2         2     1 B                      7</span></code></pre></body></html></div>
+<span class="co">#&gt; 8 b2         2     1 B                      7</span></code></code></pre></div>
 <p>For common summary functions <code>comperes</code> has a list <code>summary_funs</code> with 8 quoted expressions to be used with <code>rlang</code>’s unquoting mechanism:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><code class = "r"><span class="co"># Use .prefix to add prefix to summary columns</span>
-<span class="no">cr_long</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/item-summary-join.html">join_player_summary</a></span>(!!!<span class="no">summary_funs</span>[<span class="fl">1</span>:<span class="fl">2</span>], <span class="kw">.prefix</span> <span class="kw">=</span> <span class="st">"player_"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/item-summary-join.html">join_item_summary</a></span>(<span class="st">"season"</span>, !!!<span class="no">summary_funs</span>[<span class="fl">1</span>:<span class="fl">2</span>], <span class="kw">.prefix</span> <span class="kw">=</span> <span class="st">"season_"</span>)
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="co"># Use .prefix to add prefix to summary columns</span>
+<span class="va">cr_long</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/item-summary-join.html">join_player_summary</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">summary_funs</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, .prefix <span class="op">=</span> <span class="st">"player_"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/item-summary-join.html">join_item_summary</a></span><span class="op">(</span><span class="st">"season"</span>, <span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">summary_funs</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, .prefix <span class="op">=</span> <span class="st">"season_"</span><span class="op">)</span>
 <span class="co">#&gt; # A longcr object:</span>
 <span class="co">#&gt; # A tibble: 8 x 8</span>
 <span class="co">#&gt;   game  player score season player_min_score player_max_score season_min_score</span>
@@ -186,14 +192,15 @@
 <span class="co">#&gt; 6 b1         2     6 B                     5                8                6</span>
 <span class="co">#&gt; 7 b1         1     7 B                     1                7                6</span>
 <span class="co">#&gt; 8 b2         2     8 B                     5                8                6</span>
-<span class="co">#&gt; # … with 1 more variable: season_max_score &lt;int&gt;</span></code></pre></body></html></div>
+<span class="co">#&gt; # … with 1 more variable: season_max_score &lt;int&gt;</span></code></code></pre></div>
 </div>
 <div id="head-to-head-values" class="section level2">
 <h2 class="hasAnchor">
 <a href="#head-to-head-values" class="anchor"></a>Head-to-Head values</h2>
 <p>Head-to-Head value is a summary statistic of direct confrontation between two players. It is assumed that this value can be computed based only on the players’ <strong>matchups</strong>, data of actual participation for ordered pair of players in one game.</p>
 <p>To compute matchups, <code>comperes</code> has <code><a href="../reference/get_matchups.html">get_matchups()</a></code>, which returns a <code>widecr</code> object with all matchups actually present in results (including matchups of players with themselves). <strong>Note</strong> that missing values in <code>player</code> column are treated as separate players. It allows operating with games where multiple players’ identifiers are not known. However, when computing Head-to-Head values they treated as single player. Example:</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><code class = "r"><span class="fu"><a href="../reference/get_matchups.html">get_matchups</a></span>(<span class="no">cr_long</span>)
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/get_matchups.html">get_matchups</a></span><span class="op">(</span><span class="va">cr_long</span><span class="op">)</span>
 <span class="co">#&gt; # A widecr object:</span>
 <span class="co">#&gt; # A tibble: 18 x 5</span>
 <span class="co">#&gt;    game  player1 score1 player2 score2</span>
@@ -215,17 +222,18 @@
 <span class="co">#&gt; 15 b1          2      6       1      7</span>
 <span class="co">#&gt; 16 b1          1      7       2      6</span>
 <span class="co">#&gt; 17 b1          1      7       1      7</span>
-<span class="co">#&gt; 18 b2          2      8       2      8</span></code></pre></body></html></div>
+<span class="co">#&gt; 18 b2          2      8       2      8</span></code></code></pre></div>
 <p>Head-to-Head values can be stored in two ways:</p>
 <ul>
 <li>
 <strong>Long</strong>, a <code>tibble</code> with columns <code>player1</code> and <code>player2</code> which identify ordered pair of players, and columns corresponding to Head-to-Head values. Computation is done with <code><a href="../reference/h2h_long.html">h2h_long()</a></code> which returns an object of class <code>h2h_long</code>. Head-to-Head functions are specified as in <code>dplyr</code>’s grammar <strong>for results matchups</strong>:</li>
 </ul>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><code class = "r"><span class="no">cr_long</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/h2h_long.html">h2h_long</a></span>(
-    <span class="kw">abs_diff</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(<span class="no">score1</span> - <span class="no">score2</span>)),
-    <span class="kw">num_wins</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">score1</span> <span class="kw">&gt;</span> <span class="no">score2</span>)
-  )
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">cr_long</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/h2h_long.html">h2h_long</a></span><span class="op">(</span>
+    abs_diff <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">score1</span> <span class="op">-</span> <span class="va">score2</span><span class="op">)</span><span class="op">)</span>,
+    num_wins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">score1</span> <span class="op">&gt;</span> <span class="va">score2</span><span class="op">)</span>
+  <span class="op">)</span>
 <span class="co">#&gt; # A long format of Head-to-Head values:</span>
 <span class="co">#&gt; # A tibble: 9 x 4</span>
 <span class="co">#&gt;   player1 player2 abs_diff num_wins</span>
@@ -238,19 +246,21 @@
 <span class="co">#&gt; 6       2      NA     NA         NA</span>
 <span class="co">#&gt; 7      NA       1      1.5        2</span>
 <span class="co">#&gt; 8      NA       2     NA         NA</span>
-<span class="co">#&gt; 9      NA      NA      0.5        1</span></code></pre></body></html></div>
+<span class="co">#&gt; 9      NA      NA      0.5        1</span></code></code></pre></div>
 <ul>
 <li>
 <strong>Matrix</strong>, a matrix where rows and columns describe ordered pair of players and entries - Head-to-Head values. This allows convenient storage of only one Head-to-Head value. Computation is done with <code><a href="../reference/h2h_mat.html">h2h_mat()</a></code> which returns an object of class <code>h2h_mat</code>. Head-to-Head functions are specified as in <code><a href="../reference/h2h_long.html">h2h_long()</a></code>:</li>
 </ul>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><code class = "r"><span class="no">cr_long</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/h2h_mat.html">h2h_mat</a></span>(<span class="kw">sum_score</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">score1</span> + <span class="no">score2</span>))
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">cr_long</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/h2h_mat.html">h2h_mat</a></span><span class="op">(</span>sum_score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">score1</span> <span class="op">+</span> <span class="va">score2</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; # A matrix format of Head-to-Head values:</span>
 <span class="co">#&gt;       1  2 &lt;NA&gt;</span>
 <span class="co">#&gt; 1    24 22    7</span>
 <span class="co">#&gt; 2    22 38   NA</span>
-<span class="co">#&gt; &lt;NA&gt;  7 NA   20</span></code></pre></body></html></div>
+<span class="co">#&gt; &lt;NA&gt;  7 NA   20</span></code></code></pre></div>
 <p><code>comperes</code> also offers a list <code>h2h_funs</code> of 9 common Head-to-Head functions as quoted expressions to be used with <code>rlang</code>’s unquoting mechanism:</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><code class = "r"><span class="no">cr_long</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/h2h_long.html">h2h_long</a></span>(!!!<span class="no">h2h_funs</span>)
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">cr_long</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/h2h_long.html">h2h_long</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">h2h_funs</span><span class="op">)</span>
 <span class="co">#&gt; # A long format of Head-to-Head values:</span>
 <span class="co">#&gt; # A tibble: 9 x 11</span>
 <span class="co">#&gt;   player1 player2 mean_score_diff mean_score_diff… mean_score sum_score_diff</span>
@@ -265,18 +275,19 @@
 <span class="co">#&gt; 8      NA       2            NA               NA        NA                NA</span>
 <span class="co">#&gt; 9      NA      NA             0                0         2.5               0</span>
 <span class="co">#&gt; # … with 5 more variables: sum_score_diff_pos &lt;dbl&gt;, sum_score &lt;int&gt;,</span>
-<span class="co">#&gt; #   num_wins &lt;dbl&gt;, num_wins2 &lt;dbl&gt;, num &lt;int&gt;</span></code></pre></body></html></div>
+<span class="co">#&gt; #   num_wins &lt;dbl&gt;, num_wins2 &lt;dbl&gt;, num &lt;int&gt;</span></code></code></pre></div>
 <p>To compute Head-to-Head for only subset of players or include values for players that are not in the results, use factor <code>player</code> column. <strong>Notes</strong>:</p>
 <ul>
 <li>You can use <code>fill</code> argument to replace <code>NA</code>s in certain columns after computing Head-to-Head values.</li>
 <li>As Head-to-Head functions use <code><a href="../reference/item-summary.html">summarise_item()</a></code>, there will be a warning in case of implicit <code>NA</code>s in factor columns.</li>
 </ul>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><code class = "r"><span class="no">cr_long_fac</span> <span class="kw">&lt;-</span> <span class="no">cr_long</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">player</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="no">player</span>, <span class="kw">levels</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>)))
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">cr_long_fac</span> <span class="op">&lt;-</span> <span class="va">cr_long</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>player <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">player</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 
-<span class="no">cr_long_fac</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/h2h_long.html">h2h_long</a></span>(<span class="kw">abs_diff</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(<span class="no">score1</span> - <span class="no">score2</span>)),
-           <span class="kw">fill</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">abs_diff</span> <span class="kw">=</span> -<span class="fl">100</span>))
+<span class="va">cr_long_fac</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/h2h_long.html">h2h_long</a></span><span class="op">(</span>abs_diff <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">score1</span> <span class="op">-</span> <span class="va">score2</span><span class="op">)</span><span class="op">)</span>,
+           fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>abs_diff <span class="op">=</span> <span class="op">-</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; # A long format of Head-to-Head values:</span>
 <span class="co">#&gt; # A tibble: 9 x 3</span>
 <span class="co">#&gt;   player1 player2 abs_diff</span>
@@ -291,19 +302,20 @@
 <span class="co">#&gt; 8 3       2           -100</span>
 <span class="co">#&gt; 9 3       3           -100</span>
 
-<span class="no">cr_long_fac</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/h2h_mat.html">h2h_mat</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(<span class="no">score1</span> - <span class="no">score2</span>)),
-          <span class="kw">fill</span> <span class="kw">=</span> -<span class="fl">100</span>)
+<span class="va">cr_long_fac</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/h2h_mat.html">h2h_mat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">score1</span> <span class="op">-</span> <span class="va">score2</span><span class="op">)</span><span class="op">)</span>,
+          fill <span class="op">=</span> <span class="op">-</span><span class="fl">100</span><span class="op">)</span>
 <span class="co">#&gt; # A matrix format of Head-to-Head values:</span>
 <span class="co">#&gt;      1    2    3</span>
 <span class="co">#&gt; 1    0    1 -100</span>
 <span class="co">#&gt; 2    1    0 -100</span>
-<span class="co">#&gt; 3 -100 -100 -100</span></code></pre></body></html></div>
+<span class="co">#&gt; 3 -100 -100 -100</span></code></code></pre></div>
 <div id="conversion" class="section level3">
 <h3 class="hasAnchor">
 <a href="#conversion" class="anchor"></a>Conversion</h3>
 <p>To convert between long and matrix formats of Head-to-Head values, <code>comperes</code> has <code><a href="../reference/h2h_long.html">to_h2h_long()</a></code> and <code><a href="../reference/h2h_mat.html">to_h2h_mat()</a></code> which convert from matrix to long and from long to matrix respectively. <strong>Note</strong> that output of <code><a href="../reference/h2h_long.html">to_h2h_long()</a></code> has <code>player1</code> and <code>player2</code> columns as characters. Examples:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><code class = "r"><span class="no">cr_long</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/h2h_mat.html">h2h_mat</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">score1</span>)) <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/h2h_long.html">to_h2h_long</a></span>()
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">cr_long</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/h2h_mat.html">h2h_mat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">score1</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/h2h_long.html">to_h2h_long</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A long format of Head-to-Head values:</span>
 <span class="co">#&gt; # A tibble: 9 x 3</span>
 <span class="co">#&gt;   player1 player2 h2h_value</span>
@@ -318,47 +330,49 @@
 <span class="co">#&gt; 8 &lt;NA&gt;    2           NA   </span>
 <span class="co">#&gt; 9 &lt;NA&gt;    &lt;NA&gt;         2.5</span>
 
-<span class="no">cr_long</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/h2h_long.html">h2h_long</a></span>(<span class="kw">mean_score1</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">score1</span>), <span class="kw">mean_score2</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">score2</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/h2h_mat.html">to_h2h_mat</a></span>()
+<span class="va">cr_long</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/h2h_long.html">h2h_long</a></span><span class="op">(</span>mean_score1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">score1</span><span class="op">)</span>, mean_score2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">score2</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/h2h_mat.html">to_h2h_mat</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Using mean_score1 as value.</span>
 <span class="co">#&gt; # A matrix format of Head-to-Head values:</span>
 <span class="co">#&gt;        1        2 &lt;NA&gt;</span>
 <span class="co">#&gt; 1    4.0 5.500000  1.0</span>
 <span class="co">#&gt; 2    5.5 6.333333   NA</span>
-<span class="co">#&gt; &lt;NA&gt; 2.5       NA  2.5</span></code></pre></body></html></div>
+<span class="co">#&gt; &lt;NA&gt; 2.5       NA  2.5</span></code></code></pre></div>
 <p>All this functionality is powered by useful outside of <code>comperes</code> functions <code><a href="../reference/convert-pair-value.html">long_to_mat()</a></code> and <code><a href="../reference/convert-pair-value.html">mat_to_long()</a></code>. They convert general pair-value data between long and matrix format:</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><code class = "r"><span class="no">pair_value_long</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/reexports.html">tibble</a></span>(
-  <span class="kw">key_1</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>),
-  <span class="kw">key_2</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>),
-  <span class="kw">val</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">3</span>
-)
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">pair_value_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
+  key_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,
+  key_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span>,
+  val <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>
+<span class="op">)</span>
 
-<span class="no">pair_value_mat</span> <span class="kw">&lt;-</span> <span class="no">pair_value_long</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/convert-pair-value.html">long_to_mat</a></span>(<span class="kw">row_key</span> <span class="kw">=</span> <span class="st">"key_1"</span>, <span class="kw">col_key</span> <span class="kw">=</span> <span class="st">"key_2"</span>, <span class="kw">value</span> <span class="kw">=</span> <span class="st">"val"</span>)
-<span class="no">pair_value_mat</span>
+<span class="va">pair_value_mat</span> <span class="op">&lt;-</span> <span class="va">pair_value_long</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/convert-pair-value.html">long_to_mat</a></span><span class="op">(</span>row_key <span class="op">=</span> <span class="st">"key_1"</span>, col_key <span class="op">=</span> <span class="st">"key_2"</span>, value <span class="op">=</span> <span class="st">"val"</span><span class="op">)</span>
+<span class="va">pair_value_mat</span>
 <span class="co">#&gt;    2 3</span>
 <span class="co">#&gt; 1  1 2</span>
 <span class="co">#&gt; 2 NA 3</span>
 
-<span class="no">pair_value_mat</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/convert-pair-value.html">mat_to_long</a></span>(
-    <span class="kw">row_key</span> <span class="kw">=</span> <span class="st">"key_1"</span>, <span class="kw">col_key</span> <span class="kw">=</span> <span class="st">"key_2"</span>, <span class="kw">value</span> <span class="kw">=</span> <span class="st">"val"</span>,
-    <span class="kw">drop</span> <span class="kw">=</span> <span class="fl">TRUE</span>
-  )
+<span class="va">pair_value_mat</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/convert-pair-value.html">mat_to_long</a></span><span class="op">(</span>
+    row_key <span class="op">=</span> <span class="st">"key_1"</span>, col_key <span class="op">=</span> <span class="st">"key_2"</span>, value <span class="op">=</span> <span class="st">"val"</span>,
+    drop <span class="op">=</span> <span class="cn">TRUE</span>
+  <span class="op">)</span>
 <span class="co">#&gt; # A tibble: 3 x 3</span>
 <span class="co">#&gt;   key_1 key_2   val</span>
 <span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt; &lt;int&gt;</span>
 <span class="co">#&gt; 1 1     2         1</span>
 <span class="co">#&gt; 2 1     3         2</span>
-<span class="co">#&gt; 3 2     3         3</span></code></pre></body></html></div>
+<span class="co">#&gt; 3 2     3         3</span></code></code></pre></div>
 </div>
 </div>
 <div id="pairgames" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pairgames" class="anchor"></a>Pairgames</h2>
 <p>For some ranking algorithms it crucial that games should only be between two players. <code>comperes</code> has function <code><a href="../reference/pairgames.html">to_pairgames()</a></code> for this. It removes games with one player. Games with three and more players <code><a href="../reference/pairgames.html">to_pairgames()</a></code> splits into <strong>separate games</strong> between unordered pairs of different players without specific order. <strong>Note</strong> that game identifiers are changed to integers but order of initial games is preserved. Example:</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><code class = "r"><span class="fu"><a href="../reference/pairgames.html">to_pairgames</a></span>(<span class="no">cr_long</span>)
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/pairgames.html">to_pairgames</a></span><span class="op">(</span><span class="va">cr_long</span><span class="op">)</span>
 <span class="co">#&gt; # A widecr object:</span>
 <span class="co">#&gt; # A tibble: 5 x 5</span>
 <span class="co">#&gt;    game player1 score1 player2 score2</span>
@@ -367,7 +381,7 @@
 <span class="co">#&gt; 2     2       1      1      NA      3</span>
 <span class="co">#&gt; 3     3      NA      2      NA      3</span>
 <span class="co">#&gt; 4     4       1      4       2      5</span>
-<span class="co">#&gt; 5     5       2      6       1      7</span></code></pre></body></html></div>
+<span class="co">#&gt; 5     5       2      6       1      7</span></code></code></pre></div>
 </div>
   </div>
 
@@ -386,7 +400,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

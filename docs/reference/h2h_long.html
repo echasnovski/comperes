@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">comperes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -137,12 +137,12 @@
     <p>Functions to compute Head-to-Head values in long pair-value format.</p>
     </div>
 
-    <pre class="usage"><code class = "r"><span class='fu'>h2h_long</span>(<span class='no'>cr_data</span>, <span class='no'>...</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())
+    <pre class="usage"><code class = "r"><span class='fu'>h2h_long</span><span class='op'>(</span><span class='va'>cr_data</span>, <span class='va'>...</span>, fill <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>to_h2h_long</span>(<span class='no'>mat</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='st'>"h2h_value"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>to_h2h_long</span><span class='op'>(</span><span class='va'>mat</span>, value <span class='op'>=</span> <span class='st'>"h2h_value"</span>, drop <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
 <span class='co'># S3 method for h2h_long</span>
-<span class='fu'><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>as_tibble</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)</code></pre>
+<span class='fu'><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>as_tibble</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></code></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -230,45 +230,46 @@ for <code><a href='item-summary.html'>summarise_item()</a></code> applied to dat
 <p><a href='h2h_funs.html'>Common Head-to-Head functions</a>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><code class = "r"><div class='input'><span class='no'>ncaa2005</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>h2h_long</span>(
-    <span class='kw'>mean_score</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>score1</span>),
-    <span class='kw'>mean_abs_score</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span>(<span class='no'>score1</span> - <span class='no'>score2</span>))
-  )</div><div class='output co'>#&gt; # A long format of Head-to-Head values:
-#&gt; <span style='color: #949494;'># A tibble: 25 x 4</span><span>
+    <pre class="examples"><code class = "r"><div class='input'><span class='va'>ncaa2005</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>h2h_long</span><span class='op'>(</span>
+    mean_score <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>score1</span><span class='op'>)</span>,
+    mean_abs_score <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>score1</span> <span class='op'>-</span> <span class='va'>score2</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='op'>)</span>
+</div><div class='output co'>#&gt; # A long format of Head-to-Head values:
+#&gt; <span style='color: #555555;'># A tibble: 25 x 4</span><span>
 #&gt;    player1 player2 mean_score mean_abs_score
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> Duke    Duke          8.75              0
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> Duke    Miami         7                45
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> Duke    UNC          21                 3
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> Duke    UVA           7                31
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> Duke    VT            0                45
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> Miami   Duke         52                45
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> Miami   Miami        34.5               0
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> Miami   UNC          34                18
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> Miami   UVA          25                 8
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> Miami   VT           27                20
-#&gt; </span><span style='color: #949494;'># … with 15 more rows</span><span></div><div class='input'>
-<span class='no'>ncaa2005</span>[-(<span class='fl'>1</span>:<span class='fl'>2</span>), ] <span class='kw'>%&gt;%</span>
-  <span class='fu'>h2h_long</span>(
-    <span class='kw'>mean_score</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>score1</span>),
-    <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>mean_score</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-  )</div><div class='output co'>#&gt; # A long format of Head-to-Head values:
-#&gt; </span><span style='color: #949494;'># A tibble: 25 x 3</span><span>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> Duke    Duke          8.75              0
+#&gt; </span><span style='color: #555555;'> 2</span><span> Duke    Miami         7                45
+#&gt; </span><span style='color: #555555;'> 3</span><span> Duke    UNC          21                 3
+#&gt; </span><span style='color: #555555;'> 4</span><span> Duke    UVA           7                31
+#&gt; </span><span style='color: #555555;'> 5</span><span> Duke    VT            0                45
+#&gt; </span><span style='color: #555555;'> 6</span><span> Miami   Duke         52                45
+#&gt; </span><span style='color: #555555;'> 7</span><span> Miami   Miami        34.5               0
+#&gt; </span><span style='color: #555555;'> 8</span><span> Miami   UNC          34                18
+#&gt; </span><span style='color: #555555;'> 9</span><span> Miami   UVA          25                 8
+#&gt; </span><span style='color: #555555;'>10</span><span> Miami   VT           27                20
+#&gt; </span><span style='color: #555555;'># … with 15 more rows</span><span></div><div class='input'>
+<span class='va'>ncaa2005</span><span class='op'>[</span><span class='op'>-</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span>, <span class='op'>]</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>h2h_long</span><span class='op'>(</span>
+    mean_score <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>score1</span><span class='op'>)</span>,
+    fill <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>mean_score <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+  <span class='op'>)</span>
+</div><div class='output co'>#&gt; # A long format of Head-to-Head values:
+#&gt; </span><span style='color: #555555;'># A tibble: 25 x 3</span><span>
 #&gt;    player1 player2 mean_score
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> Duke    Duke          9.33
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> Duke    Miami         0   
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> Duke    UNC          21   
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> Duke    UVA           7   
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> Duke    VT            0   
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> Miami   Duke          0   
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> Miami   Miami        28.7 
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> Miami   UNC          34   
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> Miami   UVA          25   
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> Miami   VT           27   
-#&gt; </span><span style='color: #949494;'># … with 15 more rows</span><span></div><div class='input'>
-</div></span></code></pre>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> Duke    Duke          9.33
+#&gt; </span><span style='color: #555555;'> 2</span><span> Duke    Miami         0   
+#&gt; </span><span style='color: #555555;'> 3</span><span> Duke    UNC          21   
+#&gt; </span><span style='color: #555555;'> 4</span><span> Duke    UVA           7   
+#&gt; </span><span style='color: #555555;'> 5</span><span> Duke    VT            0   
+#&gt; </span><span style='color: #555555;'> 6</span><span> Miami   Duke          0   
+#&gt; </span><span style='color: #555555;'> 7</span><span> Miami   Miami        28.7 
+#&gt; </span><span style='color: #555555;'> 8</span><span> Miami   UNC          34   
+#&gt; </span><span style='color: #555555;'> 9</span><span> Miami   UVA          25   
+#&gt; </span><span style='color: #555555;'>10</span><span> Miami   VT           27   
+#&gt; </span><span style='color: #555555;'># … with 15 more rows</span><span></div></span></code></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -284,7 +285,7 @@ for <code><a href='item-summary.html'>summarise_item()</a></code> applied to dat
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

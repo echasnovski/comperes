@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">comperes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -137,9 +137,9 @@
     <p>Functions for competition results with games between two players.</p>
     </div>
 
-    <pre class="usage"><code class = "r"><span class='fu'>to_pairgames</span>(<span class='no'>cr_data</span>)
+    <pre class="usage"><code class = "r"><span class='fu'>to_pairgames</span><span class='op'>(</span><span class='va'>cr_data</span><span class='op'>)</span>
 
-<span class='fu'>is_pairgames</span>(<span class='no'>cr_data</span>)</code></pre>
+<span class='fu'>is_pairgames</span><span class='op'>(</span><span class='va'>cr_data</span><span class='op'>)</span></code></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -182,48 +182,51 @@ competition results with many games.</p></li>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><code class = "r"><div class='input'><span class='no'>cr_data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(
-  <span class='kw'>game</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>3</span>), <span class='fl'>6</span>),
-  <span class='kw'>player</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>3</span>), <span class='fl'>1</span>),
-  <span class='kw'>score</span> <span class='kw'>=</span> <span class='fl'>101</span>:<span class='fl'>116</span>,
-  <span class='kw'>extraCol</span> <span class='kw'>=</span> -(<span class='fl'>1</span>:<span class='fl'>16</span>)
-)
+    <pre class="examples"><code class = "r"><div class='input'><span class='va'>cr_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
+  game <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, each <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>, <span class='fl'>6</span><span class='op'>)</span>,
+  player <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, times <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span>,
+  score <span class='op'>=</span> <span class='fl'>101</span><span class='op'>:</span><span class='fl'>116</span>,
+  extraCol <span class='op'>=</span> <span class='op'>-</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>16</span><span class='op'>)</span>
+<span class='op'>)</span>
 
-<span class='fu'>to_pairgames</span>(<span class='no'>cr_data</span>)</div><div class='output co'>#&gt; # A widecr object:
-#&gt; <span style='color: #949494;'># A tibble: 15 x 5</span><span>
+<span class='fu'>to_pairgames</span><span class='op'>(</span><span class='va'>cr_data</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; # A widecr object:
+#&gt; <span style='color: #555555;'># A tibble: 15 x 5</span><span>
 #&gt;     game player1 score1 player2 score2
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>     1       1    101       2    102
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>     2       1    101       3    103
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>     3       2    102       3    103
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>     4       4    104       5    105
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>     5       4    104       1    106
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>     6       5    105       1    106
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>     7       2    107       3    108
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>     8       2    107       4    109
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>     9       3    108       4    109
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>    10       5    110       1    111
-#&gt; </span><span style='color: #BCBCBC;'>11</span><span>    11       5    110       2    112
-#&gt; </span><span style='color: #BCBCBC;'>12</span><span>    12       1    111       2    112
-#&gt; </span><span style='color: #BCBCBC;'>13</span><span>    13       3    113       4    114
-#&gt; </span><span style='color: #BCBCBC;'>14</span><span>    14       3    113       5    115
-#&gt; </span><span style='color: #BCBCBC;'>15</span><span>    15       4    114       5    115</div><div class='input'>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span>     1       1    101       2    102
+#&gt; </span><span style='color: #555555;'> 2</span><span>     2       1    101       3    103
+#&gt; </span><span style='color: #555555;'> 3</span><span>     3       2    102       3    103
+#&gt; </span><span style='color: #555555;'> 4</span><span>     4       4    104       5    105
+#&gt; </span><span style='color: #555555;'> 5</span><span>     5       4    104       1    106
+#&gt; </span><span style='color: #555555;'> 6</span><span>     6       5    105       1    106
+#&gt; </span><span style='color: #555555;'> 7</span><span>     7       2    107       3    108
+#&gt; </span><span style='color: #555555;'> 8</span><span>     8       2    107       4    109
+#&gt; </span><span style='color: #555555;'> 9</span><span>     9       3    108       4    109
+#&gt; </span><span style='color: #555555;'>10</span><span>    10       5    110       1    111
+#&gt; </span><span style='color: #555555;'>11</span><span>    11       5    110       2    112
+#&gt; </span><span style='color: #555555;'>12</span><span>    12       1    111       2    112
+#&gt; </span><span style='color: #555555;'>13</span><span>    13       3    113       4    114
+#&gt; </span><span style='color: #555555;'>14</span><span>    14       3    113       5    115
+#&gt; </span><span style='color: #555555;'>15</span><span>    15       4    114       5    115</div><div class='input'>
 <span class='co'># Missing values</span>
-<span class='no'>cr_data_na</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(
-  <span class='kw'>game</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1L</span>, <span class='fl'>3</span>),
-  <span class='kw'>player</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>),
-  <span class='kw'>score</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>
-)
-<span class='fu'>to_pairgames</span>(<span class='no'>cr_data_na</span>)</div><div class='output co'>#&gt; # A widecr object:
-#&gt; </span><span style='color: #949494;'># A tibble: 3 x 5</span><span>
+<span class='va'>cr_data_na</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
+  game <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1L</span>, <span class='fl'>3</span><span class='op'>)</span>,
+  player <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='cn'>NA</span>, <span class='cn'>NA</span><span class='op'>)</span>,
+  score <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>
+<span class='op'>)</span>
+<span class='fu'>to_pairgames</span><span class='op'>(</span><span class='va'>cr_data_na</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; # A widecr object:
+#&gt; </span><span style='color: #555555;'># A tibble: 3 x 5</span><span>
 #&gt;    game player1 score1 player2 score2
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>     1       1      1      </span><span style='color: #BB0000;'>NA</span><span>      2
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span>     2       1      1      </span><span style='color: #BB0000;'>NA</span><span>      3
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span>     3      </span><span style='color: #BB0000;'>NA</span><span>      2      </span><span style='color: #BB0000;'>NA</span><span>      3</div><div class='input'>
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span>     1       1      1      </span><span style='color: #BB0000;'>NA</span><span>      2
+#&gt; </span><span style='color: #555555;'>2</span><span>     2       1      1      </span><span style='color: #BB0000;'>NA</span><span>      3
+#&gt; </span><span style='color: #555555;'>3</span><span>     3      </span><span style='color: #BB0000;'>NA</span><span>      2      </span><span style='color: #BB0000;'>NA</span><span>      3</div><div class='input'>
 <span class='co'># Checks</span>
-<span class='fu'>is_pairgames</span>(<span class='no'>cr_data</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>is_pairgames</span>(<span class='fu'>to_pairgames</span>(<span class='no'>cr_data</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-</div></span></code></pre>
+<span class='fu'>is_pairgames</span><span class='op'>(</span><span class='va'>cr_data</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>is_pairgames</span><span class='op'>(</span><span class='fu'>to_pairgames</span><span class='op'>(</span><span class='va'>cr_data</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div></span></code></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -239,7 +242,7 @@ competition results with many games.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
