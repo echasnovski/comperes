@@ -165,7 +165,7 @@ test_that("h2h_mat handles `player` as factor", {
 })
 
 test_that("h2h_mat allows multiple Head-to-Head functions", {
-  expect_silent(h2h_mat(cr_data))
+  expect_no_message(h2h_mat(cr_data))
 
   expect_message(
     h2h_mat(
@@ -239,3 +239,4 @@ test_that("num_wins works", {
   expect_equal(num_wins(score_1, score_2, half_for_draw = TRUE), 2)
   expect_equal(num_wins(score_1, score_2, na.rm = FALSE), NA_real_)
 })
+
