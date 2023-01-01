@@ -172,7 +172,13 @@ get_matchups <- function(cr_data) {
     select(.data$game, .data$player, .data$score)
   class(cr) <- class(tibble::tibble())
 
-  left_join(x = cr, y = cr, by = "game", suffix = c("1", "2")) %>%
+  left_join(
+    x = cr,
+    y = cr,
+    by = "game",
+    suffix = c("1", "2"),
+    multiple = "all"
+  ) %>%
     as_widecr()
 }
 
