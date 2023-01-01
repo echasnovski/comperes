@@ -6,7 +6,8 @@
 \alias{mat_to_long}
 \title{Convert between long pair-value data and matrix}
 \usage{
-long_to_mat(tbl, row_key, col_key, value = NULL, fill = NULL, silent = FALSE)
+long_to_mat(tbl, row_key, col_key, value = NULL, fill = NULL,
+  silent = FALSE)
 
 mat_to_long(mat, row_key, col_key, value, drop = FALSE)
 }

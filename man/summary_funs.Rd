@@ -14,11 +14,11 @@ summary_funs
 List of commonly used functions for summarising competition results.
 }
 \details{
-\code{summary_funs} is a named list of \link[rlang:nse-defuse]{expressions}
+\code{summary_funs} is a named list of \link[rlang:expr]{expressions}
 representing commonly used expressions of summary functions for summarising
 competition results with \code{\link[=summarise_item]{summarise_item()}}. Names of the elements will be
 used as summary names. It is designed primarily to be used with \link[=longcr]{long format} of competition results. To use them inside \code{summarise_item()}
-use \link[rlang:nse-force]{unquoting} mechanism from rlang package.
+use \link[rlang:topic-inject]{unquoting} mechanism from rlang package.
 
 Currently present functions:
 \itemize{
