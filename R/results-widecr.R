@@ -158,7 +158,7 @@ as_widecr.longcr <- function(cr_data, repair = TRUE, ...) {
   }
 
   res <- cr_data %>%
-    select(.data$game, .data$player, .data$score) %>%
+    select("game", "player", "score") %>%
     group_by(.data$game) %>%
     mutate(in_game_id = seq_len(dplyr::n())) %>%
     ungroup() %>%
@@ -178,14 +178,14 @@ as_widecr.longcr <- function(cr_data, repair = TRUE, ...) {
 
       game_data %>%
         rename(
-          !!player_name := .data$player,
-          !!score_name := .data$score
+          !!player_name := "player",
+          !!score_name := "score"
         ) %>%
-        select(-.data$in_game_id)
+        select(-"in_game_id")
     }) %>%
     reduce_full_join(by = "game") %>%
     arrange(.data$game) %>%
-    select(.data$game, everything())
+    select("game", everything())
 
   if (repair) {
     res <- repair_widecr(res)
@@ -245,7 +245,7 @@ repair_widecr <- function(cr_data, ...) {
   if ("game" %in% colnames(res)) {
     res <- res %>%
       select(
-        .data$game,
+        "game",
         !!!rlang::syms(repair_info$target),
         everything()
       )

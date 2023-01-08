@@ -155,7 +155,7 @@ as_longcr.widecr <- function(cr_data, repair = TRUE, ...) {
     }) %>%
     bind_rows() %>%
     arrange(.data$game, .data[["..pair"]]) %>%
-    select(-.data[["..pair"]])
+    select(-"..pair")
 
   if (repair) {
     res <- repair_longcr(cr_data = res)
@@ -221,10 +221,7 @@ repair_longcr <- function(cr_data, ...) {
     bind_cols(
       renamecreate_columns(cr_data, repair_info, fill = NA_integer_)
     ) %>%
-    select(
-      .data$game, .data$player, .data$score,
-      everything()
-    )
+    select("game", "player", "score", everything())
 
   not_dupl_records <- (!duplicated(res[, c("game", "player")])) |
     is.na(res$game) | is.na(res$player)

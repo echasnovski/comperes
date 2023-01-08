@@ -62,7 +62,7 @@ NULL
 to_pairgames <- function(cr_data) {
   cr <- cr_data %>%
     as_longcr(repair = TRUE) %>%
-    select(.data$game, .data$player, .data$score)
+    select("game", "player", "score")
 
   multiple_players_games <- cr %>%
     count(.data$game) %>%
@@ -74,7 +74,7 @@ to_pairgames <- function(cr_data) {
     # during 'tidyverse' operations about combination of subclassed tibbles.
     as_tibble() %>%
     semi_join(y = multiple_players_games, by = "game") %>%
-    tidyr::nest(data = -.data$game) %>%
+    tidyr::nest(data = -"game") %>%
     mutate(data = lapply(.data$data, function(game_res) {
       cr_pairs <- utils::combn(nrow(game_res), 2)
 
@@ -82,7 +82,7 @@ to_pairgames <- function(cr_data) {
         slice(c(cr_pairs)) %>%
         mutate(..subGame = rep(seq_len(ncol(cr_pairs)), each = 2))
     })) %>%
-    tidyr::unnest(.data$data)
+    tidyr::unnest("data")
 
   # Compute new game identifiers
   pairgames_ids <- raw_pairgames %>%
@@ -91,8 +91,8 @@ to_pairgames <- function(cr_data) {
 
   raw_pairgames %>%
     left_join(y = pairgames_ids, by = c("game", "..subGame")) %>%
-    select(-.data$game, -.data[["..subGame"]]) %>%
-    select(game = .data[["..pairgameId"]], everything()) %>%
+    select(-"game", -"..subGame") %>%
+    select(game = "..pairgameId", everything()) %>%
     as_longcr(repair = FALSE) %>%
     as_widecr(repair = FALSE)
 }
