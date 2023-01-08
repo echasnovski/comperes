@@ -20,7 +20,7 @@ options(tibble.print_min = 6, tibble.print_max = 6)
 <!-- badges: start -->
 [![Build Status](https://travis-ci.org/echasnovski/comperes.svg?branch=master)](https://travis-ci.org/echasnovski/comperes)
 [![R build status](https://github.com/echasnovski/comperes/workflows/R-CMD-check/badge.svg)](https://github.com/echasnovski/comperes/actions)
-[![codecov](https://codecov.io/gh/echasnovski/comperes/branch/master/graph/badge.svg)](https://codecov.io/gh/echasnovski/comperes)
+[![codecov](https://codecov.io/gh/echasnovski/comperes/branch/master/graph/badge.svg)](https://app.codecov.io/gh/echasnovski/comperes)
 [![CRAN](https://www.r-pkg.org/badges/version/comperes?color=blue)](https://cran.r-project.org/package=comperes)
 [![Dependencies](https://tinyverse.netlify.com/badge/comperes)](https://CRAN.R-project.org/package=comperes)
 [![Downloads](http://cranlogs.r-pkg.org/badges/comperes)](https://cran.r-project.org/package=comperes)
@@ -40,7 +40,6 @@ This package leverages [dplyr](https://dplyr.tidyverse.org)'s grammar of data ma
 - __Summarise__:
     - Compute _item summaries_ with functions using `dplyr`'s grammar. Functions: `summarise_item()`, `summarise_game()`, `summarise_player()`.
     - Compute and _join_ item summaries to data for easy transformation. Functions: `join_item_summary()`, `join_game_summary()`, `join_player_summary()`.
-    - Use _common item summary functions_ with [rlang](https://rlang.r-lib.org/)'s [unquoting](https://rlang.r-lib.org/reference/quasiquotation.html) mechanism. Example: `. %>% summarise_player(!!!summary_funs["mean_score"])`.
 - __Compute Head-to-Head values__ (a summary statistic of direct confrontation between two players) with functions also using `dplyr`'s grammar:
     - Store output in _long format_ as a `tibble` with one row per pair of players. Function: `h2h_long()`.
     - Store output in _matrix format_ as a matrix with rows and columns describing players and entries - Head-to-Head values. Function: `h2h_mat()`.
