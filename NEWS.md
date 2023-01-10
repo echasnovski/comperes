@@ -1,3 +1,5 @@
+# comperes (development version)
+
 # comperes 0.2.6
 
 * Maintenance release in reaction to a planned update of `dplyr` to 1.1.0.
