@@ -7,9 +7,9 @@
 
 [![Build
 Status](https://travis-ci.org/echasnovski/comperes.svg?branch=master)](https://travis-ci.org/echasnovski/comperes)
-[![R build
-status](https://github.com/echasnovski/comperes/workflows/R-CMD-check/badge.svg)](https://github.com/echasnovski/comperes/actions)
-[![codecov](https://codecov.io/gh/echasnovski/comperes/branch/master/graph/badge.svg)](https://app.codecov.io/gh/echasnovski/comperes)
+[![R-CMD-check](https://github.com/echasnovski/comperes/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/echasnovski/comperes/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/echasnovski/comperes/branch/master/graph/badge.svg)](https://app.codecov.io/gh/echasnovski/comperes?branch=master)
 [![CRAN](https://www.r-pkg.org/badges/version/comperes?color=blue)](https://cran.r-project.org/package=comperes)
 [![Dependencies](https://tinyverse.netlify.com/badge/comperes)](https://CRAN.R-project.org/package=comperes)
 [![Downloads](http://cranlogs.r-pkg.org/badges/comperes)](https://cran.r-project.org/package=comperes)
